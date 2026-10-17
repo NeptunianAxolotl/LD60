@@ -21,6 +21,11 @@ function IterableMap.GetUnusedKey(self)
 	return self.unusedKey
 end
 
+function IterableMap.GetNewUniqueKey(self)
+	self.unusedKey = self.unusedKey + 1
+	return self.unusedKey
+end
+
 function IterableMap.Add(self, key, data)
 	if not key then
 		return
@@ -157,6 +162,25 @@ function IterableMap.GetFirstSatisfies(self, funcName, ...)
 	end
 end
 
+-- Does the function until a result is found.
+function IterableMap.GetRandomSatisfies(self, funcName, ...)
+	local initialSize = self.indexMax -- Destroying can cause indexMax to reduce
+	local permutation = util.GetRandomPermutation(initialSize)
+	local i = 1
+	while i <= initialSize do
+		local key = self.keyByIndex[permutation[i]]
+		local found, toRemove = self.dataByKey[key][funcName](...)
+		if found then
+			return self.dataByKey[key]
+		elseif toRemove then
+			-- Return true with second argument to remove element
+			IterableMap.Remove(self, key)
+		else
+			i = i + 1
+		end
+	end
+end
+
 function IterableMap.SumWithFunction(self, funcName, ...)
 	local count = 0
 	local i = 1
@@ -224,11 +248,12 @@ function IterableMap.ApplySelfMapToList(self, funcName, ...)
 end
 
 function IterableMap.ApplySelfRandomOrder(self, funcName, ...)
-	local permutation = util.GetRandomPermutation(self.indexMax)
+	local initialSize = self.indexMax -- Destroying can cause indexMax to reduce
+	local permutation = util.GetRandomPermutation(initialSize)
 	local i = 1
-	while i <= self.indexMax do
+	while i <= initialSize do
 		local key = self.keyByIndex[permutation[i]]
-		if self.dataByKey[key][funcName](...) then
+		if key and self.dataByKey[key][funcName](...) then
 			-- Return true to remove element
 			IterableMap.Remove(self, key)
 		else
