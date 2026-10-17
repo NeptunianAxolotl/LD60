@@ -21,6 +21,13 @@ local function NewPlayer(self, position, direction)
 	function self.Destroy(dt)
 	end
 	
+	function self.Export(objList)
+		objList[#objList + 1] = {
+			name = "player",
+			pos = self.pos,
+			direction = self.direction,
+		}
+	end
 	function self.Draw(drawQueue)
 		drawQueue:push({y=self.pos[2] + 10; f=function()
 			local drawPos = LevelHandler.GridToWorld(self.pos)

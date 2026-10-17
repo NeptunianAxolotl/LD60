@@ -11,6 +11,14 @@ function api.CreatePlayer(pos, direction)
 	self.player = NewPlayer({}, pos, direction)
 end
 
+function api.ExportObjects()
+	local objList = {}
+	if self.player then
+		self.player.Export(objList)
+	end
+	return objList
+end
+
 function api.KeyPressed(key, scancode, isRepeat)
 	if not self.player then
 		return

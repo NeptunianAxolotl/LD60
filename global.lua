@@ -37,6 +37,12 @@ local globals = {
 	TILE_SIZE = 100,
 	VIEW_PADDING = 50,
 	
+	SAVE_ORDER = {
+		"humanName", "dimensions", "player",
+		"blocks",
+	},
+	SAVE_INLINE = {"pos", "dimensions"},
+	
 	WINDOW_X = 1960,
 	WINDOW_Y = 1080,
 	STAMP_WIDTH = 96,

@@ -12,7 +12,7 @@ local def = {
 				TerrainHandler.RemoveBlock(pos)
 			end,
 			exportFunc = function ()
-				
+				return TerrainHandler.ExportObjects()
 			end,
 		},
 		player = {
@@ -24,7 +24,7 @@ local def = {
 				
 			end,
 			exportFunc = function ()
-				
+				return PlayerHandler.ExportObjects()
 			end,
 		}
 	},

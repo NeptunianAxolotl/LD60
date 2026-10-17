@@ -23,6 +23,12 @@ function api.AddBlock(blockType, pos, direction)
 	IterableMap.Add(self.blocks, NewBlock(blockData))
 end
 
+function api.ExportObjects()
+	local objList = {}
+	IterableMap.ApplySelf(self.blocks, "Export", objList)
+	return objList
+end
+
 function api.GetBlockAt(pos)
 	return IterableMap.GetFirstSatisfies(self.blocks, "IsAtPos", pos)
 end
@@ -33,9 +39,8 @@ end
 
 function api.Draw(drawQueue)
 	IterableMap.ApplySelf(self.blocks, "Draw", drawQueue)
-	drawQueue:push({y=0; f=function()
-		love.graphics.rectangle("line", 0, 0, 1, 1)
-		
+	drawQueue:push({y=-100; f=function()
+		love.graphics.setColor(0, 0, 0, 0.5)
 		local dimension = LevelHandler.GetDimensions()
 		local rightPos = dimension[1]*Global.TILE_SIZE
 		local bottomPos = dimension[2]*Global.TILE_SIZE

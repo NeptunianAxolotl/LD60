@@ -52,9 +52,9 @@ end
 
 local function SetupLevel()
 	self.dimensions = util.CopyTable(self.levelData.dimensions)
-	for spawnType, _ in pairs(EditorDefs.spawnTypes) do
+	for spawnType, spawnData in pairs(EditorDefs.spawnTypes) do
 		for i = 1, #self.levelData[spawnType] do
-			EditorDefs.spawnTypes[spawnType].spawnFunc(
+			spawnData.spawnFunc(
 				self.levelData[spawnType][i].name,
 				self.levelData[spawnType][i].pos,
 				self.levelData[spawnType][i].direction
@@ -67,17 +67,17 @@ function api.LoadLevel(name)
 	print("load level")
 	local contents = love.filesystem.read("levels/" .. name)
 	if not contents then
-		EffectsHandler.SpawnEffect("error_popup", {480, 15}, {text = "Level file not found.", velocity = {0, 4}})
+		EffectsHandler.SpawnEffect("error_popup", {400, 900}, {text = "Level file not found.", velocity = {0, 4}})
 		return
 	end
 	local levelFunc = loadstring("return "..contents)
 	if not levelFunc then
-		EffectsHandler.SpawnEffect("error_popup", {480, 15}, {text = "Error loading level.", velocity = {0, 4}})
+		EffectsHandler.SpawnEffect("error_popup", {400, 900}, {text = "Error loading level.", velocity = {0, 4}})
 		return
 	end
 	local success, levelData = pcall(levelFunc)
 	if not success then
-		EffectsHandler.SpawnEffect("error_popup", {480, 15}, {text = "Level format error.", velocity = {0, 4}})
+		EffectsHandler.SpawnEffect("error_popup", {400, 900}, {text = "Level format error.", velocity = {0, 4}})
 		return
 	end
 	
@@ -93,18 +93,16 @@ function api.SaveLevel(name)
 		humanName = self.humanName,
 		dimensions = self.dimensions,
 	}
-	for spawnType, _ in pairs(EditorDefs.spawnTypes) do
-		for i = 1, #self.levelData[spawnType] do
-			save[spawnType] = EditorDefs.spawnTypes[spawnType].exportFunc()
-		end
+	for spawnType, spawnData in pairs(EditorDefs.spawnTypes) do
+		save[spawnType] = spawnData.exportFunc()
 	end
 	
-	local saveTable = util.TableToString(save)
-	local success, message = love.filesystem.write("levels/" .. name .. ".lua", saveTable)
+	local saveTable = util.TableToString(save, Global.SAVE_ORDER, util.ListToMask(Global.SAVE_INLINE))
+	local success, message = love.filesystem.write("levels/" .. name .. ".lua", "return " .. saveTable)
 	if success then
-		EffectsHandler.SpawnEffect("error_popup", {0, 0}, {text = "Level saved to " .. name .. ".", velocity = {0, 4}})
+		EffectsHandler.SpawnEffect("error_popup", {400, 900}, {text = "Level saved to " .. name .. ".", velocity = {0, 4}})
 	else
-		EffectsHandler.SpawnEffect("error_popup", {0, 0}, {text = "Save error: " .. (message or "NO MESSAGE"), velocity = {0, 4}})
+		EffectsHandler.SpawnEffect("error_popup", {400, 900}, {text = "Save error: " .. (message or "NO MESSAGE"), velocity = {0, 4}})
 	end
 	return success
 end
@@ -126,14 +124,14 @@ function api.MousePressed(mx, my, button)
 	end
 	local clickPos = api.WorldToGrid({mx, my})
 	if self.editor.tile == "delete" then
-		for spawnType, _ in pairs(EditorDefs.spawnTypes) do
-			EditorDefs.spawnTypes[spawnType].deleteFunc(clickPos)
+		for spawnType, spawnData in pairs(EditorDefs.spawnTypes) do
+			spawnData.deleteFunc(clickPos)
 		end
 		return
 	end
-	for spawnType, _ in pairs(EditorDefs.spawnTypes) do
-		if EditorDefs.spawnTypes[spawnType].defs[self.editor.tile] then
-			EditorDefs.spawnTypes[spawnType].spawnFunc(self.editor.tile, clickPos, self.editor.direction)
+	for spawnType, spawnData in pairs(EditorDefs.spawnTypes) do
+		if spawnData.defs[self.editor.tile] then
+			spawnData.spawnFunc(self.editor.tile, clickPos, self.editor.direction)
 		end
 	end
 end
@@ -250,6 +248,10 @@ function api.DrawInterface()
 		
 		offset = offset + 40
 		love.graphics.printf([[
+Ctrl+J - Edit mode
+Ctrl+K - Save level
+Ctrl+L = Load level
+
 R - Rotate
 E - Rotate backwards
 Z - Delete

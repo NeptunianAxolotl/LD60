@@ -19,6 +19,14 @@ local function NewBlock(self)
 		end
 	end
 	
+	function self.Export(objList)
+		objList[#objList + 1] = {
+			name = self.blockType,
+			pos = self.pos,
+			direction = self.direction,
+		}
+	end
+	
 	function self.Draw(drawQueue)
 		drawQueue:push({y=self.pos[2]; f=function()
 			local drawPos = LevelHandler.GridToWorld(self.pos)
