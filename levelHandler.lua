@@ -74,6 +74,10 @@ return data
 	return success
 end
 
+function api.MousePressed(x, y, button)
+
+end
+
 function api.KeyPressed(key, scancode, isRepeat)
 	if self.loadingLevelGetName or self.saveLevelGetName then
 		if key and string.len(key) == 1 then

@@ -23,6 +23,19 @@ local PriorityQueue = require("include/PriorityQueue")
 local self = {}
 local api = {}
 
+-- Global
+function DrawDebug()
+	return self.cosmos.DrawDebug()
+end
+
+function api.SetMenuState(newState)
+	self.menuState = newState
+end
+
+function api.ToggleMenu()
+	self.menuState = not self.menuState
+end
+
 function api.GetPaused()
 	return self.paused or MainMenuHandler.IsMenuOpen()
 end
@@ -64,16 +77,13 @@ function api.KeyPressed(key, scancode, isRepeat)
 	if TerrainHandler.KeyPressed and TerrainHandler.KeyPressed(key, scancode, isRepeat) then
 		return
 	end
-	if key == "escape" then
-		api.ToggleMenu()
-	end
-	if key == "p" then
-		api.ToggleMenu()
-	end
 	if api.GetGameOver() then
 		return -- No doing actions
 	end
 	if GameHandler.KeyPressed and GameHandler.KeyPressed(key, scancode, isRepeat) then
+		return
+	end
+	if LevelHandler.KeyPressed and LevelHandler.KeyPressed(key, scancode, isRepeat) then
 		return
 	end
 end
@@ -82,7 +92,14 @@ function api.MousePressed(x, y, button)
 	if MainMenuHandler.MousePressed(x, y, button) then
 		return
 	end
-	if GameHandler.MousePressed(x, y, button) then
+	local wPos = api.ScreenToWorld({x, y})
+	if GameHandler.MousePressed(wPos[1], wPos[2], button) then
+		return
+	end
+	if LevelHandler.MousePressed(wPos[1], wPos[2], button) then
+		return
+	end
+	if TerrainHandler.MousePressed(wPos[1], wPos[2], button) then
 		return
 	end
 	if api.GetPaused() then
@@ -186,7 +203,6 @@ function api.ViewResize(width, height)
 end
 
 function api.Update(dt)
-	GameHandler.Update(dt)
 	if api.GetPaused() then
 		UpdateCamera(dt)
 		return
@@ -239,7 +255,7 @@ function api.Draw()
 		local edge = (windowY - Global.WINDOW_Y*windowX/Global.WINDOW_X) / 2
 		self.interfaceTransform:setTransformation(0, edge, 0, windowX/Global.WINDOW_X, windowX/Global.WINDOW_X, 0, 0)
 	end
-	--love.graphics.replaceTransform(self.emptyTransform)
+	love.graphics.replaceTransform(self.interfaceTransform)
 	
 	-- Draw interface
 	GameHandler.DrawInterface()
