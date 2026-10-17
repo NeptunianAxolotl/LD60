@@ -75,6 +75,10 @@ local function NewPlayer(self, position, direction)
 		return false
 	end
 	
+	function self.IsRobot()
+		return false
+	end
+	
 	function self.GetType()
 		return "player"
 	end
