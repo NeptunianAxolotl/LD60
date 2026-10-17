@@ -11,7 +11,7 @@ local function NewPlayer(self, position, direction)
 	end
 	
 	function self.Draw(drawQueue)
-		drawQueue:push({y=self.pos[2]; f=function()
+		drawQueue:push({y=self.pos[2] + 10; f=function()
 			local drawPos = LevelHandler.GridToWorld(self.pos)
 			local drawRot = util.CardinalToDirection(self.direction)
 			Resources.DrawImage("player", drawPos[1], drawPos[2], drawRot)

@@ -84,7 +84,8 @@ function api.KeyPressed(key, scancode, isRepeat)
 end
 
 function api.MousePressed(x, y, button)
-	if MainMenuHandler.MousePressed(x, y, button) then
+	local iPos = api.ScreenToInterface({x, y})
+	if MainMenuHandler.MousePressed(iPos[1], iPos[2], button) then
 		return
 	end
 	local wPos = api.ScreenToWorld({x, y})

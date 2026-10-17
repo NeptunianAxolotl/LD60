@@ -1,5 +1,6 @@
-local Font = require("include/font")
-local MapDefs = util.LoadDefDirectory("defs/maps")
+
+local BlockDefs = util.LoadDefDirectory("defs/blocks")
+local NewBlock = require("objects/block")
 
 local self = {}
 local api = {}
@@ -8,12 +9,30 @@ function api.MousePressed(x, y, button)
 
 end
 
+function api.RemoveBlock(pos)
+	IterableMap.ApplySelf(self.blocks, "IsAtPos", pos)
+end
+
+function api.AddBlock(blockType, pos, direction)
+	api.RemoveBlock(pos)
+	local def = BlockDefs[blockType]
+	local blockData = {}
+	blockData.blockType = blockType
+	blockData.pos = pos
+	blockData.direction = direction
+	IterableMap.Add(self.blocks, NewBlock(blockData))
+end
+
+function api.GetBlockAt(pos)
+	return IterableMap.GetFirstSatisfies(self.blocks, "IsAtPos", pos)
+end
+
 function api.Update(dt)
-	IterableMap.ApplySelf(self.blockList, "Update", dt)
+	IterableMap.ApplySelf(self.blocks, "Update", dt)
 end
 
 function api.Draw(drawQueue)
-	IterableMap.ApplySelf(self.blockList, "Draw", drawQueue)
+	IterableMap.ApplySelf(self.blocks, "Draw", drawQueue)
 	drawQueue:push({y=0; f=function()
 		love.graphics.rectangle("line", 0, 0, 1, 1)
 		
@@ -31,7 +50,7 @@ end
 function api.Initialize(world, levelIndex, mapDataOverride)
 	self = {
 		world = world,
-		blockList = IterableMap.New(),
+		blocks = IterableMap.New(),
 	}
 end
 

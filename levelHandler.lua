@@ -280,7 +280,6 @@ function api.Draw(drawQueue)
 	drawQueue:push({y=0; f=function()
 		local drawPos = api.GridToWorld(mousePos)
 		local drawRot = util.CardinalToDirection(self.editor.direction)
-		print(drawRot)
 		Resources.DrawImage(toDraw, drawPos[1], drawPos[2], drawRot, 0.5)
 	end})
 end

@@ -6,10 +6,10 @@ local def = {
 		blocks = {
 			defs = BlockDefs,
 			spawnFunc = function (defName, pos, direction)
-			
+				TerrainHandler.AddBlock(defName, pos, direction)
 			end,
-			deleteFunc = function ()
-			
+			deleteFunc = function (pos)
+				TerrainHandler.RemoveBlock(pos)
 			end,
 			exportFunc = function ()
 				
