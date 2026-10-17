@@ -299,6 +299,10 @@ function util.GetAngleBetweenUnitVectors(u, v)
 	return math.acos(util.Dot(u, v))
 end
 
+function util.UnitThenDot(u, v)
+	return util.Dot(util.Unit(u), util.Unit(v))
+end
+
 -- Get the average position between two vectors
 function util.Average(u, v, uFactor)
 	uFactor = uFactor or 0.5
@@ -704,6 +708,9 @@ function util.SampleList(list)
 	if (not list) or (#list == 0) then
 		return false, false
 	end
+	if #list == 1 then
+		return list[1], 1
+	end
 	local index = math.floor(math.random()*#list) + 1
 	return list[index], index
 end
@@ -732,6 +739,17 @@ function util.NormaliseWeightedList(list)
 		list[i].probability = list[i].probability*factor
 	end
 	return list
+end
+
+function util.NormaliseAndSampleWeightedList(list, rngIn)
+	if (not list) or (#list == 0) then
+		return false, false
+	end
+	if #list == 1 then
+		return list[1], 1
+	end
+	local el, index = util.SampleListWeighted(util.NormaliseWeightedList(list), rngIn)
+	return el, index
 end
 
 function util.SampleMap(map)
@@ -917,7 +935,7 @@ function util.UpdateTimer(timer, dt)
 	end
 	timer = timer - dt
 	if timer < 0 then
-		return false
+		return false, true
 	end
 	return timer
 end
@@ -1045,6 +1063,16 @@ function util.CopyTable(tableToCopy, deep, appendTo)
 		end
 	end
 	return copy
+end
+
+function util.MergeTable(primary, secondary)
+	primary = util.CopyTable(primary)
+	for key, value in pairs(secondary) do
+		if not primary[key] then
+			primary[key] = value
+		end
+	end
+	return primary
 end
 
 function util.ListToMask(listTable)
