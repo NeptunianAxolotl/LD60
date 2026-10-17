@@ -23,16 +23,8 @@ local PriorityQueue = require("include/PriorityQueue")
 local self = {}
 local api = {}
 
-function api.SetMenuState(newState)
-	self.menuState = newState
-end
-
-function api.ToggleMenu()
-	self.menuState = not self.menuState
-end
-
 function api.GetPaused()
-	return self.paused or self.menuState
+	return self.paused or MainMenuHandler.IsMenuOpen()
 end
 
 function api.GetGameOver()
@@ -87,6 +79,9 @@ function api.KeyPressed(key, scancode, isRepeat)
 end
 
 function api.MousePressed(x, y, button)
+	if MainMenuHandler.MousePressed(x, y, button) then
+		return
+	end
 	if GameHandler.MousePressed(x, y, button) then
 		return
 	end
@@ -116,10 +111,13 @@ end
 function api.MouseReleased(x, y, button)
 	x, y = CameraHandler.GetCameraTransform():inverse():transformPoint(x, y)
 	-- Send event to game components
+	MainMenuHandler.MouseReleased(x, y, button)
 end
 
 function api.MouseMoved(x, y, dx, dy)
-	
+	if MainMenuHandler.MouseMoved(x, y, dx, dy) then
+		return true
+	end
 end
 
 --------------------------------------------------
@@ -248,6 +246,7 @@ function api.Draw()
 	EffectsHandler.DrawInterface()
 	DialogueHandler.DrawInterface()
 	ChatHandler.DrawInterface()
+	MainMenuHandler.DrawInterface()
 	
 	love.graphics.replaceTransform(self.emptyTransform)
 end

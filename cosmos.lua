@@ -2,6 +2,7 @@
 local World = require("world")
 SoundHandler = require("soundHandler")
 MusicHandler = require("musicHandler")
+MainMenuHandler = require("mainMenuHandler")
 
 local LevelDefs = util.LoadDefDirectory("defs/levels")
 
@@ -105,6 +106,10 @@ end
 --------------------------------------------------
 
 function api.KeyPressed(key, scancode, isRepeat)
+	if key == "escape" then
+		MainMenuHandler.ToggleMenu()
+		return true
+	end
 	if key == "r" and (love.keyboard.isDown("lctrl") or love.keyboard.isDown("rctrl")) then
 		api.RestartWorld()
 		return true
@@ -160,6 +165,7 @@ function api.Initialize()
 	self.curLevelData = LevelDefs[self.inbuiltLevelName]
 	MusicHandler.Initialize(api)
 	SoundHandler.Initialize(api)
+	MainMenuHandler.Initialize(api)
 	World.Initialize(api, self.curLevelData)
 end
 
