@@ -2,7 +2,7 @@
 local util = require("utilities/util")
 local IterableMap = {}
 
-function IterableMap.New()
+function IterableMap.New(opts)
 	local mapData = {
 		indexByKey = {},
 		dataByKey = {},
@@ -11,6 +11,12 @@ function IterableMap.New()
 		keyByIndex = {},
 		nextCounter = 0,
 	}
+	if opts and opts.stable then
+		mapData.stable = true
+	end
+	if opts and opts.gridLookup then
+		opts.gridLookup = true
+	end
 	return mapData
 end
 
@@ -56,8 +62,16 @@ function IterableMap.Remove(self, key)
 	end
 	local myIndex = self.indexByKey[key]
 	local endKey = self.keyByIndex[self.indexMax]
-	self.keyByIndex[myIndex] = endKey
-	self.indexByKey[endKey] = myIndex
+	if self.stable then
+		for i = myIndex, self.indexMax - 1 do
+			local thisKey = self.keyByIndex[i + 1]
+			self.keyByIndex[i] = thisKey
+			self.indexByKey[thisKey] = i
+		end
+	else
+		self.keyByIndex[myIndex] = endKey
+		self.indexByKey[endKey] = myIndex
+	end
 	self.keyByIndex[self.indexMax] = nil
 	self.indexByKey[key] = nil
 	self.dataByKey[key] = nil

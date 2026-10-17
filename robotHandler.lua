@@ -53,7 +53,7 @@ end
 function api.Initialize(world, levelIndex, mapDataOverride)
 	self = {
 		world = world,
-		robots = IterableMap.New(),
+		robots = IterableMap.New({stable = true}),
 		commandDt = Global.ROBOT_MOVE_TIME/4,
 	}
 end
