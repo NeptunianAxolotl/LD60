@@ -30,7 +30,7 @@ function api.ExportObjects()
 end
 
 function api.GetBlockAt(pos)
-	return IterableMap.GetFirstSatisfies(self.blocks, "IsAtPos", pos)
+	return IterableMap.GetAt(self.blocks, pos)
 end
 
 function api.GetAnythingAt(pos)
@@ -103,7 +103,7 @@ end
 function api.Initialize(world, levelIndex, mapDataOverride)
 	self = {
 		world = world,
-		blocks = IterableMap.New(),
+		blocks = IterableMap.New({gridPos = true}),
 	}
 end
 

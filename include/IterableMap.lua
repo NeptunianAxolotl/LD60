@@ -12,10 +12,14 @@ function IterableMap.New(opts)
 		nextCounter = 0,
 	}
 	if opts and opts.stable then
+		-- Remove does not shuffle the order of the map
 		mapData.stable = true
 	end
-	if opts and opts.gridLookup then
-		opts.gridLookup = true
+	if opts and opts.gridPos then
+		-- Data has fields pos = {x, y} where x and y are integers
+		-- Only one element is stored per {x, y}, and the map can 
+		-- retrieve them.
+		mapData.gridKey = {}
 	end
 	return mapData
 end
@@ -30,6 +34,28 @@ end
 function IterableMap.GetNewUniqueKey(self)
 	self.unusedKey = self.unusedKey + 1
 	return self.unusedKey
+end
+
+function IterableMap.AddToGrid(self, data)
+	local x, y = data.pos[1], data.pos[2]
+	self.gridKey[x] = self.gridKey[x] or {}
+	if self.gridKey[x][y] then
+		print("Non-unique grid position " .. x .. ", " .. y)
+		return
+	end
+	self.gridKey[x][y] = data.map_key
+end
+
+function IterableMap.RemoveFromGrid(self, data)
+	local x, y = self.dataByKey[key].pos[1], self.dataByKey[key].pos[2]
+	self.gridKey[x] = self.gridKey[x] or {}
+	self.gridKey[x][y] = nil
+end
+
+function IterableMap.GetAt(self, pos)
+	local x, y = pos[1], pos[2]
+	local key = self.gridKey[x] and self.gridKey[x][y]
+	return key and self.dataByKey[key]
 end
 
 function IterableMap.Add(self, key, data)
@@ -53,6 +79,9 @@ function IterableMap.Add(self, key, data)
 	if type(data) == "table" then
 		data.map_key = key
 	end
+	if self.gridKey then
+		IterableMap.AddToGrid(self, data)
+	end
 	return key
 end
 
@@ -72,6 +101,9 @@ function IterableMap.Remove(self, key)
 		self.keyByIndex[myIndex] = endKey
 		self.indexByKey[endKey] = myIndex
 	end
+	if self.gridKey then
+		IterableMap.RemoveFromGrid(self, self.dataByKey[key])
+	end
 	self.keyByIndex[self.indexMax] = nil
 	self.indexByKey[key] = nil
 	self.dataByKey[key] = nil
@@ -82,6 +114,15 @@ end
 function IterableMap.ReplaceKey(self, oldKey, newKey)
 	if (not oldKey) or (not self.indexByKey[oldKey]) or self.indexByKey[newKey] then
 		return false
+	end
+	if type(self.dataByKey[oldKey]) == "table" then
+		if self.gridKey then
+			IterableMap.RemoveFromGrid(self, self.dataByKey[oldKey])
+		end
+		self.dataByKey[oldKey].map_key = newKey
+		if self.gridKey then
+			IterableMap.AddToGrid(self, self.dataByKey[oldKey])
+		end
 	end
 	self.keyByIndex[self.indexByKey[oldKey]] = newKey
 	self.indexByKey[newKey] = self.indexByKey[oldKey]
@@ -100,7 +141,13 @@ function IterableMap.Set(self, key, data)
 	if not self.indexByKey[key] then
 		IterableMap.Add(self, key, data)
 	else
+		if self.gridKey then
+			IterableMap.RemoveFromGrid(self, data)
+		end
 		self.dataByKey[key] = data
+		if self.gridKey then
+			IterableMap.AddToGrid(self, data)
+		end
 	end
 end
 
@@ -114,6 +161,9 @@ function IterableMap.Clear(self, key)
 	self.indexMax = 0
 	self.unusedKey = 1
 	self.keyByIndex = {}
+	if self.gridKey then
+		self.gridKey = {}
+	end
 end
 
 -- Use Next to implement iteration spread over many updates. Returns the next
