@@ -212,6 +212,7 @@ function api.Draw()
 	EffectsHandler.Draw(drawQueue)
 	PlayerHandler.Draw(drawQueue)
 	TerrainHandler.Draw(drawQueue)
+	LevelHandler.Draw(drawQueue)
 	
 	love.graphics.replaceTransform(CameraHandler.GetCameraTransform())
 	while true do
@@ -234,6 +235,7 @@ function api.Draw()
 	
 	-- Draw interface
 	GameHandler.DrawInterface()
+	LevelHandler.DrawInterface()
 	EffectsHandler.DrawInterface()
 	MainMenuHandler.DrawInterface()
 	
@@ -255,7 +257,9 @@ function api.Initialize(cosmos, levelData)
 	
 	GameHandler.Initialize(api)
 	PlayerHandler.Initialize(api)
-	TerrainHandler.Initialize(api, levelData)
+	TerrainHandler.Initialize(api)
+	LevelHandler.Initialize(api)
+	
 	CameraHandler.Initialize(api)
 end
 

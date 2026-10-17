@@ -423,6 +423,7 @@ function util.DirectionToCardinal(direction, start, segments)
 end
 
 function util.CardinalToDirection(cardinal, start, segments)
+	-- Order: right, down, left, top
 	start = start or 0
 	segments = segments or 4
 	return cardinal * 2 * math.pi/segments + start 

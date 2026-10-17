@@ -1,28 +1,25 @@
 
+local NewPlayer = require("objects/player")
+
 local self = {}
 local api = {}
 
 function api.Update(dt)
-	if self.playerCar then
-		self.playerCar.Update(dt)
+	if self.player then
+		self.player.Update(dt)
 	end
 end
 
 function api.Draw(drawQueue)
-	if self.playerCar then
-		self.playerCar.Draw(drawQueue)
+	if self.player then
+		self.player.Draw(drawQueue)
 	end
 end
-
+function api.CreatePlayer(pos, direction)	if self.player then		self.player.Destroy()	end	self.player = NewPlayer({}, pos, direction)end
 function api.Initialize(world)
 	self = {
-		playerCar = false,
-		animationTimer = 0,
+		player = false,
 		world = world,
-	}
-	
-	local initPlayerData = {
-		pos = {500, 200}
 	}
 end
 

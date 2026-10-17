@@ -16,10 +16,18 @@ end
 function api.MousePressed(x, y, button)
 
 end
-function api.GetViewRestriction()	local pointsToView = {{self.left*Global.TILE_SIZE, self.top*Global.TILE_SIZE}, {self.right*Global.TILE_SIZE, self.bottom*Global.TILE_SIZE}}	return pointsToViewend
+function api.GetViewRestriction()	local pointsToView = {{self.left*Global.TILE_SIZE, self.top*Global.TILE_SIZE}, {self.right*Global.TILE_SIZE, self.bottom*Global.TILE_SIZE}}	return pointsToViewend
+
+function api.SetDimensions(newDimensions)
+	self.left = 0
+	self.top = 0
+	self.right = newDimensions[1]
+	self.bottom = newDimensions[2]
+end
 function api.Initialize(world, levelIndex, mapDataOverride)
 	self = {
-		world = world,		left = -4,		right = 4,		top = -4,		bottom = 4,
+		world = world,		left = 0,
+		top = 0,		right = 6,		bottom = 6,
 	}
 	SetupLevel(levelIndex, mapDataOverride)
 end
