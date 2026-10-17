@@ -35,8 +35,9 @@ local globals = {
 	FLOATING_TEXT_COL   = {0.95,0.95,0.9},
 	
 	TILE_SIZE = 100,
-	COMMAND_DRAW_SIZE = 40,
+	COMMAND_DRAW_SIZE = 50,
 	VIEW_PADDING = 50,
+	UI_WIDTH = 350,
 	
 	SAVE_ORDER = {
 		"humanName", "dimensions",
@@ -46,8 +47,8 @@ local globals = {
 	},
 	SAVE_INLINE = {"pos", "dimensions", "actions"},
 	
-	BUFFER_KEY_LEEWAY = 0.17,
-	PAINT_MOVE_REQ = 0.05,
+	BUFFER_KEY_LEEWAY = 0.16,
+	ARRIVAL_LEEWAY = 0.05,
 	PLAYER_MOVE_TIME = 0.3,
 	ROBOT_ANIMATE_TIME = 0.3,
 	ROBOT_MOVE_TIME = 0.8,

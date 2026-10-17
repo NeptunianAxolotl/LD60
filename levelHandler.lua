@@ -88,6 +88,7 @@ function api.SaveLevel(name)
 	local save = {
 		humanName = self.humanName,
 		dimensions = self.dimensions,
+		description = self.levelData.description,
 	}
 	for spawnType, spawnData in pairs(EditorDefs.spawnTypes) do
 		save[spawnType] = spawnData.exportFunc()
@@ -278,8 +279,12 @@ Z - Delete
 	end
 end
 
-function api.DrawInterface()
+local function DrawLevelInfo()
 	local gameOver, gameWon, gameLost = self.world.GetGameOver()
+
+end
+
+function api.DrawInterface()
 	DrawEditor()
 end
 
@@ -312,7 +317,7 @@ function api.Initialize(world, levelData)
 	self = {
 		world = world,
 		levelData = levelData,
-		editMode = true,
+		editMode = false,
 		tileSize = Global.TILE_SIZE,
 		editor = {
 			direction = 0,

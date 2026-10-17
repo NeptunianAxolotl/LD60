@@ -42,7 +42,8 @@ function api.Draw(drawQueue)
 	IterableMap.ApplySelf(self.robots, "Draw", drawQueue)
 end
 function api.DrawInterface()
-	IterableMap.ApplySelf(self.robots, "DrawProgram", {20, 500})
+	love.graphics.setLineWidth(3)
+	IterableMap.ApplySelf(self.robots, "DrawProgram", {Global.WINDOW_X - Global.UI_WIDTH + Global.COMMAND_DRAW_SIZE, 500})
 end
 
 function api.Initialize(world, levelIndex, mapDataOverride)

@@ -61,6 +61,14 @@ local function InitProgram(programDef)
 	return program
 end
 
+local function DrawUiBox(x, y)
+	x, y = x - Global.COMMAND_DRAW_SIZE/2, y - Global.COMMAND_DRAW_SIZE/2
+	love.graphics.setColor(Global.PANEL_COL)
+	love.graphics.rectangle("fill", x, y, Global.COMMAND_DRAW_SIZE, Global.COMMAND_DRAW_SIZE, 4, 4, 16)
+	love.graphics.setColor(Global.PANEL_BORDER_COL)
+	love.graphics.rectangle("line", x, y, Global.COMMAND_DRAW_SIZE, Global.COMMAND_DRAW_SIZE, 4, 4, 16)
+end
+
 local function NewRobot(self)
 	self.def = RobotDefs[self.robotType]
 	self.tiggerDt = Global.TURN_RATE
@@ -70,12 +78,22 @@ local function NewRobot(self)
 	
 	function self.ObjInDirection(direction)
 		local newPos = util.Add(self.pos, util.CardinalToVector(direction))
-		return TerrainHandler.GetAnythingAt(newPos)
+		return TerrainHandler.GetMobileObjectAt(newPos)
 	end
 	
 	function self.ObjInRelativeDirection(direction)
 		direction = (self.direction + direction)%4
 		return self.ObjInDirection(direction)
+	end
+	
+	function self.BlockInDirection(direction)
+		local newPos = util.Add(self.pos, util.CardinalToVector(direction))
+		return TerrainHandler.GetBlockAt(newPos)
+	end
+	
+	function self.BlockInRelativeDirection(direction)
+		direction = (self.direction + direction)%4
+		return self.BlockInDirection(direction)
 	end
 	
 	function self.BlockAtMyLocation()
@@ -88,6 +106,10 @@ local function NewRobot(self)
 			return
 		end
 		self.pos = newPos
+	end
+	
+	function self.HasArrived()
+		return (not self.moveBlockDt) or self.moveBlockDt < Global.ARRIVAL_LEEWAY
 	end
 	
 	function self.ForceExecuteCommand(triggerName, actionIndex)
@@ -105,11 +127,11 @@ local function NewRobot(self)
 	
 	function self.Update(dt)
 		self.triggerDt = util.UpdateTimer(self.triggerDt, dt)
-		self.animDt = util.UpdateTimer(self.animDt, dt)
+		self.moveBlockDt = util.UpdateTimer(self.moveBlockDt, dt)
 		if not self.triggerDt then
 			self.prevPos = self.pos
 			self.prevDir = self.direction
-			self.animDt = Global.ROBOT_ANIMATE_TIME
+			self.moveBlockDt = Global.ROBOT_ANIMATE_TIME
 			FindAndExecuteCommand(self)
 			self.triggerDt = Global.ROBOT_MOVE_TIME
 		end
@@ -158,16 +180,18 @@ local function NewRobot(self)
 			local actions = self.program[i].actions
 			local lastTrigger = (i == self.lastTriggerIndex)
 			local color = (lastTrigger and {1, 0.5, 0.5}) or self.program[i].trigger.color or {0.85, 0.85, 0.85}
+			DrawUiBox(offsetX, offsetY)
 			Resources.DrawImage(self.program[i].trigger.image, offsetX, offsetY, false, false, false, color)
 			offsetX = offsetX + Global.COMMAND_DRAW_SIZE + 10
 			for j = 1, #actions do
 				local lastAction = (i == self.lastTriggerIndex and j == self.lastActionIndex)
 				local nextAction = (j == (self.nextAction[i] or 1))
 				local color = (lastAction and {1, 0, 0}) or (nextAction and {0, 0, 0}) or {0.35, 0.35, 0.35}
+				DrawUiBox(offsetX, offsetY)
 				Resources.DrawImage(actions[j].image, offsetX, offsetY, false, false, false, color)
 				offsetX = offsetX + Global.COMMAND_DRAW_SIZE + 5
 			end
-			offsetY = offsetY + Global.COMMAND_DRAW_SIZE + 5
+			offsetY = offsetY + Global.COMMAND_DRAW_SIZE + 10
 		end
 		drawPos[2] = offsetY + Global.COMMAND_DRAW_SIZE
 	end
@@ -176,8 +200,8 @@ local function NewRobot(self)
 		drawQueue:push({y=self.pos[2] + 10; f=function()
 			local drawPos = LevelHandler.GridToWorld(self.pos)
 			local drawRot = util.CardinalToDirection(self.direction)
-			if self.animDt then
-				local prevProp = self.animDt/Global.ROBOT_ANIMATE_TIME
+			if self.moveBlockDt then
+				local prevProp = self.moveBlockDt/Global.ROBOT_ANIMATE_TIME
 				drawPos = util.Average(drawPos, LevelHandler.GridToWorld(self.prevPos), prevProp)
 				drawRot = util.AngleAverageShortest(drawRot, util.CardinalToDirection(self.prevDir), prevProp)
 			end

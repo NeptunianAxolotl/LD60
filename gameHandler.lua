@@ -34,7 +34,21 @@ function api.Update(dt)
 end
 
 function api.DrawInterface()
-	local windowX, windowY = love.window.getMode()
+	love.graphics.setLineWidth(5)
+	love.graphics.setColor(Global.PANEL_COL)
+	love.graphics.rectangle("fill", Global.WINDOW_X - Global.UI_WIDTH, -1000, 1200, 3000, 4, 4, 16)
+	love.graphics.setColor(Global.PANEL_BORDER_COL)
+	love.graphics.rectangle("line", Global.WINDOW_X - Global.UI_WIDTH, -1000, 1200, 3000, 4, 4, 16)
+	
+	local levelData = LevelHandler.GetLevelData()
+	Font.SetSize(0)
+	love.graphics.setColor(Global.TEXT_COL)
+	love.graphics.printf(levelData.humanName, Global.WINDOW_X - Global.UI_WIDTH, 30, Global.UI_WIDTH, "center")
+	
+	if levelData.description then
+		Font.SetSize(4)
+		love.graphics.printf(levelData.description, Global.WINDOW_X - Global.UI_WIDTH + 30, 120, Global.UI_WIDTH - 40, "left")
+	end
 end
 
 function api.Initialize(parentWorld)

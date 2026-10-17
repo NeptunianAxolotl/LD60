@@ -1,5 +1,14 @@
 return {
-	humanName = "test",
+	humanName = "Level 1",
+	description = [[
+WSAD or arrows to move.
+Space/Right Mouse to paint.
+
+Direct all the robots (including yourself) to their designated charging ports.
+
+Ctrl+J to toggle editor
+Ctrl+R to restart
+]],
 	dimensions = {16, 10},
 	player = {
 		{

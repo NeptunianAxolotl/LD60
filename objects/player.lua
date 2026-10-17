@@ -6,12 +6,22 @@ local function NewPlayer(self, position, direction)
 	
 	function self.ObjInDirection(direction)
 		local newPos = util.Add(self.pos, util.CardinalToVector(direction))
-		return TerrainHandler.GetAnythingAt(newPos)
+		return TerrainHandler.GetMobileObjectAt(newPos)
 	end
 	
 	function self.ObjInRelativeDirection(direction)
 		direction = (self.direction + direction)%4
 		return self.ObjInDirection(direction)
+	end
+	
+	function self.BlockInDirection(direction)
+		local newPos = util.Add(self.pos, util.CardinalToVector(direction))
+		return TerrainHandler.GetBlockAt(newPos)
+	end
+	
+	function self.BlockInRelativeDirection(direction)
+		direction = (self.direction + direction)%4
+		return self.BlockInDirection(direction)
 	end
 	
 	function self.BlockAtMyLocation()
@@ -33,8 +43,12 @@ local function NewPlayer(self, position, direction)
 		return true
 	end
 	
+	function self.HasArrived()
+		return (not self.moveBlockDt) or self.moveBlockDt < Global.ARRIVAL_LEEWAY
+	end
+	
 	function self.DropPaint()
-		if self.moveBlockDt and self.moveBlockDt > Global.PAINT_MOVE_REQ then
+		if self.HasArrived() then
 			return
 		end
 		if not self.BlockAtMyLocation() then

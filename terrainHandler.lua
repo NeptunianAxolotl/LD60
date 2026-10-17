@@ -49,6 +49,18 @@ function api.GetAnythingAt(pos)
 	return false
 end
 
+function api.GetMobileObjectAt(pos)
+	local robot = RobotHandler.GetRobotAt(pos)
+	if robot then
+		return robot
+	end
+	local player = PlayerHandler.GetPlayerAt(pos)
+	if player then
+		return player
+	end
+	return false
+end
+
 function api.InteractWithObjectsAt(pos, object, funcName)
 	local block = api.GetBlockAt(pos)
 	if block and block[funcName](object) then
