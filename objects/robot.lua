@@ -180,9 +180,12 @@ local function NewRobot(self)
 			local actions = self.program[i].actions
 			local lastTrigger = (i == self.lastTriggerIndex)
 			local color = (lastTrigger and {1, 0.5, 0.5}) or self.program[i].trigger.color or {0.85, 0.85, 0.85}
+			love.graphics.setColor(Global.PANEL_BORDER_COL)
+			love.graphics.rectangle("line", offsetX, offsetY - 3, Global.COMMAND_DRAW_SIZE, 6, 4, 4, 16)
+			
 			DrawUiBox(offsetX, offsetY)
 			Resources.DrawImage(self.program[i].trigger.image, offsetX, offsetY, false, false, false, color)
-			offsetX = offsetX + Global.COMMAND_DRAW_SIZE + 10
+			offsetX = offsetX + Global.COMMAND_DRAW_SIZE + 20
 			for j = 1, #actions do
 				local lastAction = (i == self.lastTriggerIndex and j == self.lastActionIndex)
 				local nextAction = (j == (self.nextAction[i] or 1))

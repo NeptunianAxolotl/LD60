@@ -5,11 +5,9 @@ local api = {}
 local menuOptions = {
 	"Quit",
 	"Restart Game",
-	"Skip Task",
 	"Fullscreen",
 	"Music Volume",
 	--"SFX Volume",
-	"Drive on the Right",
 	--"Brutal",
 }
 local menuTooltip = {
@@ -78,16 +76,6 @@ function api.MousePressed(x, y, button)
 	elseif self.hoveredMenuAction == "Fullscreen" then
 		self.fullscreen = not self.fullscreen
 		love.window.setFullscreen(self.fullscreen)
-	elseif self.hoveredMenuAction == "Brutal" then
-		self.cosmos.ToggleBrutal()
-	elseif self.hoveredMenuAction == "Drive on the Right" then
-		menuOptions[6] = "Drive on the Left"
-		self.cosmos.ToggleLocalisation()
-	elseif self.hoveredMenuAction == "Drive on the Left" then
-		menuOptions[6] = "Drive on the Right"
-		self.cosmos.ToggleLocalisation()
-	elseif self.hoveredMenuAction == "Skip Task" then
-		GameHandler.AdvanceLevel(true)
 	elseif self.menuOpen then
 		self.menuOpen = false
 		return true
@@ -108,8 +96,8 @@ function api.DrawInterface()
 	local mousePos = self.cosmos.GetWorld().GetMousePositionInterface()
 	
 	local padding = 40
-	local sx, sy = Global.WINDOW_X - 135 - padding, 1000
-	local overX = Global.WINDOW_X - 350 - padding
+	local sx, sy = Global.WINDOW_X - Global.UI_WIDTH - 135 - padding, 1000
+	local overX = Global.WINDOW_X - Global.UI_WIDTH - 350 - padding
 	if self.cosmos.GetLocalisation() then
 		sx = padding
 		overX = padding
