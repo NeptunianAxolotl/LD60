@@ -4,15 +4,15 @@ return {
 	player = {
 		{
 			name = "player",
-			pos = {7, 6},
+			pos = {6, 4},
 			direction = 0,
 		},
 	},
 	robots = {
 		{
 			name = "basic_robot",
-			pos = {8, 4},
-			direction = 3,
+			pos = {6, 6},
+			direction = 0,
 			program = {
 				{
 					trigger = "robot_goal",
@@ -35,59 +35,14 @@ return {
 	},
 	blocks = {
 		{
-			name = "robot_goal",
-			pos = {6, 3},
-			direction = 3,
-		},
-		{
-			name = "wall",
-			pos = {4, 1},
-			direction = 3,
-		},
-		{
-			name = "wall",
-			pos = {4, 4},
-			direction = 3,
-		},
-		{
-			name = "wall",
-			pos = {4, 3},
-			direction = 3,
-		},
-		{
-			name = "wall",
-			pos = {11, 5},
+			name = "paint",
+			pos = {8, 6},
 			direction = 0,
 		},
 		{
 			name = "wall",
-			pos = {5, 5},
+			pos = {7, 8},
 			direction = 0,
-		},
-		{
-			name = "wall",
-			pos = {11, 6},
-			direction = 0,
-		},
-		{
-			name = "wall",
-			pos = {5, 6},
-			direction = 0,
-		},
-		{
-			name = "wall",
-			pos = {5, 7},
-			direction = 0,
-		},
-		{
-			name = "wall",
-			pos = {5, 8},
-			direction = 0,
-		},
-		{
-			name = "wall",
-			pos = {4, 5},
-			direction = 3,
 		},
 		{
 			name = "wall",
@@ -96,12 +51,17 @@ return {
 		},
 		{
 			name = "wall",
-			pos = {4, 2},
-			direction = 3,
+			pos = {10, 1},
+			direction = 0,
 		},
 		{
 			name = "wall",
-			pos = {5, 1},
+			pos = {9, 1},
+			direction = 0,
+		},
+		{
+			name = "wall",
+			pos = {8, 1},
 			direction = 0,
 		},
 		{
@@ -116,82 +76,152 @@ return {
 		},
 		{
 			name = "wall",
-			pos = {8, 1},
+			pos = {11, 4},
 			direction = 0,
 		},
 		{
 			name = "wall",
-			pos = {9, 1},
+			pos = {11, 3},
 			direction = 0,
 		},
 		{
 			name = "wall",
-			pos = {10, 1},
+			pos = {11, 2},
 			direction = 0,
 		},
 		{
 			name = "wall",
-			pos = {6, 8},
+			pos = {11, 5},
 			direction = 0,
 		},
 		{
 			name = "wall",
-			pos = {7, 8},
+			pos = {10, 5},
 			direction = 0,
 		},
 		{
 			name = "wall",
-			pos = {8, 8},
+			pos = {9, 5},
 			direction = 0,
 		},
 		{
 			name = "wall",
-			pos = {9, 8},
+			pos = {9, 6},
 			direction = 0,
 		},
 		{
 			name = "wall",
-			pos = {10, 8},
+			pos = {9, 7},
 			direction = 0,
 		},
 		{
 			name = "wall",
-			pos = {11, 8},
+			pos = {8, 7},
 			direction = 0,
 		},
 		{
 			name = "wall",
-			pos = {11, 7},
+			pos = {7, 7},
 			direction = 0,
 		},
 		{
 			name = "wall",
-			pos = {12, 1},
+			pos = {7, 9},
 			direction = 0,
 		},
 		{
 			name = "wall",
-			pos = {12, 2},
+			pos = {6, 9},
 			direction = 0,
 		},
 		{
 			name = "wall",
-			pos = {12, 3},
+			pos = {5, 9},
 			direction = 0,
 		},
 		{
 			name = "wall",
-			pos = {12, 4},
+			pos = {4, 9},
 			direction = 0,
 		},
 		{
 			name = "wall",
-			pos = {12, 5},
+			pos = {3, 9},
+			direction = 0,
+		},
+		{
+			name = "wall",
+			pos = {3, 8},
+			direction = 0,
+		},
+		{
+			name = "wall",
+			pos = {3, 7},
+			direction = 0,
+		},
+		{
+			name = "wall",
+			pos = {3, 6},
+			direction = 0,
+		},
+		{
+			name = "wall",
+			pos = {3, 5},
+			direction = 0,
+		},
+		{
+			name = "wall",
+			pos = {3, 4},
+			direction = 0,
+		},
+		{
+			name = "wall",
+			pos = {3, 3},
+			direction = 0,
+		},
+		{
+			name = "wall",
+			pos = {3, 2},
+			direction = 0,
+		},
+		{
+			name = "wall",
+			pos = {5, 1},
+			direction = 0,
+		},
+		{
+			name = "wall",
+			pos = {3, 1},
+			direction = 0,
+		},
+		{
+			name = "wall",
+			pos = {4, 1},
+			direction = 0,
+		},
+		{
+			name = "robot_goal",
+			pos = {5, 3},
 			direction = 0,
 		},
 		{
 			name = "player_goal",
-			pos = {10, 3},
+			pos = {7, 5},
+			direction = 0,
+		},
+		{
+			name = "paint",
+			pos = {8, 2},
+			direction = 0,
+		},
+		{
+			name = "paint",
+			pos = {4, 2},
+			direction = 0,
+		},
+		{
+			name = "paint",
+			pos = {4, 6},
 			direction = 0,
 		},
 	},

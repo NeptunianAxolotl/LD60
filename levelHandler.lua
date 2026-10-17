@@ -162,6 +162,7 @@ function api.KeyPressed(key, scancode, isRepeat)
 				key = string.upper(key)
 			end
 			self.enteredText = (self.enteredText or "") .. key
+			return true
 		end
 		if key == "meta" or key == "space" then
 			self.enteredText = (self.enteredText or "") .. " "
@@ -204,12 +205,16 @@ function api.KeyPressed(key, scancode, isRepeat)
 	local varyRate = ((love.keyboard.isDown("lshift") or love.keyboard.isDown("rshift")) and 5) or 1
 	if key == "r" then
 		self.editor.direction = (self.editor.direction + 1)%4
+		return true
 	elseif key == "e" then
 		self.editor.direction = (self.editor.direction - 1)%4
+		return true
 	elseif key == "z" then
 		self.editor.tile = "delete"
+		return true
 	elseif EditorDefs.spawnKey[key] then
 		self.editor.tile = EditorDefs.spawnKey[key]
+		return true
 	end
 	print(key)
 end
