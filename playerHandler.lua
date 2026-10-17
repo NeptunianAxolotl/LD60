@@ -59,6 +59,10 @@ function api.MousePressed(mx, my, button)
 	end
 end
 
+function api.GetPlayer()
+	return self.player
+end
+
 function api.GetPlayerAt(pos)
 	if self.player and self.player.IsAtPos(pos) then
 		return self.player

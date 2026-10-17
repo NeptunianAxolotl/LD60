@@ -53,7 +53,7 @@ function api.GetCosmos()
 end
 
 function api.SetGameOver(hasWon, overType)
-	if self.gameWon or self.gameLost or TerrainHandler.InEditMode() then
+	if self.gameWon or self.gameLost then
 		return
 	end
 	
@@ -217,7 +217,9 @@ function api.Update(dt)
 	InterfaceUtil.Update(dt)
 	PlayerHandler.Update(dt)
 	RobotHandler.Update(dt)
+	TerrainHandler.Update(dt)
 	EffectsHandler.Update(dt)
+	GameHandler.Update(dt)
 	UpdateCamera(dt)
 end
 

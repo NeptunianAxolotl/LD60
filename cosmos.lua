@@ -66,23 +66,25 @@ end
 --------------------------------------------------
 
 function api.RestartWorld()
-	World.Initialize(api, self.curLevelData)
+	World.Initialize(api, self.currentLevel)
 end
 
 function api.LoadLevelByTable(levelTable)
-	self.curLevelData = levelTable
-	World.Initialize(api, self.curLevelData)
+	self.currentLevel = levelTable
+	World.Initialize(api, self.currentLevel)
 end
 
 function api.SwitchLevel(goNext)
-	--local nameKey = (goNext and "nextLevel") or "prevLevel"
-	--local newLevelName = LevelDefs.levels[self.currentLevel][nameKey]
-	--if not newLevelName then
-	--	return
-	--end
-	--self.inbuiltLevelName = newLevelName
-	--self.curLevelData = MapDefs[self.inbuiltLevelName]
-	World.Initialize(api, self.curLevelData)
+	for i = 1, #LevelDefs.levelOrder do
+		if LevelDefs.levelOrder[i] == self.currentLevel.name then
+			local offset = (goNext and 1) or -1
+			if LevelDefs.levelOrder[i + offset] then
+				self.currentLevel = LevelDefs.levels[LevelDefs.levelOrder[i + offset]]
+				World.Initialize(api, self.currentLevel)
+			end
+			return
+		end
+	end
 end
 
 function api.GetScrollSpeeds()
@@ -214,16 +216,15 @@ function api.Initialize()
 		realTime = 0,
 		musicVolume = Global.MUSIC_VOLUME,
 		soundVolume = Global.SFX_VOLUME,
-		currentLevel = LevelDefs.levelOrder[1],
+		currentLevel = LevelDefs.levels[LevelDefs.levelOrder[1]],
 		musicEnabled = true,
 		soundEnabled = true,
 		drawDebug = Global.DRAW_DEBUG,
 	}
-	self.curLevelData = LevelDefs.levels[self.currentLevel]
 	BGMHandler.Initialize(api)
 	SoundHandler.Initialize(api)
 	MainMenuHandler.Initialize(api)
-	World.Initialize(api, self.curLevelData)
+	World.Initialize(api, self.currentLevel)
 end
 
 return api

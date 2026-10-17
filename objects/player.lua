@@ -29,6 +29,9 @@ local function NewPlayer(self, position, direction)
 	end
 	
 	function self.Move(direction)
+		if not GameHandler.AllowMovement() then
+			return
+		end
 		if self.moveBlockDt then
 			return false
 		end
@@ -48,7 +51,7 @@ local function NewPlayer(self, position, direction)
 	end
 	
 	function self.DropPaint()
-		if self.HasArrived() then
+		if not self.HasArrived() then
 			return
 		end
 		if not self.BlockAtMyLocation() then
@@ -74,13 +77,6 @@ local function NewPlayer(self, position, direction)
 	
 	function self.GetType()
 		return "player"
-	end
-	
-	function self.OnGoal()
-		local block = self.BlockAtMyLocation()
-		if block and block.goalFunc(self) then
-			return true
-		end
 	end
 	
 	function self.IsAtPos(pos)

@@ -81,6 +81,10 @@ function api.Update(dt)
 	IterableMap.ApplySelf(self.blocks, "Update", dt)
 end
 
+function api.GoalSatisfied()
+	return IterableMap.IfAllSatisfy(self.blocks, "GoalSatisfied")
+end
+
 function api.Draw(drawQueue)
 	IterableMap.ApplySelf(self.blocks, "Draw", drawQueue)
 	drawQueue:push({y=-100; f=function()

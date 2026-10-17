@@ -6,7 +6,6 @@ local Resources = require("resourceHandler")
 
 local self = {}
 local api = {}
-local world
 
 --------------------------------------------------
 -- Updating
@@ -16,14 +15,17 @@ local world
 -- API
 --------------------------------------------------
 
-function api.ToggleMenu()
-	self.menuOpen = not self.menuOpen
-	world.SetMenuState(self.menuOpen)
+function api.MousePressed(x, y)
+	if self.hovered == "You Win! Click to continue." then
+		self.world.GetCosmos().SwitchLevel(true)
+	elseif self.hovere == "You Died! Click to restart." then
+		self.world.Restart()
+	end
 end
 
-function api.MousePressed(x, y)
-	local windowX, windowY = love.window.getMode()
-	local drawPos = world.ScreenToInterface({windowX, 0})
+function api.AllowMovement()
+	local _, won = self.world.GetGameOver()
+	return not won
 end
 
 --------------------------------------------------
@@ -31,6 +33,13 @@ end
 --------------------------------------------------
 
 function api.Update(dt)
+	if not self.world.GetGameOver() then
+		if not PlayerHandler.GetPlayer() and not LevelHandler.InEditMode() then
+			self.world.SetGameOver(false, "player_died")
+		elseif TerrainHandler.GoalSatisfied() then
+			self.world.SetGameOver(true, "all_charging")
+		end
+	end
 end
 
 function api.DrawInterface()
@@ -49,11 +58,21 @@ function api.DrawInterface()
 		Font.SetSize(4)
 		love.graphics.printf(levelData.description, Global.WINDOW_X - Global.UI_WIDTH + 30, 120, Global.UI_WIDTH - 40, "left")
 	end
+	
+	local _, won, lost = self.world.GetGameOver()
+	local mousePos = self.world.GetMousePositionInterface()
+	self.hovered = false
+	if won then
+		self.hovered = InterfaceUtil.DrawButton(600, 500, 700, 100, mousePos, "You Win! Click to continue.", false, false, false, false, 1, 15, false, 0.85)
+	elseif lost then
+		self.hovered = InterfaceUtil.DrawButton(600, 500, 700, 100, mousePos, "You Died! Click to restart.", false, false, false, false, 1, 15, false, 0.85)
+	end
 end
 
 function api.Initialize(parentWorld)
-	self = {}
-	world = parentWorld
+	self = {
+		world = parentWorld
+	}
 end
 
 return api

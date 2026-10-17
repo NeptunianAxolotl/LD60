@@ -101,15 +101,27 @@ local function NewRobot(self)
 	end
 	
 	function self.Move(direction)
+		if not GameHandler.AllowMovement() then
+			return
+		end
 		local newPos = util.Add(self.pos, util.CardinalToVector(direction))
 		if TerrainHandler.InteractWithObjectsAt(newPos, self, "DoMoveOnto") then
 			return
 		end
 		self.pos = newPos
+		self.moveBlockDt = Global.ROBOT_ANIMATE_TIME
+	end
+	
+	function self.Rotate(direction)
+		if not GameHandler.AllowMovement() then
+			return
+		end
+		self.direction = (self.direction + direction)%4
+		self.moveBlockDt = Global.ROBOT_ANIMATE_TIME
 	end
 	
 	function self.HasArrived()
-		return (not self.moveBlockDt) or self.moveBlockDt < Global.ARRIVAL_LEEWAY
+		return (not self.moveBlockDt) or self.moveBlockDt < Global.ARRIVAL_LEEWAY or util.Equal(self.pos, self.prevPos)
 	end
 	
 	function self.ForceExecuteCommand(triggerName, actionIndex)
@@ -131,7 +143,6 @@ local function NewRobot(self)
 		if not self.triggerDt then
 			self.prevPos = self.pos
 			self.prevDir = self.direction
-			self.moveBlockDt = Global.ROBOT_ANIMATE_TIME
 			FindAndExecuteCommand(self)
 			self.triggerDt = Global.ROBOT_MOVE_TIME
 		end
@@ -146,13 +157,6 @@ local function NewRobot(self)
 	
 	function self.DoMoveOnto(object)
 		if self.def.isBlocking then
-			return true
-		end
-	end
-	
-	function self.OnGoal()
-		local block = self.BlockAtMyLocation()
-		if block and block.goalFunc(self) then
 			return true
 		end
 	end
