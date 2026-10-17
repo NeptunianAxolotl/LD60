@@ -19,7 +19,7 @@ local def = {
 		robots = {
 			defs = RobotDefs,
 			spawnFunc = function (data)
-				RobotHandler.AddRobot(data.name, data.pos, data.direction, data.config)
+				RobotHandler.AddRobot(data.name, data.pos, data.direction, data.program)
 			end,
 			deleteFunc = function (pos)
 				RobotHandler.RemoveRobot(pos)
@@ -48,12 +48,16 @@ def.spawnKey = {
 	w = "wall",
 	q = "player",
 	d = "basic_robot",
+	a = "player_goal",
+	s = "robot_goal",
 }
 
 def.spawnString = [[
 W - Wall
 Q - Player
 D - Basic Robot
+A - Player Goal
+S - Robot Goal
 
 ]]
 

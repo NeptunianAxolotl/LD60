@@ -99,10 +99,13 @@ function api.MousePressed(x, y, button)
 	if GameHandler.MousePressed(wPos[1], wPos[2], button) then
 		return
 	end
-	if LevelHandler.MousePressed(wPos[1], wPos[2], button) then
+	if PlayerHandler.MousePressed(wPos[1], wPos[2], button) then
 		return
 	end
 	if TerrainHandler.MousePressed(wPos[1], wPos[2], button) then
+		return
+	end
+	if LevelHandler.MousePressed(wPos[1], wPos[2], button) then
 		return
 	end
 	if api.GetPaused() then
@@ -132,7 +135,12 @@ function api.MouseReleased(x, y, button)
 end
 
 function api.MouseMoved(x, y, dx, dy)
-	if MainMenuHandler.MouseMoved(x, y, dx, dy) then
+	local iPos = api.ScreenToInterface({x, y})
+	if MainMenuHandler.MouseMoved(iPos[1], iPos[2], dx, dy) then
+		return true
+	end
+	local wPos = api.ScreenToWorld({x, y})
+	if LevelHandler.MouseMoved(wPos[1], wPos[2], dx, dy) then
 		return true
 	end
 end

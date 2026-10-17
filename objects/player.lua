@@ -14,6 +14,10 @@ local function NewPlayer(self, position, direction)
 		return self.ObjInDirection(direction)
 	end
 	
+	function self.BlockAtMyLocation()
+		return TerrainHandler.GetBlockAt(self.pos)
+	end
+	
 	function self.Move(direction)
 		if self.moveBlockDt then
 			return false
@@ -30,8 +34,21 @@ local function NewPlayer(self, position, direction)
 		return true
 	end
 	
+	function self.DropPaint()
+		if self.moveBlockDt and self.moveBlockDt > Global.PAINT_MOVE_REQ then
+			return
+		end
+		if not self.BlockAtMyLocation() then
+			TerrainHandler.AddBlock("paint", self.pos, self.direction)
+		end
+	end
+	
 	function self.Update(dt)
 		self.moveBlockDt = util.UpdateTimer(self.moveBlockDt, dt)
+		if love.mouse.isDown(2) then
+			self.DropPaint()
+			return
+		end
 	end
 	
 	function self.Destroy(dt)
@@ -44,6 +61,13 @@ local function NewPlayer(self, position, direction)
 	
 	function self.GetType()
 		return "player"
+	end
+	
+	function self.OnGoal()
+		local block = self.BlockAtMyLocation()
+		if block and block.goalFunc(self) then
+			return true
+		end
 	end
 	
 	function self.IsAtPos(pos)

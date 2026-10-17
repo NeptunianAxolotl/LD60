@@ -43,9 +43,15 @@ local function InitProgram(programDef)
 	local program = {}
 	for i = 1, #programDef do
 		local trigger = CommandDefs[programDef[i].trigger]
+		if not trigger then
+			error("Cannot find trigger with name " .. programDef[i].trigger)
+		end
 		local actions = {}
 		for j = 1, #programDef[i].actions do
 			actions[j] = CommandDefs[programDef[i].actions[j]]
+			if not actions[j] then
+				error("Cannot find action with name " .. programDef[i].actions[j])
+			end
 		end
 		program[i] = {
 			trigger = trigger,
@@ -58,7 +64,8 @@ end
 local function NewRobot(self)
 	self.def = RobotDefs[self.robotType]
 	self.tiggerDt = Global.TURN_RATE
-	self.program = InitProgram(self.config and self.config.program)
+	self.programRaw = self.program -- Save/load stability
+	self.program = InitProgram(self.program)
 	self.nextAction = {}
 	
 	function self.ObjInDirection(direction)
@@ -69,6 +76,10 @@ local function NewRobot(self)
 	function self.ObjInRelativeDirection(direction)
 		direction = (self.direction + direction)%4
 		return self.ObjInDirection(direction)
+	end
+	
+	function self.BlockAtMyLocation()
+		return TerrainHandler.GetBlockAt(self.pos)
 	end
 	
 	function self.Move(direction)
@@ -118,6 +129,13 @@ local function NewRobot(self)
 		end
 	end
 	
+	function self.OnGoal()
+		local block = self.BlockAtMyLocation()
+		if block and block.goalFunc(self) then
+			return true
+		end
+	end
+	
 	function self.GetType()
 		return self.robotType
 	end
@@ -127,7 +145,7 @@ local function NewRobot(self)
 			name = self.robotType,
 			pos = self.pos,
 			direction = self.direction,
-			config = self.config, -- Save/load stability
+			program = self.programRaw,
 		}
 	end
 	
@@ -140,7 +158,7 @@ local function NewRobot(self)
 			local offsetX = drawPos[1]
 			local actions = self.program[i].actions
 			local lastTrigger = (i == self.lastTriggerIndex)
-			local color = (lastTrigger and {1, 0, 0}) or {0, 0, 0}
+			local color = (lastTrigger and {1, 0.5, 0.5}) or self.program[i].trigger.color or {0.85, 0.85, 0.85}
 			Resources.DrawImage(self.program[i].trigger.image, offsetX, offsetY, false, false, false, color)
 			offsetX = offsetX + Global.COMMAND_DRAW_SIZE + 10
 			for j = 1, #actions do

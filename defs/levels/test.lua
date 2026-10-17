@@ -13,16 +13,14 @@ return {
 			name = "basic_robot",
 			pos = {4, 5},
 			direction = 0,
-			config = {
-				program = {
-					{
-						trigger = "wall_front",
-						actions = {"right"},
-					},
-					{
-						trigger = "wildcard",
-						actions = {"move", "move", "move", "left"},
-					},
+			program = {
+				{
+					trigger = "wall_front",
+					actions = {"right"},
+				},
+				{
+					trigger = "wildcard",
+					actions = {"move", "move", "move", "left"},
 				},
 			},
 		},
@@ -30,28 +28,26 @@ return {
 			name = "basic_robot",
 			pos = {8, 4},
 			direction = 3,
-			config = {
-				program = {
-					{
-						trigger = "wall_front",
-						actions = {"u_turn"},
-					},
-					{
-						trigger = "player_front",
-						actions = {"sub_1"},
-					},
-					{
-						trigger = "sub_1",
-						actions = {"empty", "empty", "u_turn", "u_turn"},
-					},
-					{
-						trigger = "robot_front",
-						actions = {"wait"},
-					},
-					{
-						trigger = "wildcard",
-						actions = {"move"},
-					},
+			program = {
+				{
+					trigger = "wall_front",
+					actions = {"u_turn"},
+				},
+				{
+					trigger = "player_front",
+					actions = {"sub_1"},
+				},
+				{
+					trigger = "sub_1",
+					actions = {"empty", "empty", "u_turn", "u_turn"},
+				},
+				{
+					trigger = "robot_front",
+					actions = {"wait"},
+				},
+				{
+					trigger = "wildcard",
+					actions = {"move"},
 				},
 			},
 		},
@@ -59,20 +55,18 @@ return {
 			name = "basic_robot",
 			pos = {14, 4},
 			direction = 0,
-			config = {
-				program = {
-					{
-						trigger = "wall_front",
-						actions = {"right"},
-					},
-					{
-						trigger = "wall_left",
-						actions = {"move"},
-					},
-					{
-						trigger = "wildcard",
-						actions = {"left", "move"},
-					},
+			program = {
+				{
+					trigger = "wall_front",
+					actions = {"right"},
+				},
+				{
+					trigger = "wall_left",
+					actions = {"move"},
+				},
+				{
+					trigger = "wildcard",
+					actions = {"left", "move"},
 				},
 			},
 		},

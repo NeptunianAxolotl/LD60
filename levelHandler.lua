@@ -118,6 +118,9 @@ function api.MousePressed(mx, my, button)
 	if not self.editMode then
 		return
 	end
+	if button ~= 1 then
+		return
+	end
 	local clickPos = api.WorldToGrid({mx, my})
 	if self.editor.tile == "delete" then
 		for spawnType, spawnData in pairs(EditorDefs.spawnTypes) do
@@ -133,8 +136,23 @@ function api.MousePressed(mx, my, button)
 				direction = self.editor.direction,
 			}
 			spawnData.spawnFunc(data)
+			self.prevClickPos = clickPos
 		end
 	end
+end
+
+function api.MouseMoved(mx, my, dx, dy)
+	if not self.editMode then
+		return
+	end
+	if not love.mouse.isDown(1) then
+		return
+	end
+	local clickPos = api.WorldToGrid({mx, my})
+	if util.Equal(self.prevClickPos, clickPos) then
+		return
+	end
+	api.MousePressed(mx, my, 1)
 end
 
 function api.KeyPressed(key, scancode, isRepeat)
@@ -196,8 +214,7 @@ function api.KeyPressed(key, scancode, isRepeat)
 	print(key)
 end
 
-function api.DrawInterface()
-	local gameOver, gameWon, gameLost = self.world.GetGameOver()
+local function DrawEditor()
 	local windowX, windowY = love.window.getMode()
 	local overX = windowX*0.32
 	local overWidth = windowX*0.36
@@ -254,7 +271,11 @@ E - Rotate backwards
 Z - Delete
 ]] .. EditorDefs.spawnString, 0, offset, 500, "left")
 	end
-	return drawWindow
+end
+
+function api.DrawInterface()
+	local gameOver, gameWon, gameLost = self.world.GetGameOver()
+	DrawEditor()
 end
 
 function api.Draw(drawQueue)

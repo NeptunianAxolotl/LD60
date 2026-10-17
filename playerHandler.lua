@@ -47,6 +47,16 @@ function api.KeyPressed(key, scancode, isRepeat)
 	end
 	self.bufferKey = key
 	TryMove()
+	if key == "space" then
+		self.player.DropPaint()
+		return true
+	end
+end
+
+function api.MousePressed(mx, my, button)
+	if not self.player then
+		return
+	end
 end
 
 function api.GetPlayerAt(pos)
@@ -86,6 +96,10 @@ function api.Initialize(world)
 			down = 1,
 			left = 2,
 			up = 3,
+			d = 0,
+			s = 1,
+			a = 2,
+			w = 3,
 		}
 	}
 end
