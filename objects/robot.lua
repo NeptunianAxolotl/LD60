@@ -19,11 +19,12 @@ end
 local function ExecuteNextCommand(self, index)
 	local actions = self.program[index].actions
 	self.nextAction[index] = self.nextAction[index] or 1
-	local func = actions[self.nextAction[index]].executeFunc
+	local actionToTake = actions[self.nextAction[index]]
 	self.lastTriggerIndex = index
 	self.lastActionIndex = self.nextAction[index]
 	FindNextNonEmpty(self, index)
-	func(self)
+	self.previousAction = actionToTake
+	actionToTake.executeFunc(self)
 end
 
 local function FindAndExecuteCommand(self)
@@ -61,6 +62,22 @@ local function InitProgram(programDef)
 	return program
 end
 
+local function GetLastCommandSpeed(self)
+	local speed = (self.previousAction or {}).commandSpeed or 1
+	
+	if self.lastCommandType == "move" then
+		speed = speed * self.def.moveSpeed
+	elseif self.lastCommandType == "turn" then
+		speed = speed * self.def.turnSpeed
+	else
+		speed = speed * self.def.otherCommandSpeed
+	end
+	if speed ~= 1 and speed ~= 2 and speed ~= 4 then
+		speed = 1
+	end
+	return speed
+end
+
 local function DrawUiBox(x, y)
 	x, y = x - Global.COMMAND_DRAW_SIZE/2, y - Global.COMMAND_DRAW_SIZE/2
 	love.graphics.setColor(Global.PANEL_COL)
@@ -71,7 +88,8 @@ end
 
 local function NewRobot(self)
 	self.def = RobotDefs[self.robotType]
-	self.tiggerDt = Global.TURN_RATE
+	self.commandSpeed = 1
+	self.commandAcc = 3
 	self.programRaw = self.program -- Save/load stability
 	self.program = InitProgram(self.program)
 	self.nextAction = {}
@@ -137,14 +155,27 @@ local function NewRobot(self)
 		end
 	end
 	
-	function self.Update(dt)
-		self.triggerDt = util.UpdateTimer(self.triggerDt, dt)
+	function self.Update(dt, commandUpdate)
 		self.moveBlockDt = util.UpdateTimer(self.moveBlockDt, dt)
-		if not self.triggerDt then
+		if commandUpdate then
+			self.commandAcc = self.commandAcc + self.commandSpeed
+		end
+		if self.commandAcc >= 4 then
 			self.prevPos = self.pos
 			self.prevDir = self.direction
+			self.lastCommandType = false
 			FindAndExecuteCommand(self)
-			self.triggerDt = Global.ROBOT_MOVE_TIME
+			self.commandSpeed = GetLastCommandSpeed(self)
+			self.commandAcc = 0
+			if self.moveBlockDt then
+				self.moveBlockDt = self.moveBlockDt / self.commandSpeed
+				self.moveBlockDt = self.moveBlockDt / ((self.previousAction and self.previousAction.animateSpeed) or 1)
+				if self.commandSpeed > 1 then
+					local triggerTime = Global.ROBOT_MOVE_TIME / self.commandSpeed
+					self.moveBlockDt = util.AverageScalar(self.moveBlockDt, triggerTime, math.min(1, (self.commandSpeed - 1)/3))
+				end
+				self.maxMoveBlock = self.moveBlockDt
+			end
 		end
 	end
 	
@@ -163,6 +194,10 @@ local function NewRobot(self)
 	
 	function self.GetType()
 		return self.robotType
+	end
+	
+	function self.IsRobot()
+		return true
 	end
 	
 	function self.Export(objList)
@@ -208,9 +243,11 @@ local function NewRobot(self)
 			local drawPos = LevelHandler.GridToWorld(self.pos)
 			local drawRot = util.CardinalToDirection(self.direction)
 			if self.moveBlockDt then
-				local prevProp = self.moveBlockDt/Global.ROBOT_ANIMATE_TIME
+				local prevProp = self.moveBlockDt / self.maxMoveBlock
 				drawPos = util.Average(drawPos, LevelHandler.GridToWorld(self.prevPos), prevProp)
-				drawRot = util.AngleAverageShortest(drawRot, util.CardinalToDirection(self.prevDir), prevProp)
+				if not (self.previousAction and self.previousAction.skipRotationAnimate) then
+					drawRot = util.AngleAverageShortest(drawRot, util.CardinalToDirection(self.prevDir), prevProp)
+				end
 			end
 			Resources.DrawImage(self.def.image, drawPos[1], drawPos[2], drawRot)
 		end})

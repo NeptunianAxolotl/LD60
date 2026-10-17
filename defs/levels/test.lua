@@ -25,7 +25,7 @@ return {
 			},
 		},
 		{
-			name = "basic_robot",
+			name = "fast_robot",
 			pos = {8, 4},
 			direction = 3,
 			program = {
@@ -320,6 +320,16 @@ return {
 		{
 			name = "wall",
 			pos = {7, 9},
+			direction = 0,
+		},
+		{
+			name = "player_goal",
+			pos = {3, 4},
+			direction = 0,
+		},
+		{
+			name = "robot_goal",
+			pos = {9, 7},
 			direction = 0,
 		},
 	},

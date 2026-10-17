@@ -83,7 +83,7 @@ end
 
 function api.SaveLevel(name)
 	love.filesystem.createDirectory("levels")
-	self.humanName = name
+	self.humanName = self.levelData.humanName or name
 	
 	local save = {
 		humanName = self.humanName,

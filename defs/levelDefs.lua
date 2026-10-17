@@ -5,6 +5,7 @@ local def = {
 	levels = LevelDefs,
 	levelOrder = {
 		"level1",
+		"level2",
 		"test",
 	}
 }

@@ -148,7 +148,7 @@ local function Initialize(data)
 		posVelocity = {0, 0},
 		cameraScale = data.initScale or 1080,
 		baseScale = data.baseScale or 1,
-		windowPadding = data.windowPadding or {left = 0, right = 0, top = 0, bot = 0},
+		windowPadding = data.windowPadding or {left = 0, right = Global.UI_WIDTH / Global.WINDOW_X, top = 0, bot = 0},
 		pinX = data.pinX,
 		pinY = data.pinY,
 		squashRatio = data.squashRatio or 1,

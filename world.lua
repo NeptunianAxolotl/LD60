@@ -76,6 +76,9 @@ function api.KeyPressed(key, scancode, isRepeat)
 	if TerrainHandler.KeyPressed and TerrainHandler.KeyPressed(key, scancode, isRepeat) then
 		return
 	end
+	if LevelHandler.KeyPressed and LevelHandler.KeyPressed(key, scancode, isRepeat) then
+		return
+	end
 	if api.GetGameOver() then
 		return -- No doing actions
 	end
@@ -83,9 +86,6 @@ function api.KeyPressed(key, scancode, isRepeat)
 		return
 	end
 	if GameHandler.KeyPressed and GameHandler.KeyPressed(key, scancode, isRepeat) then
-		return
-	end
-	if LevelHandler.KeyPressed and LevelHandler.KeyPressed(key, scancode, isRepeat) then
 		return
 	end
 end

@@ -35,7 +35,11 @@ function api.GetRobotAt(pos)
 end
 
 function api.Update(dt)
-	IterableMap.ApplySelf(self.robots, "Update", dt)
+	self.commandDt = util.UpdateTimer(self.commandDt, dt)
+	IterableMap.ApplySelf(self.robots, "Update", dt, not self.commandDt)
+	if not self.commandDt then
+		self.commandDt = Global.ROBOT_MOVE_TIME/4
+	end
 end
 
 function api.Draw(drawQueue)
@@ -50,6 +54,7 @@ function api.Initialize(world, levelIndex, mapDataOverride)
 	self = {
 		world = world,
 		robots = IterableMap.New(),
+		commandDt = Global.ROBOT_MOVE_TIME/4,
 	}
 end
 

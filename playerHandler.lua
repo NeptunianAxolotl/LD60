@@ -5,6 +5,9 @@ local self = {}
 local api = {}
 
 function api.KillPlayer()
+	if not GameHandler.AllowMovement() then
+		return
+	end
 	if self.player then
 		self.player.Destroy()
 	end

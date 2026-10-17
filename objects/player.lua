@@ -51,9 +51,6 @@ local function NewPlayer(self, position, direction)
 	end
 	
 	function self.DropPaint()
-		if not self.HasArrived() then
-			return
-		end
 		if not self.BlockAtMyLocation() then
 			TerrainHandler.AddBlock("paint", self.pos, self.direction)
 		end
@@ -61,13 +58,16 @@ local function NewPlayer(self, position, direction)
 	
 	function self.Update(dt)
 		self.moveBlockDt = util.UpdateTimer(self.moveBlockDt, dt)
-		if love.mouse.isDown(2) then
-			self.DropPaint()
-			return
-		end
+		--if love.mouse.isDown(2) then
+		--	self.DropPaint()
+		--	return
+		--end
 	end
 	
 	function self.Destroy(dt)
+		if not GameHandler.AllowMovement() then
+			return
+		end
 	end
 	
 	function self.DoMoveOnto(object)
@@ -88,6 +88,7 @@ local function NewPlayer(self, position, direction)
 			name = "player",
 			pos = self.pos,
 			direction = self.direction,
+			paintCount = self.paintCount,
 		}
 	end
 	function self.Draw(drawQueue)
