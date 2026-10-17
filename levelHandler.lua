@@ -238,17 +238,13 @@ function api.DrawInterface()
 	end
 	
 	if self.editMode then
-		Font.SetSize(2)
-		offset = 20
-		love.graphics.printf("Editing Level", 20, offset, 500, "left")
-		offset = offset + 40
-		love.graphics.printf("Piece: " .. self.editor.tile, 20, offset, 500, "left")
-		offset = offset + 40
-		love.graphics.printf("Direction: " .. self.editor.direction, 20, offset, 500, "left")
-		offset = offset + 40
-		
-		offset = offset + 40
+		Font.SetSize(4)
+		offset = 10
 		love.graphics.printf([[
+Editing Level
+Piece: ]] .. self.editor.tile .. [[ 
+Direction: ]] .. self.editor.direction .. [[ 
+
 Ctrl+J - Edit mode
 Ctrl+K - Save level
 Ctrl+L = Load level
@@ -256,8 +252,7 @@ Ctrl+L = Load level
 R - Rotate
 E - Rotate backwards
 Z - Delete
-]] .. EditorDefs.spawnString, 20, offset, 500, "left")
-		offset = offset + 40
+]] .. EditorDefs.spawnString, 0, offset, 500, "left")
 	end
 	return drawWindow
 end

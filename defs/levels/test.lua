@@ -26,6 +26,52 @@ return {
 				},
 			},
 		},
+		{
+			name = "basic_robot",
+			pos = {8, 4},
+			direction = 3,
+			config = {
+				program = {
+					{
+						trigger = "wall_front",
+						actions = {"u_turn"},
+					},
+					{
+						trigger = "player_front",
+						actions = {"left"},
+					},
+					{
+						trigger = "robot_front",
+						actions = {"wait"},
+					},
+					{
+						trigger = "wildcard",
+						actions = {"move"},
+					},
+				},
+			},
+		},
+		{
+			name = "basic_robot",
+			pos = {14, 4},
+			direction = 0,
+			config = {
+				program = {
+					{
+						trigger = "wall_front",
+						actions = {"right"},
+					},
+					{
+						trigger = "wall_left",
+						actions = {"move"},
+					},
+					{
+						trigger = "wildcard",
+						actions = {"left", "move"},
+					},
+				},
+			},
+		},
 	},
 	blocks = {
 		{

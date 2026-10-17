@@ -35,6 +35,7 @@ local globals = {
 	FLOATING_TEXT_COL   = {0.95,0.95,0.9},
 	
 	TILE_SIZE = 100,
+	COMMAND_DRAW_SIZE = 40,
 	VIEW_PADDING = 50,
 	
 	SAVE_ORDER = {

@@ -41,6 +41,10 @@ end
 function api.Draw(drawQueue)
 	IterableMap.ApplySelf(self.robots, "Draw", drawQueue)
 end
+function api.DrawInterface()
+	IterableMap.ApplySelf(self.robots, "DrawProgram", {20, 500})
+end
+
 function api.Initialize(world, levelIndex, mapDataOverride)
 	self = {
 		world = world,

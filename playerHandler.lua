@@ -4,6 +4,13 @@ local NewPlayer = require("objects/player")
 local self = {}
 local api = {}
 
+function api.KillPlayer()
+	if self.player then
+		self.player.Destroy()
+	end
+	self.player = false
+end
+
 function api.CreatePlayer(pos, direction)
 	if self.player then
 		self.player.Destroy()

@@ -9,6 +9,9 @@ local function FindAndExecuteCommand(self)
 			local actions = self.program[i].actions
 			self.nextAction[i] = self.nextAction[i] or 1
 			actions[self.nextAction[i]].executeFunc(self)
+			
+			self.lastTriggerIndex = i
+			self.lastActionIndex = self.nextAction[i]
 			self.nextAction[i] = self.nextAction[i]%(#actions) + 1
 			return
 		end
@@ -37,7 +40,7 @@ end
 local function NewRobot(self)
 	self.def = RobotDefs[self.robotType]
 	self.tiggerDt = Global.TURN_RATE
-	self.program = InitProgram(self.config.program)
+	self.program = InitProgram(self.config and self.config.program)
 	self.nextAction = {}
 	
 	function self.ObjInDirection(direction)
@@ -53,7 +56,7 @@ local function NewRobot(self)
 	function self.Move(direction)
 		local newPos = util.Add(self.pos, util.CardinalToVector(direction))
 		local object = self.ObjInDirection(direction)
-		if object and object.Stops(self) then
+		if object and object.DoMoveOnto(self) then
 			return
 		end
 		self.pos = newPos
@@ -74,7 +77,7 @@ local function NewRobot(self)
 		return util.Equal(self.pos, pos)
 	end
 	
-	function self.Stops(object)
+	function self.DoMoveOnto(object)
 		if self.def.isBlocking then
 			return true
 		end
@@ -92,6 +95,31 @@ local function NewRobot(self)
 			config = self.config, -- Save/load stability
 		}
 	end
+	
+	function self.DrawProgram(drawPos)
+		if #self.program == 0 then
+			return
+		end
+		offsetY = drawPos[2]
+		for i = 1, #self.program do
+			local offsetX = drawPos[1]
+			local actions = self.program[i].actions
+			local lastTrigger = (i == self.lastTriggerIndex)
+			local color = (lastTrigger and {1, 0, 0}) or {0, 0, 0}
+			Resources.DrawImage(self.program[i].trigger.image, offsetX, offsetY, false, false, false, color)
+			offsetX = offsetX + Global.COMMAND_DRAW_SIZE + 10
+			for j = 1, #actions do
+				local lastAction = (i == self.lastTriggerIndex and j == self.lastActionIndex)
+				local nextAction = (j == (self.nextAction[i] or 1))
+				local color = (lastAction and {1, 0, 0}) or (nextAction and {0, 0, 0}) or {0.35, 0.35, 0.35}
+				Resources.DrawImage(actions[j].image, offsetX, offsetY, false, false, false, color)
+				offsetX = offsetX + Global.COMMAND_DRAW_SIZE + 5
+			end
+			offsetY = offsetY + Global.COMMAND_DRAW_SIZE + 5
+		end
+		drawPos[2] = offsetY + Global.COMMAND_DRAW_SIZE
+	end
+	
 	function self.Draw(drawQueue)
 		drawQueue:push({y=self.pos[2] + 10; f=function()
 			local drawPos = LevelHandler.GridToWorld(self.pos)

@@ -246,6 +246,7 @@ function api.Draw()
 	-- Draw interface
 	GameHandler.DrawInterface()
 	LevelHandler.DrawInterface()
+	RobotHandler.DrawInterface()
 	EffectsHandler.DrawInterface()
 	MainMenuHandler.DrawInterface()
 	

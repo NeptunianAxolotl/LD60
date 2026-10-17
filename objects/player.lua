@@ -18,7 +18,7 @@ local function NewPlayer(self, position, direction)
 		local newPos = util.Add(self.pos, util.CardinalToVector(direction))
 		self.direction = direction
 		local object = self.ObjInRelativeDirection(0)
-		if object and object.Stops(self) then
+		if object and object.DoMoveOnto(self) then
 			return
 		end
 		self.pos = newPos
@@ -30,8 +30,9 @@ local function NewPlayer(self, position, direction)
 	function self.Destroy(dt)
 	end
 	
-	function self.Stops(object)
-		return true
+	function self.DoMoveOnto(object)
+		PlayerHandler.KillPlayer()
+		return false
 	end
 	
 	function self.GetType()

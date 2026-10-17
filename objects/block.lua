@@ -13,7 +13,7 @@ local function NewBlock(self)
 		return util.Equal(self.pos, pos)
 	end
 	
-	function self.Stops(object)
+	function self.DoMoveOnto(object)
 		if self.def.isBlocking then
 			return true
 		end
