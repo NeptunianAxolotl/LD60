@@ -1,8 +1,6 @@
 
 EffectsHandler = require("effectsHandler")
-DialogueHandler = require("dialogueHandler")
 TerrainHandler = require("terrainHandler")
---ShadowHandler = require("--ShadowHandler")
 
 LevelHandler = require("levelHandler")
 PlayerHandler = require("playerHandler")
@@ -10,12 +8,9 @@ PlayerHandler = require("playerHandler")
 InterfaceUtil = require("utilities/interfaceUtilities")
 Delay = require("utilities/delay")
 
-local PhysicsHandler = require("physicsHandler")
 CameraHandler = require("cameraHandler")
 Camera = require("utilities/cameraUtilities")
 
-ChatHandler = require("chatHandler")
-DeckHandler = require("deckHandler")
 GameHandler = require("gameHandler") -- Handles the gamified parts of the game, such as score, progress and interface.
 
 local PriorityQueue = require("include/PriorityQueue")
@@ -110,9 +105,6 @@ function api.MousePressed(x, y, button)
 	if api.GetGameOver() then
 		return -- No doing actions
 	end
-	if DialogueHandler.MousePressedInterface(uiX, uiY, button) then
-		return
-	end
 	x, y = CameraHandler.GetCameraTransform():inverse():transformPoint(x, y)
 	
 	-- Send event to game components
@@ -183,10 +175,6 @@ function api.GetCameraExtents(buffer)
 	return topLeftPos[1] - buffer, topLeftPos[2] - buffer, botRightPos[1] + buffer, botRightPos[2] + buffer
 end
 
-function api.GetPhysicsWorld()
-	return PhysicsHandler.GetPhysicsWorld()
-end
-
 local function UpdateCamera(dt)
 	CameraHandler.Update(dt)
 end
@@ -212,28 +200,15 @@ function api.Update(dt)
 	Delay.Update(dt)
 	InterfaceUtil.Update(dt)
 	PlayerHandler.Update(dt)
-	--ShadowHandler.Update(api)
-	
-	PhysicsHandler.Update(dt)
-
-	ChatHandler.Update(dt)
 	EffectsHandler.Update(dt)
 	UpdateCamera(dt)
 end
 
 function api.Draw()
-	local preShadowQueue = PriorityQueue.new(function(l, r) return l.y < r.y end)
 	local drawQueue = PriorityQueue.new(function(l, r) return l.y < r.y end)
 
 	-- Draw world
 	love.graphics.replaceTransform(CameraHandler.GetCameraTransform())
-	while true do
-		local d = preShadowQueue:pop()
-		if not d then break end
-		d.f()
-	end
-	
-	--ShadowHandler.DrawGroundShadow(self.cameraTransform)
 	EffectsHandler.Draw(drawQueue)
 	PlayerHandler.Draw(drawQueue)
 	TerrainHandler.Draw(drawQueue)
@@ -260,8 +235,6 @@ function api.Draw()
 	-- Draw interface
 	GameHandler.DrawInterface()
 	EffectsHandler.DrawInterface()
-	DialogueHandler.DrawInterface()
-	ChatHandler.DrawInterface()
 	MainMenuHandler.DrawInterface()
 	
 	love.graphics.replaceTransform(self.emptyTransform)
@@ -280,17 +253,9 @@ function api.Initialize(cosmos, levelData)
 	InterfaceUtil.Initialize()
 	EffectsHandler.Initialize(api)
 	
-	PhysicsHandler.Initialize(api)
-	PlayerHandler.Initialize(api)
-	ChatHandler.Initialize(api)
-	DialogueHandler.Initialize(api)
-	
-	TerrainHandler.Initialize(api, levelData)
-	--ShadowHandler.Initialize(api)
-	
-	DeckHandler.Initialize(api)
 	GameHandler.Initialize(api)
-	
+	PlayerHandler.Initialize(api)
+	TerrainHandler.Initialize(api, levelData)
 	CameraHandler.Initialize(api)
 end
 

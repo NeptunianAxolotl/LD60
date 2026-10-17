@@ -3,7 +3,6 @@ local Font = require("include/font")
 
 local EffectsHandler = require("effectsHandler")
 local Resources = require("resourceHandler")
-MusicHandler = require("musicHandler")
 
 local self = {}
 local api = {}

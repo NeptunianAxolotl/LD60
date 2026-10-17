@@ -1,7 +1,3 @@
-
-
---local EffectDefs = util.LoadDefDirectory("effects")
-local NewPlayerCar = require("objects/playerCar")
 
 local self = {}
 local api = {}
@@ -28,7 +24,6 @@ function api.Initialize(world)
 	local initPlayerData = {
 		pos = {500, 200}
 	}
-	self.playerCar = NewPlayerCar(initPlayerData, self.world.GetPhysicsWorld())
 end
 
 return api
