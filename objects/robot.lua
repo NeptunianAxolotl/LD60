@@ -162,7 +162,7 @@ local function NewRobot(self)
 			if self.animDt then
 				local prevProp = self.animDt/Global.ROBOT_ANIMATE_TIME
 				drawPos = util.Average(drawPos, LevelHandler.GridToWorld(self.prevPos), prevProp)
-				drawRot = util.AverageScalar(drawRot, util.CardinalToDirection(self.prevDir), prevProp)
+				drawRot = util.AngleAverageShortest(drawRot, util.CardinalToDirection(self.prevDir), prevProp)
 			end
 			Resources.DrawImage(self.def.image, drawPos[1], drawPos[2], drawRot)
 		end})

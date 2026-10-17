@@ -308,9 +308,9 @@ function util.UnitThenDot(u, v)
 end
 
 -- Get the average position between two vectors
-function util.Average(u, v, uFactor)
-	uFactor = uFactor or 0.5
-	return util.Add(util.Mult(uFactor, util.Subtract(v, u)), u)
+function util.Average(u, v, vFactor)
+	vFactor = vFactor or 0.5
+	return util.Add(util.Mult(vFactor, util.Subtract(v, u)), u)
 end
 
 function util.AverageMulti(pointList)
@@ -329,9 +329,9 @@ function util.AverageMulti(pointList)
 	}
 end
 
-function util.AverageScalar(u, v, uFactor)
-	uFactor = uFactor or 0.5
-	return u*(1 - uFactor) + v * uFactor
+function util.AverageScalar(u, v, vFactor)
+	vFactor = vFactor or 0.5
+	return u*(1 - vFactor) + v * vFactor
 end
 
 function util.AngleSubtractShortest(angleA, angleB)
@@ -349,9 +349,10 @@ function util.AngleSubtractShortest(angleA, angleB)
 	end
 end
 
-function util.AngleAverageShortest(angleA, angleB)
+function util.AngleAverageShortest(angleA, angleB, bFactor)
+	aFactor = aFactor or 0.5
 	local diff = util.AngleSubtractShortest(angleA, angleB)
-	return angleA - diff/2
+	return angleA - diff*aFactor
 end
 
 function util.SignPreserveMax(val, mag)
