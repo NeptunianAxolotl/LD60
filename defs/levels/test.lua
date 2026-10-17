@@ -42,7 +42,7 @@ return {
 					},
 					{
 						trigger = "sub_1",
-						actions = {"u_turn", "u_turn", "u_turn", "u_turn"},
+						actions = {"empty", "empty", "u_turn", "u_turn"},
 					},
 					{
 						trigger = "robot_front",

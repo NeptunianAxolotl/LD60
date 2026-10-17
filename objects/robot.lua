@@ -2,24 +2,34 @@
 local RobotDefs = util.LoadDefDirectory("defs/robots")
 local CommandDefs = util.LoadDefDirectory("defs/commands")
 
+local function FindNextNonEmpty(self, index)
+	local actions = self.program[index].actions
+	local increment = true
+	local finalIndex = index
+	while increment do
+		self.nextAction[index] = self.nextAction[index] + 1
+		if self.nextAction[index] > #actions then
+			self.nextAction[index] = 1
+			self.forceFullTrigger = false
+		end
+		increment = actions[self.nextAction[index]].emptyCommand and (self.nextAction[index] ~= finalIndex)
+	end
+end
+
 local function ExecuteNextCommand(self, index)
 	local actions = self.program[index].actions
 	self.nextAction[index] = self.nextAction[index] or 1
 	local func = actions[self.nextAction[index]].executeFunc
 	self.lastTriggerIndex = index
 	self.lastActionIndex = self.nextAction[index]
-	self.nextAction[index] = self.nextAction[index] + 1
-	if self.nextAction[index] > #actions then
-		self.nextAction[index] = 1
-		self.forceFullTrigger = false
-	end
+	FindNextNonEmpty(self, index)
 	func(self)
 end
 
 local function FindAndExecuteCommand(self)
 	-- Look down the list of triggers and execute the next action of the first one
 	for i = 1, #self.program do
-		if self.program[i].trigger.acceptFunc(self) and ((not self.forceFullTrigger) or self.program[i].trigger.name == self.forceFullTrigger) then
+		if self.program[i].trigger.acceptFunc(self) and ((not self.forceFullTrigger) or self.program[i].trigger.name == self.forceFullTrigger) and not self.program[i].allEmpty then
 			ExecuteNextCommand(self, i)
 			return
 		end
@@ -73,7 +83,10 @@ local function NewRobot(self)
 	function self.ForceExecuteCommand(triggerName, actionIndex)
 		for i = 1, #self.program do
 			if self.program[i].trigger.name == triggerName then
-				self.nextAction[i] = actionIndex or self.nextAction[i]
+				if actionIndex then
+					self.nextAction[i] = actionIndex
+					FindNextNonEmpty(self, i)
+				end
 				ExecuteNextCommand(self, i)
 				return
 			end
