@@ -3,6 +3,17 @@ local function NewPlayer(self, position, direction)
 	-- pos
 	self.direction = direction
 	self.pos = position
+	self.isPlayer = true
+	
+	function self.Move(direction)
+		local newPos = util.Add(self.pos, util.CardinalToVector(direction))
+		local block = TerrainHandler.GetBlockAt(newPos)
+		self.direction = direction
+		if block and block.Stops(self) then
+			return
+		end
+		self.pos = newPos
+	end
 	
 	function self.Update(dt)
 	end

@@ -10,8 +10,13 @@ local function NewBlock(self)
 	end
 	
 	function self.IsAtPos(pos)
-		print("util.Equal(self.pos, pos)", util.Equal(self.pos, pos))
 		return util.Equal(self.pos, pos)
+	end
+	
+	function self.Stops(object)
+		if self.def.blocksPlayer and object.isPlayer then
+			return true
+		end
 	end
 	
 	function self.Draw(drawQueue)

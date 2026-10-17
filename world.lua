@@ -75,6 +75,9 @@ function api.KeyPressed(key, scancode, isRepeat)
 	if api.GetGameOver() then
 		return -- No doing actions
 	end
+	if PlayerHandler.KeyPressed and PlayerHandler.KeyPressed(key, scancode, isRepeat) then
+		return
+	end
 	if GameHandler.KeyPressed and GameHandler.KeyPressed(key, scancode, isRepeat) then
 		return
 	end
