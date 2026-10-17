@@ -26,19 +26,27 @@ function api.ExportObjects()
 	return objList
 end
 
+local function TryMove()
+	if not self.bufferKey then
+		return
+	end
+	if not self.moveKeys[self.bufferKey] then
+		self.bufferKey = false
+		return
+	end
+	if self.player.Move(self.moveKeys[self.bufferKey]) then
+		self.bufferKey = false
+		self.lastMoveKey = self.bufferKey
+		self.lastMoveDt = Global.BUFFER_KEY_LEEWAY
+	end
+end
+
 function api.KeyPressed(key, scancode, isRepeat)
 	if not self.player then
 		return
 	end
-	if key == "right" then
-		self.player.Move(0)
-	elseif key == "down" then
-		self.player.Move(1)
-	elseif key == "left" then
-		self.player.Move(2)
-	elseif key == "up" then
-		self.player.Move(3)
-	end
+	self.bufferKey = key
+	TryMove()
 end
 
 function api.GetPlayerAt(pos)
@@ -48,9 +56,19 @@ function api.GetPlayerAt(pos)
 end
 
 function api.Update(dt)
-	if self.player then
-		self.player.Update(dt)
+	if not self.player then
+		return
 	end
+	if not self.bufferKey and not self.lastMoveDt then
+		for key,_ in pairs(self.moveKeys) do
+			if key ~= self.lastMoveKey and love.keyboard.isDown(key) then
+				self.bufferKey = key
+			end
+		end
+	end
+	self.lastMoveDt = util.UpdateTimer(self.lastMoveDt, dt)
+	TryMove()
+	self.player.Update(dt)
 end
 
 function api.Draw(drawQueue)
@@ -63,6 +81,12 @@ function api.Initialize(world)
 	self = {
 		player = false,
 		world = world,
+		moveKeys = {
+			right = 0,
+			down = 1,
+			left = 2,
+			up = 3,
+		}
 	}
 end
 

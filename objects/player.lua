@@ -15,16 +15,23 @@ local function NewPlayer(self, position, direction)
 	end
 	
 	function self.Move(direction)
+		if self.moveBlockDt then
+			return false
+		end
 		local newPos = util.Add(self.pos, util.CardinalToVector(direction))
 		self.direction = direction
 		local object = self.ObjInRelativeDirection(0)
 		if object and object.DoMoveOnto(self) then
-			return
+			return false
 		end
+		self.prevPos = self.pos
 		self.pos = newPos
+		self.moveBlockDt = Global.PLAYER_MOVE_TIME
+		return true
 	end
 	
 	function self.Update(dt)
+		self.moveBlockDt = util.UpdateTimer(self.moveBlockDt, dt)
 	end
 	
 	function self.Destroy(dt)
@@ -54,6 +61,10 @@ local function NewPlayer(self, position, direction)
 		drawQueue:push({y=self.pos[2] + 10; f=function()
 			local drawPos = LevelHandler.GridToWorld(self.pos)
 			local drawRot = util.CardinalToDirection(self.direction)
+			if self.moveBlockDt then
+				local prevProp = self.moveBlockDt/Global.PLAYER_MOVE_TIME
+				drawPos = util.Average(drawPos, LevelHandler.GridToWorld(self.prevPos), prevProp)
+			end
 			Resources.DrawImage("player", drawPos[1], drawPos[2], drawRot)
 		end})
 	end

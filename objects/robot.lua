@@ -95,9 +95,13 @@ local function NewRobot(self)
 	
 	function self.Update(dt)
 		self.triggerDt = util.UpdateTimer(self.triggerDt, dt)
+		self.animDt = util.UpdateTimer(self.animDt, dt)
 		if not self.triggerDt then
+			self.prevPos = self.pos
+			self.prevDir = self.direction
+			self.animDt = Global.ROBOT_ANIMATE_TIME
 			FindAndExecuteCommand(self)
-			self.triggerDt = Global.TURN_RATE
+			self.triggerDt = Global.ROBOT_MOVE_TIME
 		end
 	end
 	
@@ -155,6 +159,11 @@ local function NewRobot(self)
 		drawQueue:push({y=self.pos[2] + 10; f=function()
 			local drawPos = LevelHandler.GridToWorld(self.pos)
 			local drawRot = util.CardinalToDirection(self.direction)
+			if self.animDt then
+				local prevProp = self.animDt/Global.ROBOT_ANIMATE_TIME
+				drawPos = util.Average(drawPos, LevelHandler.GridToWorld(self.prevPos), prevProp)
+				drawRot = util.AverageScalar(drawRot, util.CardinalToDirection(self.prevDir), prevProp)
+			end
 			Resources.DrawImage(self.def.image, drawPos[1], drawPos[2], drawRot)
 		end})
 	end

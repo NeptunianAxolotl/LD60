@@ -46,7 +46,10 @@ local globals = {
 	},
 	SAVE_INLINE = {"pos", "dimensions", "actions"},
 	
-	TURN_RATE = 0.8,
+	BUFFER_KEY_LEEWAY = 0.17,
+	PLAYER_MOVE_TIME = 0.3,
+	ROBOT_ANIMATE_TIME = 0.3,
+	ROBOT_MOVE_TIME = 0.8,
 	
 	WINDOW_X = 1960,
 	WINDOW_Y = 1080,
