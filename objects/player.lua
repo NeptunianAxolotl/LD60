@@ -24,9 +24,8 @@ local function NewPlayer(self, position, direction)
 		end
 		local newPos = util.Add(self.pos, util.CardinalToVector(direction))
 		self.direction = direction
-		local object = self.ObjInRelativeDirection(0)
-		if object and object.DoMoveOnto(self) then
-			return false
+		if TerrainHandler.InteractWithObjectsAt(newPos, self, "DoMoveOnto") then
+			return
 		end
 		self.prevPos = self.pos
 		self.pos = newPos

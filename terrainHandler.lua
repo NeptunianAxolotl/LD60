@@ -49,6 +49,22 @@ function api.GetAnythingAt(pos)
 	return false
 end
 
+function api.InteractWithObjectsAt(pos, object, funcName)
+	local block = api.GetBlockAt(pos)
+	if block and block[funcName](object) then
+		return block
+	end
+	local robot = RobotHandler.GetRobotAt(pos)
+	if robot and robot[funcName](object) then
+		return robot
+	end
+	local player = PlayerHandler.GetPlayerAt(pos)
+	if player and player[funcName](object) then
+		return player
+	end
+	return false
+end
+
 function api.Update(dt)
 	IterableMap.ApplySelf(self.blocks, "Update", dt)
 end

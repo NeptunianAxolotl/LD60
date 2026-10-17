@@ -61,12 +61,12 @@ end
 
 function api.LoadLevel(name)
 	print("load level")
-	local contents = love.filesystem.read("levels/" .. name)
+	local contents = love.filesystem.read("levels/" .. name .. ".lua")
 	if not contents then
 		EffectsHandler.SpawnEffect("error_popup", {400, 300}, {text = "Level file not found.", velocity = {0, 4}})
 		return
 	end
-	local levelFunc = loadstring("return "..contents)
+	local levelFunc = loadstring(contents)
 	if not levelFunc then
 		EffectsHandler.SpawnEffect("error_popup", {400, 300}, {text = "Error loading level.", velocity = {0, 4}})
 		return

@@ -84,8 +84,7 @@ local function NewRobot(self)
 	
 	function self.Move(direction)
 		local newPos = util.Add(self.pos, util.CardinalToVector(direction))
-		local object = self.ObjInDirection(direction)
-		if object and object.DoMoveOnto(self) then
+		if TerrainHandler.InteractWithObjectsAt(newPos, self, "DoMoveOnto") then
 			return
 		end
 		self.pos = newPos
