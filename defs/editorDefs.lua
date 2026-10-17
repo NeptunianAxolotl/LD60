@@ -1,12 +1,13 @@
 
 local BlockDefs = util.LoadDefDirectory("defs/blocks")
+local RobotDefs = util.LoadDefDirectory("defs/robots")
 
 local def = {
 	spawnTypes = {
 		blocks = {
 			defs = BlockDefs,
-			spawnFunc = function (defName, pos, direction)
-				TerrainHandler.AddBlock(defName, pos, direction)
+			spawnFunc = function (data)
+				TerrainHandler.AddBlock(data.name, data.pos, data.direction)
 			end,
 			deleteFunc = function (pos)
 				TerrainHandler.RemoveBlock(pos)
@@ -15,10 +16,22 @@ local def = {
 				return TerrainHandler.ExportObjects()
 			end,
 		},
+		robots = {
+			defs = RobotDefs,
+			spawnFunc = function (data)
+				RobotHandler.AddRobot(data.name, data.pos, data.direction)
+			end,
+			deleteFunc = function (pos)
+				RobotHandler.RemoveRobot(pos)
+			end,
+			exportFunc = function ()
+				return RobotHandler.ExportObjects()
+			end,
+		},
 		player = {
 			defs = {player = {image = "player"}},
-			spawnFunc = function (defName, pos, direction)
-				PlayerHandler.CreatePlayer(pos, direction)
+			spawnFunc = function (data)
+				PlayerHandler.CreatePlayer(data.pos, data.direction)
 			end,
 			deleteFunc = function ()
 				
@@ -34,11 +47,13 @@ local def = {
 def.spawnKey = {
 	w = "wall",
 	q = "player",
+	d = "basic_robot",
 }
 
 def.spawnString = [[
 W - Wall
 Q - Player
+D - Basic Robot
 
 ]]
 

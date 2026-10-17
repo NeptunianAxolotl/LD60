@@ -53,12 +53,8 @@ end
 local function SetupLevel()
 	self.dimensions = util.CopyTable(self.levelData.dimensions)
 	for spawnType, spawnData in pairs(EditorDefs.spawnTypes) do
-		for i = 1, #self.levelData[spawnType] do
-			spawnData.spawnFunc(
-				self.levelData[spawnType][i].name,
-				self.levelData[spawnType][i].pos,
-				self.levelData[spawnType][i].direction
-			)
+		for i = 1, #(self.levelData[spawnType] or {}) do
+			spawnData.spawnFunc(self.levelData[spawnType][i])
 		end
 	end
 end
@@ -131,7 +127,12 @@ function api.MousePressed(mx, my, button)
 	end
 	for spawnType, spawnData in pairs(EditorDefs.spawnTypes) do
 		if spawnData.defs[self.editor.tile] then
-			spawnData.spawnFunc(self.editor.tile, clickPos, self.editor.direction)
+			local data = {
+				name = self.editor.tile,
+				pos = clickPos,
+				direction = self.editor.direction,
+			}
+			spawnData.spawnFunc(data)
 		end
 	end
 end

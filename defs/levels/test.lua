@@ -8,6 +8,18 @@ return {
 			pos = {5, 7},
 		},
 	},
+	robots = {
+		{
+			direction = 0,
+			name = "basic_robot",
+			pos = {4, 6},
+		},
+		{
+			direction = 0,
+			name = "basic_robot",
+			pos = {7, 4},
+		},
+	},
 	blocks = {
 		{
 			direction = 0,

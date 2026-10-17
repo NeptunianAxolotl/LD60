@@ -1,7 +1,7 @@
 
 local def = {
 	image = "wall",
-	blocksPlayer = true,
+	isBlocking = true,
 }
 
 return def

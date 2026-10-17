@@ -39,7 +39,7 @@ local globals = {
 	
 	SAVE_ORDER = {
 		"humanName", "dimensions", "player",
-		"blocks",
+		"robots", "blocks",
 	},
 	SAVE_INLINE = {"pos", "dimensions"},
 	

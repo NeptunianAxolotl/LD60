@@ -3,6 +3,7 @@ EffectsHandler = require("effectsHandler")
 TerrainHandler = require("terrainHandler")
 
 LevelHandler = require("levelHandler")
+RobotHandler = require("robotHandler")
 PlayerHandler = require("playerHandler")
 
 InterfaceUtil = require("utilities/interfaceUtilities")
@@ -204,6 +205,7 @@ function api.Update(dt)
 	Delay.Update(dt)
 	InterfaceUtil.Update(dt)
 	PlayerHandler.Update(dt)
+	RobotHandler.Update(dt)
 	EffectsHandler.Update(dt)
 	UpdateCamera(dt)
 end
@@ -215,6 +217,7 @@ function api.Draw()
 	love.graphics.replaceTransform(CameraHandler.GetCameraTransform())
 	EffectsHandler.Draw(drawQueue)
 	PlayerHandler.Draw(drawQueue)
+	RobotHandler.Draw(drawQueue)
 	TerrainHandler.Draw(drawQueue)
 	LevelHandler.Draw(drawQueue)
 	
@@ -261,6 +264,7 @@ function api.Initialize(cosmos, levelData)
 	
 	GameHandler.Initialize(api)
 	PlayerHandler.Initialize(api)
+	RobotHandler.Initialize(api)
 	TerrainHandler.Initialize(api)
 	LevelHandler.Initialize(api, levelData)
 	

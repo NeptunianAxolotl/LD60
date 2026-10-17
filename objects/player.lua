@@ -7,9 +7,13 @@ local function NewPlayer(self, position, direction)
 	
 	function self.Move(direction)
 		local newPos = util.Add(self.pos, util.CardinalToVector(direction))
-		local block = TerrainHandler.GetBlockAt(newPos)
 		self.direction = direction
+		local block = TerrainHandler.GetBlockAt(newPos)
 		if block and block.Stops(self) then
+			return
+		end
+		local robot = RobotHandler.GetRobotAt(newPos)
+		if robot and robot.Stops(self) then
 			return
 		end
 		self.pos = newPos
@@ -19,6 +23,10 @@ local function NewPlayer(self, position, direction)
 	end
 	
 	function self.Destroy(dt)
+	end
+	
+	function self.Stops(object)
+		return true
 	end
 	
 	function self.Export(objList)

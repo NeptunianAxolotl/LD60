@@ -14,7 +14,7 @@ local function NewBlock(self)
 	end
 	
 	function self.Stops(object)
-		if self.def.blocksPlayer and object.isPlayer then
+		if self.def.isBlocking then
 			return true
 		end
 	end
