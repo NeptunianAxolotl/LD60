@@ -1,16 +1,24 @@
 
 local World = require("world")
 SoundHandler = require("soundHandler")
-MusicHandler = require("musicHandler")
+BGMHandler = require("bgmHandler")
 MainMenuHandler = require("mainMenuHandler")
 
-local LevelDefs = util.LoadDefDirectory("defs/levels")
+local MapDefs = util.LoadDefDirectory("defs/maps")
 
 local self = {}
 local api = {}
 
 -- Cosmos handles the world level, restarting the world,
 -- and things that persist between worlds.
+
+--------------------------------------------------
+-- Get
+--------------------------------------------------
+
+function api.GetWorld()
+	return World
+end
 
 --------------------------------------------------
 -- Music
@@ -25,6 +33,32 @@ end
 
 function api.MusicEnabled()
 	return self.musicEnabled
+end
+
+function api.GetMusicVolume()
+	return self.musicVolume
+end
+
+function api.SetMusicVolume(volume)
+	self.musicVolume = volume
+	if volume <= 0 then
+		self.musicEnabled = false
+		return
+	end
+	self.musicEnabled = true
+end
+
+function api.GetSoundVolume()
+	return self.soundVolume
+end
+
+function api.SetSoundVolume(volume)
+	self.soundVolume = volume
+	if volume <= 0 then
+		self.soundEnabled = false
+		return
+	end
+	self.soundEnabled = true
 end
 
 --------------------------------------------------
@@ -42,18 +76,18 @@ end
 
 function api.SwitchLevel(goNext)
 	local nameKey = (goNext and "nextLevel") or "prevLevel"
-	local newLevelName = LevelDefs[self.inbuiltLevelName][nameKey]
+	local newLevelName = MapDefs[self.inbuiltLevelName][nameKey]
 	if not newLevelName then
 		return
 	end
 	self.inbuiltLevelName = newLevelName
-	self.curLevelData = LevelDefs[self.inbuiltLevelName]
+	self.curLevelData = MapDefs[self.inbuiltLevelName]
 	World.Initialize(api, self.curLevelData)
 end
 
 function api.TestSwitchLevel(goNext)
 	local nameKey = (goNext and "nextLevel") or "prevLevel"
-	local newLevelName = LevelDefs[self.inbuiltLevelName][nameKey]
+	local newLevelName = MapDefs[self.inbuiltLevelName][nameKey]
 	if not newLevelName then
 		return false
 	end
@@ -76,6 +110,30 @@ end
 function api.ScrollSpeedChange(change)
 	self.mouseScrollSpeed = self.mouseScrollSpeed * change
 	self.keyScrollSpeed = self.keyScrollSpeed * change
+end
+
+function api.DrawPhysicsEnabled()
+	return self.drawDebug
+end
+
+function api.QuitGame()
+	love.event.quit()
+end
+
+function api.DrawDebug()
+	return self.drawDebug
+end
+
+function api.ToggleDebug()
+	self.drawDebug = not self.drawDebug
+end
+
+function api.ToggleLocalisation()
+	self.localisation = not self.localisation
+end
+
+function api.GetLocalisation()
+	return self.localisation
 end
 
 --------------------------------------------------
@@ -112,6 +170,10 @@ function api.KeyPressed(key, scancode, isRepeat)
 	end
 	if key == "r" and (love.keyboard.isDown("lctrl") or love.keyboard.isDown("rctrl")) then
 		api.RestartWorld()
+		return true
+	end
+	if key == "d" and (love.keyboard.isDown("lctrl") or love.keyboard.isDown("rctrl")) then
+		api.ToggleDebug()
 		return true
 	end
 	if key == "m" and (love.keyboard.isDown("lctrl") or love.keyboard.isDown("rctrl")) then
@@ -151,7 +213,7 @@ end
 
 function api.Update(dt, realDt)
 	self.realTime = self.realTime + realDt
-	MusicHandler.Update(realDt)
+	BGMHandler.Update(realDt)
 	SoundHandler.Update(realDt)
 	World.Update(dt)
 end
@@ -159,11 +221,15 @@ end
 function api.Initialize()
 	self = {
 		realTime = 0,
+		musicVolume = Global.MUSIC_VOLUME,
+		soundVolume = Global.SFX_VOLUME,
 		inbuiltLevelName = Global.INIT_LEVEL,
 		musicEnabled = true,
+		soundEnabled = true,
+		drawDebug = Global.DRAW_DEBUG,
 	}
-	self.curLevelData = LevelDefs[self.inbuiltLevelName]
-	MusicHandler.Initialize(api)
+	self.curLevelData = MapDefs[self.inbuiltLevelName]
+	BGMHandler.Initialize(api)
 	SoundHandler.Initialize(api)
 	MainMenuHandler.Initialize(api)
 	World.Initialize(api, self.curLevelData)
