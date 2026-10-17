@@ -350,9 +350,9 @@ function util.AngleSubtractShortest(angleA, angleB)
 end
 
 function util.AngleAverageShortest(angleA, angleB, bFactor)
-	aFactor = aFactor or 0.5
+	bFactor = bFactor or 0.5
 	local diff = util.AngleSubtractShortest(angleA, angleB)
-	return angleA - diff*aFactor
+	return angleA - diff*bFactor
 end
 
 function util.SignPreserveMax(val, mag)
