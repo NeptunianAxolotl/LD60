@@ -9,7 +9,6 @@ for i = 1, #names do
 		form = "image",
 		xScale = Global.TILE_SIZE/128,
 		yScale = Global.TILE_SIZE/128,
-		frontDir = -math.pi/2,
 		xOffset = 0.5,
 		yOffset = 0.5,
 	}

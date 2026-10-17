@@ -7,7 +7,7 @@ function api.GetCameraTransform()
 end
 
 function api.Update(dt, pad)
-	local viewPoints = Camera.PointsToViewPoints(TerrainHandler.GetViewRestriction(), Global.VIEW_PADDING)
+	local viewPoints = Camera.PointsToViewPoints(LevelHandler.GetViewRestriction(), Global.VIEW_PADDING)
 	local cameraX, cameraY, cameraScale = Camera.UpdateCameraToViewPoints(false, viewPoints)
 	self.cameraPos[1] = cameraX
 	self.cameraPos[2] = cameraY
@@ -27,7 +27,7 @@ function api.Initialize(world, padding)
 		squashRatio = 1,
 	})
 	
-	local viewPoints = Camera.PointsToViewPoints(TerrainHandler.GetViewRestriction(), Global.VIEW_PADDING)
+	local viewPoints = Camera.PointsToViewPoints(LevelHandler.GetViewRestriction(), Global.VIEW_PADDING)
 	local cameraX, cameraY, cameraScale = Camera.UpdateCameraToViewPoints(false, viewPoints)
 	self.cameraPos[1] = cameraX
 	self.cameraPos[2] = cameraY

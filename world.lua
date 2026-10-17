@@ -258,7 +258,7 @@ function api.Initialize(cosmos, levelData)
 	GameHandler.Initialize(api)
 	PlayerHandler.Initialize(api)
 	TerrainHandler.Initialize(api)
-	LevelHandler.Initialize(api)
+	LevelHandler.Initialize(api, levelData)
 	
 	CameraHandler.Initialize(api)
 end

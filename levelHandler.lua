@@ -26,6 +26,15 @@ function api.TileScale()
 	return 1
 end
 
+function api.GetViewRestriction()
+	local pointsToView = {{0, 0}, {self.dimensions[1]*Global.TILE_SIZE, self.dimensions[2]*Global.TILE_SIZE}}
+	return pointsToView
+end
+
+function api.GetDimensions()
+	return self.dimensions
+end
+
 function api.WorldToGrid(pos)
 	local x, y = math.floor(pos[1]/self.tileSize), math.floor(pos[2] / self.tileSize)
 	return {x, y}
@@ -42,10 +51,14 @@ function api.GridToWorld(pos)
 end
 
 local function SetupLevel()
-	TerrainHandler.SetDimensions(self.levelData.dimensions)
+	self.dimensions = util.CopyTable(self.levelData.dimensions)
 	for spawnType, _ in pairs(EditorDefs.spawnTypes) do
 		for i = 1, #self.levelData[spawnType] do
-			EditorDefs.spawnTypes[spawnType].spawnFunc(self.levelData[spawnType][i])
+			EditorDefs.spawnTypes[spawnType].spawnFunc(
+				self.levelData[spawnType][i].name,
+				self.levelData[spawnType][i].pos,
+				self.levelData[spawnType][i].direction
+			)
 		end
 	end
 end
@@ -78,7 +91,7 @@ function api.SaveLevel(name)
 	
 	local save = {
 		humanName = self.humanName,
-		dimensions = TerrainHandler.GetDimensions(),
+		dimensions = self.dimensions,
 	}
 	for spawnType, _ in pairs(EditorDefs.spawnTypes) do
 		for i = 1, #self.levelData[spawnType] do
@@ -120,7 +133,7 @@ function api.MousePressed(mx, my, button)
 	end
 	for spawnType, _ in pairs(EditorDefs.spawnTypes) do
 		if EditorDefs.spawnTypes[spawnType].defs[self.editor.tile] then
-			EditorDefs.spawnTypes[spawnType].spawnFunc(clickPos, self.editor.tile, self.editor.rotation)
+			EditorDefs.spawnTypes[spawnType].spawnFunc(self.editor.tile, clickPos, self.editor.direction)
 		end
 	end
 end
@@ -173,19 +186,15 @@ function api.KeyPressed(key, scancode, isRepeat)
 	
 	local varyRate = ((love.keyboard.isDown("lshift") or love.keyboard.isDown("rshift")) and 5) or 1
 	if key == "r" then
-		self.editor.rotation = (self.editor.rotation + 1)%4
+		self.editor.direction = (self.editor.direction + 1)%4
 	elseif key == "e" then
-		self.editor.rotation = (self.editor.rotation - 1)%4
+		self.editor.direction = (self.editor.direction - 1)%4
 	elseif key == "z" then
 		self.editor.tile = "delete"
 	elseif EditorDefs.spawnKey[key] then
 		self.editor.tile = EditorDefs.spawnKey[key]
 	end
 	print(key)
-end
-
-function api.GetSelectedTile()
-	return self.editor and self.editor.tile, self.editor and self.editor.rotation
 end
 
 function api.DrawInterface()
@@ -236,7 +245,7 @@ function api.DrawInterface()
 		offset = offset + 40
 		love.graphics.printf("Piece: " .. self.editor.tile, 20, offset, 500, "left")
 		offset = offset + 40
-		love.graphics.printf("Rotation: " .. self.editor.rotation, 20, offset, 500, "left")
+		love.graphics.printf("Direction: " .. self.editor.direction, 20, offset, 500, "left")
 		offset = offset + 40
 		
 		offset = offset + 40
@@ -270,8 +279,9 @@ function api.Draw(drawQueue)
 	end
 	drawQueue:push({y=0; f=function()
 		local drawPos = api.GridToWorld(mousePos)
-		local drawRot = util.CardinalToDirection(self.editor.rotation)
-		Resources.DrawImage(toDraw, drawPos[1], drawPos[2], drawRot)
+		local drawRot = util.CardinalToDirection(self.editor.direction)
+		print(drawRot)
+		Resources.DrawImage(toDraw, drawPos[1], drawPos[2], drawRot, 0.5)
 	end})
 end
 
@@ -282,10 +292,11 @@ function api.Initialize(world, levelData)
 		editMode = true,
 		tileSize = Global.TILE_SIZE,
 		editor = {
-			rotation = 0,
+			direction = 0,
 			tile = "wall",
 		},
 	}
+	SetupLevel()
 end
 
 return api

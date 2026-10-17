@@ -4,7 +4,7 @@ SoundHandler = require("soundHandler")
 BGMHandler = require("bgmHandler")
 MainMenuHandler = require("mainMenuHandler")
 
-local MapDefs = util.LoadDefDirectory("defs/maps")
+local LevelDefs = require("defs/levelDefs")
 
 local self = {}
 local api = {}
@@ -75,23 +75,14 @@ function api.LoadLevelByTable(levelTable)
 end
 
 function api.SwitchLevel(goNext)
-	local nameKey = (goNext and "nextLevel") or "prevLevel"
-	local newLevelName = MapDefs[self.inbuiltLevelName][nameKey]
-	if not newLevelName then
-		return
-	end
-	self.inbuiltLevelName = newLevelName
-	self.curLevelData = MapDefs[self.inbuiltLevelName]
+	--local nameKey = (goNext and "nextLevel") or "prevLevel"
+	--local newLevelName = LevelDefs.levels[self.currentLevel][nameKey]
+	--if not newLevelName then
+	--	return
+	--end
+	--self.inbuiltLevelName = newLevelName
+	--self.curLevelData = MapDefs[self.inbuiltLevelName]
 	World.Initialize(api, self.curLevelData)
-end
-
-function api.TestSwitchLevel(goNext)
-	local nameKey = (goNext and "nextLevel") or "prevLevel"
-	local newLevelName = MapDefs[self.inbuiltLevelName][nameKey]
-	if not newLevelName then
-		return false
-	end
-	return true
 end
 
 function api.GetScrollSpeeds()
@@ -223,12 +214,12 @@ function api.Initialize()
 		realTime = 0,
 		musicVolume = Global.MUSIC_VOLUME,
 		soundVolume = Global.SFX_VOLUME,
-		inbuiltLevelName = Global.INIT_LEVEL,
+		currentLevel = LevelDefs.levelOrder[1],
 		musicEnabled = true,
 		soundEnabled = true,
 		drawDebug = Global.DRAW_DEBUG,
 	}
-	self.curLevelData = MapDefs[self.inbuiltLevelName]
+	self.curLevelData = LevelDefs.levels[self.currentLevel]
 	BGMHandler.Initialize(api)
 	SoundHandler.Initialize(api)
 	MainMenuHandler.Initialize(api)
