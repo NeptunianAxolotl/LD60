@@ -13,13 +13,14 @@ function api.RemoveRobot(pos)
 	IterableMap.ApplySelf(self.robots, "IsAtPos", pos)
 end
 
-function api.AddRobot(robotType, pos, direction)
+function api.AddRobot(robotType, pos, direction, config)
 	api.RemoveRobot(pos)
 	local def = RobotDefs[robotType]
 	local robotData = {}
 	robotData.robotType = robotType
 	robotData.pos = pos
 	robotData.direction = direction
+	robotData.config = config
 	IterableMap.Add(self.robots, NewRobot(robotData))
 end
 

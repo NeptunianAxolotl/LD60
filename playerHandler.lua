@@ -34,6 +34,12 @@ function api.KeyPressed(key, scancode, isRepeat)
 	end
 end
 
+function api.GetPlayerAt(pos)
+	if self.player and self.player.IsAtPos(pos) then
+		return self.player
+	end
+end
+
 function api.Update(dt)
 	if self.player then
 		self.player.Update(dt)

@@ -38,10 +38,14 @@ local globals = {
 	VIEW_PADDING = 50,
 	
 	SAVE_ORDER = {
-		"humanName", "dimensions", "player",
-		"robots", "blocks",
+		"humanName", "dimensions",
+		"player", "robots", "blocks",
+		"name", "pos", "direction",
+		"trigger", "actions",
 	},
-	SAVE_INLINE = {"pos", "dimensions"},
+	SAVE_INLINE = {"pos", "dimensions", "actions"},
+	
+	TURN_RATE = 0.8,
 	
 	WINDOW_X = 1960,
 	WINDOW_Y = 1080,

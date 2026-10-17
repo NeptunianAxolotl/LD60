@@ -63,17 +63,17 @@ function api.LoadLevel(name)
 	print("load level")
 	local contents = love.filesystem.read("levels/" .. name)
 	if not contents then
-		EffectsHandler.SpawnEffect("error_popup", {400, 900}, {text = "Level file not found.", velocity = {0, 4}})
+		EffectsHandler.SpawnEffect("error_popup", {400, 300}, {text = "Level file not found.", velocity = {0, 4}})
 		return
 	end
 	local levelFunc = loadstring("return "..contents)
 	if not levelFunc then
-		EffectsHandler.SpawnEffect("error_popup", {400, 900}, {text = "Error loading level.", velocity = {0, 4}})
+		EffectsHandler.SpawnEffect("error_popup", {400, 300}, {text = "Error loading level.", velocity = {0, 4}})
 		return
 	end
 	local success, levelData = pcall(levelFunc)
 	if not success then
-		EffectsHandler.SpawnEffect("error_popup", {400, 900}, {text = "Level format error.", velocity = {0, 4}})
+		EffectsHandler.SpawnEffect("error_popup", {400, 300}, {text = "Level format error.", velocity = {0, 4}})
 		return
 	end
 	
@@ -96,9 +96,9 @@ function api.SaveLevel(name)
 	local saveTable = util.TableToString(save, Global.SAVE_ORDER, util.ListToMask(Global.SAVE_INLINE))
 	local success, message = love.filesystem.write("levels/" .. name .. ".lua", "return " .. saveTable)
 	if success then
-		EffectsHandler.SpawnEffect("error_popup", {400, 900}, {text = "Level saved to " .. name .. ".", velocity = {0, 4}})
+		EffectsHandler.SpawnEffect("error_popup", {400, 300}, {text = "Level saved to " .. name .. ".", velocity = {0, 4}})
 	else
-		EffectsHandler.SpawnEffect("error_popup", {400, 900}, {text = "Save error: " .. (message or "NO MESSAGE"), velocity = {0, 4}})
+		EffectsHandler.SpawnEffect("error_popup", {400, 300}, {text = "Save error: " .. (message or "NO MESSAGE"), velocity = {0, 4}})
 	end
 	return success
 end

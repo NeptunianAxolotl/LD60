@@ -19,6 +19,10 @@ local function NewBlock(self)
 		end
 	end
 	
+	function self.GetType()
+		return self.blockType
+	end
+	
 	function self.Export(objList)
 		objList[#objList + 1] = {
 			name = self.blockType,

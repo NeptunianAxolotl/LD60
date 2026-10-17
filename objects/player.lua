@@ -3,17 +3,22 @@ local function NewPlayer(self, position, direction)
 	-- pos
 	self.direction = direction
 	self.pos = position
-	self.isPlayer = true
+	
+	function self.ObjInDirection(direction)
+		local newPos = util.Add(self.pos, util.CardinalToVector(direction))
+		return TerrainHandler.GetAnythingAt(newPos)
+	end
+	
+	function self.ObjInRelativeDirection(direction)
+		direction = (self.direction + direction)%4
+		return self.ObjInDirection(direction)
+	end
 	
 	function self.Move(direction)
 		local newPos = util.Add(self.pos, util.CardinalToVector(direction))
 		self.direction = direction
-		local block = TerrainHandler.GetBlockAt(newPos)
-		if block and block.Stops(self) then
-			return
-		end
-		local robot = RobotHandler.GetRobotAt(newPos)
-		if robot and robot.Stops(self) then
+		local object = self.ObjInRelativeDirection(0)
+		if object and object.Stops(self) then
 			return
 		end
 		self.pos = newPos
@@ -27,6 +32,14 @@ local function NewPlayer(self, position, direction)
 	
 	function self.Stops(object)
 		return true
+	end
+	
+	function self.GetType()
+		return "player"
+	end
+	
+	function self.IsAtPos(pos)
+		return util.Equal(self.pos, pos)
 	end
 	
 	function self.Export(objList)

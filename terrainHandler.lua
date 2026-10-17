@@ -33,6 +33,22 @@ function api.GetBlockAt(pos)
 	return IterableMap.GetFirstSatisfies(self.blocks, "IsAtPos", pos)
 end
 
+function api.GetAnythingAt(pos)
+	local block = api.GetBlockAt(pos)
+	if block then
+		return block
+	end
+	local robot = RobotHandler.GetRobotAt(pos)
+	if robot then
+		return robot
+	end
+	local player = PlayerHandler.GetPlayerAt(pos)
+	if player then
+		return player
+	end
+	return false
+end
+
 function api.Update(dt)
 	IterableMap.ApplySelf(self.blocks, "Update", dt)
 end
