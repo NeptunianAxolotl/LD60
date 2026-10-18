@@ -96,8 +96,8 @@ function api.DrawInterface()
 	local mousePos = self.cosmos.GetWorld().GetMousePositionInterface()
 	
 	local padding = 40
-	local sx, sy = Global.WINDOW_X - Global.UI_WIDTH - 135 - padding, 1000
-	local overX = Global.WINDOW_X - Global.UI_WIDTH - 350 - padding
+	local sx, sy = padding, 1000
+	local overX = padding
 	if self.cosmos.GetLocalisation() then
 		sx = padding
 		overX = padding

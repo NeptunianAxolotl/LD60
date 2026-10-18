@@ -941,7 +941,7 @@ function util.UpdateTimer(timer, dt)
 	end
 	timer = timer - dt
 	if timer < 0 then
-		return false, true
+		return false, timer
 	end
 	return timer
 end

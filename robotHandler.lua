@@ -39,10 +39,11 @@ function api.GoalSatisfied()
 end
 
 function api.Update(dt)
-	self.commandDt = util.UpdateTimer(self.commandDt, dt)
+	local newDt, leftover = util.UpdateTimer(self.commandDt, dt)
+	self.commandDt = newDt
 	IterableMap.ApplySelf(self.robots, "Update", dt, not self.commandDt)
 	if not self.commandDt then
-		self.commandDt = Global.ROBOT_MOVE_TIME/4
+		self.commandDt = Global.ROBOT_MOVE_TIME/4 + leftover
 	end
 end
 
