@@ -2,17 +2,26 @@
 local RobotDefs = util.LoadDefDirectory("defs/robots")
 local CommandDefs = util.LoadDefDirectory("defs/commands")
 
+local function SkipAction(self, action)
+	return action.skipFunc and action.skipFunc(self)
+end
+
+local function AllSkip(self, actions)
+	for i = 1, #actions do
+		if not SkipAction(self, actions[i]) then
+			return false
+		end
+	end
+	return true
+end
+
 local function FindNextNonEmpty(self, index)
 	local actions = self.program[index].actions
 	local increment = true
 	local finalIndex = index
 	while increment do
-		self.nextAction[index] = self.nextAction[index] + 1
-		if self.nextAction[index] > #actions then
-			self.nextAction[index] = 1
-			self.forceFullTrigger = false
-		end
-		increment = actions[self.nextAction[index]].emptyCommand and (self.nextAction[index] ~= finalIndex)
+		self.nextAction[index] = (self.nextAction[index])%(#actions) + 1
+		increment =  SkipAction(self, actions[self.nextAction[index]]) and (self.nextAction[index] ~= finalIndex)
 	end
 end
 
@@ -20,8 +29,9 @@ local function ExecuteNextCommand(self, index)
 	local actions = self.program[index].actions
 	self.nextAction[index] = self.nextAction[index] or 1
 	local actionToTake = actions[self.nextAction[index]]
-	self.lastTriggerIndex = index
-	self.lastActionIndex = self.nextAction[index]
+	self.lastStepTriggers[index] = true
+	self.lastStepActions[index] = self.lastStepActions[index] or {}
+	self.lastStepActions[index][self.nextAction[index]] = true
 	FindNextNonEmpty(self, index)
 	self.previousAction = actionToTake
 	actionToTake.executeFunc(self)
@@ -29,10 +39,16 @@ end
 
 local function FindAndExecuteCommand(self)
 	-- Look down the list of triggers and execute the next action of the first one
-	for i = 1, #self.program do
-		if self.program[i].trigger.acceptFunc(self) and ((not self.forceFullTrigger) or self.program[i].trigger.name == self.forceFullTrigger) and not self.program[i].allEmpty then
-			ExecuteNextCommand(self, i)
-			return
+	self.chainAction = true
+	self.lastStepTriggers = {}
+	self.lastStepActions = {}
+	while self.chainAction do
+		self.chainAction = false -- Set by actions
+		for i = 1, #self.program do
+			if self.program[i].trigger.acceptFunc(self) and not AllSkip(self, self.program[i].actions) then
+				ExecuteNextCommand(self, i)
+				break
+			end
 		end
 	end
 end
@@ -93,6 +109,7 @@ local function NewRobot(self)
 	self.programRaw = self.program -- Save/load stability
 	self.program = InitProgram(self.program)
 	self.nextAction = {}
+	self.registerValues = {}
 	
 	function self.ObjInDirection(direction)
 		local newPos = util.Add(self.pos, util.CardinalToVector(direction))
@@ -136,6 +153,14 @@ local function NewRobot(self)
 		end
 		self.direction = (self.direction + direction)%4
 		self.moveBlockDt = Global.ROBOT_ANIMATE_TIME
+	end
+	
+	function self.GetRegister(index)
+		return self.registerValues[index]
+	end
+	
+	function self.SetRegister(index, value)
+		self.registerValues[index] = value
 	end
 	
 	function self.HasArrived()
@@ -217,7 +242,7 @@ local function NewRobot(self)
 		for i = 1, #self.program do
 			local offsetX = drawPos[1]
 			local actions = self.program[i].actions
-			local lastTrigger = (i == self.lastTriggerIndex)
+			local lastTrigger = (self.lastStepTriggers and self.lastStepTriggers[i])
 			local color = (lastTrigger and {1, 0.5, 0.5}) or self.program[i].trigger.color or {0.85, 0.85, 0.85}
 			love.graphics.setColor(Global.PANEL_BORDER_COL)
 			love.graphics.rectangle("line", offsetX, offsetY - 3, Global.COMMAND_DRAW_SIZE, 6, 4, 4, 16)
@@ -226,7 +251,7 @@ local function NewRobot(self)
 			Resources.DrawImage(self.program[i].trigger.image, offsetX, offsetY, false, false, false, color)
 			offsetX = offsetX + Global.COMMAND_DRAW_SIZE + 20
 			for j = 1, #actions do
-				local lastAction = (i == self.lastTriggerIndex and j == self.lastActionIndex)
+				local lastAction = (self.lastStepActions and self.lastStepActions[i] and self.lastStepActions[i][j])
 				local nextAction = (j == (self.nextAction[i] or 1))
 				local color = (lastAction and {1, 0, 0}) or (nextAction and {0, 0, 0}) or {0.35, 0.35, 0.35}
 				DrawUiBox(offsetX, offsetY)

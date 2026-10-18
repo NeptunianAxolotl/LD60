@@ -35,11 +35,11 @@ return {
 				},
 				{
 					trigger = "player_front",
-					actions = {"sub_1"},
+					actions = {"set_1"},
 				},
 				{
-					trigger = "sub_1",
-					actions = {"empty", "empty", "u_turn", "u_turn"},
+					trigger = "set_1",
+					actions = {"u_turn", "u_turn", "reset_1"},
 				},
 				{
 					trigger = "robot_front",
