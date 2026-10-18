@@ -13,9 +13,9 @@ local def = {
 		"levelA1",
 		"levelA2",
 		"homing_bots",
-		--"simple_test",
 		--"test",
 		"box_level",
+		"simple_test",
 	}
 }
 

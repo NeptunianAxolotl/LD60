@@ -1,18 +1,13 @@
 return {
 	humanName = "Painting",
-	description = [[
-Use the X or N keys or the Left Mouse button to paint the floor.
-
-Paint can also be removed with the same controls.
-
-This robot turns left when it encounters paint. It will run over you if you get in the way.
-]],
+	description = "Use the X or N keys or the Left Mouse button to paint the floor.\n\nPaint can also be removed with the same controls.\n\nThis robot turns left when it encounters paint. It will run over you if you get in the way.\n",
+	dimensions = {14, 9},
 	hideChipInventory = true,
-	dimensions = {16, 10},
+	doorOpenState = {},
 	player = {
 		{
 			name = "player",
-			pos = {6, 4},
+			pos = {6, 3},
 			direction = 0,
 		},
 	},
@@ -20,8 +15,8 @@ This robot turns left when it encounters paint. It will run over you if you get 
 		{
 			name = "basic_robot",
 			humanName = "Left Paint Turner",
-			pos = {6, 6},
-			direction = 0,
+			pos = {8, 4},
+			direction = 3,
 			program = {
 				{
 					trigger = "robot_goal",
@@ -45,47 +40,42 @@ This robot turns left when it encounters paint. It will run over you if you get 
 	blocks = {
 		{
 			name = "paint",
-			pos = {8, 6},
+			pos = {8, 5},
 			direction = 0,
 		},
 		{
 			name = "wall",
-			pos = {7, 8},
+			pos = {7, 7},
 			direction = 0,
 		},
 		{
 			name = "wall",
-			pos = {11, 1},
+			pos = {11, 0},
 			direction = 0,
 		},
 		{
 			name = "wall",
-			pos = {10, 1},
+			pos = {10, 0},
 			direction = 0,
 		},
 		{
 			name = "wall",
-			pos = {9, 1},
+			pos = {9, 0},
 			direction = 0,
 		},
 		{
 			name = "wall",
-			pos = {8, 1},
+			pos = {8, 0},
 			direction = 0,
 		},
 		{
 			name = "wall",
-			pos = {6, 1},
+			pos = {6, 0},
 			direction = 0,
 		},
 		{
 			name = "wall",
-			pos = {7, 1},
-			direction = 0,
-		},
-		{
-			name = "wall",
-			pos = {11, 4},
+			pos = {7, 0},
 			direction = 0,
 		},
 		{
@@ -100,12 +90,22 @@ This robot turns left when it encounters paint. It will run over you if you get 
 		},
 		{
 			name = "wall",
-			pos = {11, 5},
+			pos = {11, 1},
 			direction = 0,
 		},
 		{
 			name = "wall",
-			pos = {10, 5},
+			pos = {11, 4},
+			direction = 0,
+		},
+		{
+			name = "wall",
+			pos = {10, 4},
+			direction = 0,
+		},
+		{
+			name = "wall",
+			pos = {9, 4},
 			direction = 0,
 		},
 		{
@@ -120,42 +120,32 @@ This robot turns left when it encounters paint. It will run over you if you get 
 		},
 		{
 			name = "wall",
-			pos = {9, 7},
+			pos = {8, 6},
 			direction = 0,
 		},
 		{
 			name = "wall",
-			pos = {8, 7},
+			pos = {7, 6},
 			direction = 0,
 		},
 		{
 			name = "wall",
-			pos = {7, 7},
+			pos = {7, 8},
 			direction = 0,
 		},
 		{
 			name = "wall",
-			pos = {7, 9},
+			pos = {6, 8},
 			direction = 0,
 		},
 		{
 			name = "wall",
-			pos = {6, 9},
+			pos = {5, 8},
 			direction = 0,
 		},
 		{
 			name = "wall",
-			pos = {5, 9},
-			direction = 0,
-		},
-		{
-			name = "wall",
-			pos = {4, 9},
-			direction = 0,
-		},
-		{
-			name = "wall",
-			pos = {3, 9},
+			pos = {4, 8},
 			direction = 0,
 		},
 		{
@@ -195,42 +185,47 @@ This robot turns left when it encounters paint. It will run over you if you get 
 		},
 		{
 			name = "wall",
-			pos = {5, 1},
-			direction = 0,
-		},
-		{
-			name = "wall",
 			pos = {3, 1},
 			direction = 0,
 		},
 		{
 			name = "wall",
-			pos = {4, 1},
+			pos = {5, 0},
+			direction = 0,
+		},
+		{
+			name = "wall",
+			pos = {3, 0},
+			direction = 0,
+		},
+		{
+			name = "wall",
+			pos = {4, 0},
 			direction = 0,
 		},
 		{
 			name = "robot_goal",
-			pos = {5, 3},
+			pos = {5, 2},
 			direction = 0,
 		},
 		{
 			name = "player_goal",
-			pos = {7, 5},
+			pos = {7, 4},
 			direction = 0,
 		},
 		{
 			name = "paint",
-			pos = {8, 2},
+			pos = {8, 1},
 			direction = 0,
 		},
 		{
 			name = "paint",
-			pos = {4, 2},
+			pos = {4, 1},
 			direction = 0,
 		},
 		{
 			name = "paint",
-			pos = {4, 6},
+			pos = {4, 5},
 			direction = 0,
 		},
 	},

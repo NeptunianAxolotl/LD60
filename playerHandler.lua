@@ -48,10 +48,10 @@ function api.GetTargetForCommand()
 		local candidate = self.player.ObjInRelativeDirection(directions[i])
 		if candidate and candidate.IsRobot() then
 			if CommandDefs[command].executeFunc and candidate.CanSwapAction(command) then
-				return candidate
+				return candidate, "action"
 			end
 			if CommandDefs[command].acceptFunc and candidate.CanSwapTrigger(command) then
-				return candidate
+				return candidate, "trigger"
 			end
 		end
 	end
@@ -63,7 +63,7 @@ function api.GetCommandQueue()
 end
 
 local function TrySwapCommand()
-	local target = api.GetTargetForCommand()
+	local target, targetType = api.GetTargetForCommand()
 	if not target then
 		return false
 	end
@@ -71,7 +71,7 @@ local function TrySwapCommand()
 	for i = 1, #self.commandQueue do
 		self.commandQueue[i] = self.commandQueue[i + 1]
 	end
-	local newCommand = target.SwapCommand(command)
+	local newCommand = target.SwapCommand(command, targetType)
 	if newCommand and not CommandDefs[newCommand].isEmpty then
 		self.commandQueue[#self.commandQueue + 1] = newCommand
 	end

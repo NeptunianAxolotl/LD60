@@ -17,6 +17,7 @@ return {
 			pos = {4, 1},
 			direction = 2,
 			swapAction = {trigger = "paint", slot = 1},
+			swapTrigger = "wall_front",
 			program = {
 				{
 					trigger = "robot_goal",
