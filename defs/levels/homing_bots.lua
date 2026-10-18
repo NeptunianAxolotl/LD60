@@ -49,16 +49,16 @@ return {
 			direction = 0,
 			program = {
 				{
+					trigger = "paint",
+					actions = {"paint_up"},
+				},
+				{
 					trigger = "paint_see_front",
 					actions = {"move_fast"},
 				},
 				{
 					trigger = "wall_front",
 					actions = {"u_turn"},
-				},
-				{
-					trigger = "paint",
-					actions = {"paint_up"},
 				},
 				{
 					trigger = "robot_goal",
