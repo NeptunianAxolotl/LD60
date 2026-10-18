@@ -163,6 +163,20 @@ local function NewRobot(self)
 		self.registerValues[index] = value
 	end
 	
+	function self.AddPaint()
+		local block = TerrainHandler.GetBlockAt(self.pos)
+		if not block then
+			TerrainHandler.AddBlock("paint", self.pos, self.direction)
+		end
+	end
+	
+	function self.RemovePaint()
+		local block = TerrainHandler.GetBlockAt(self.pos)
+		if block and block.GetType() == "paint" then
+			TerrainHandler.RemoveBlock(self.pos)
+		end
+	end
+	
 	function self.HasArrived()
 		return (not self.moveBlockDt) or self.moveBlockDt < Global.ARRIVAL_LEEWAY or util.Equal(self.pos, self.prevPos)
 	end
