@@ -151,7 +151,12 @@ function api.DrawInterface()
 		
 		local def = CommandDefs[self.tooltipDisplay]
 		Font.SetSize(3)
-		love.graphics.setColor(Global.TEXT_COL)
+		local textColor = Global.TEXT_COL
+		if alpha ~= 1 then
+			textColor = util.CopyTable(textColor)
+			textColor[4] = alpha
+		end
+		love.graphics.setColor(textColor)
 		love.graphics.printf(def.humanName or "MISSING", panelX + height, panelY + 13, width - height, "left")
 		love.graphics.printf(def.description or "No description", panelX + height, panelY + 50, width - height - 20, "left")
 		

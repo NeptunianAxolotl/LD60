@@ -1,6 +1,7 @@
 return {
 	humanName = "Homing Bots",
 	dimensions = {19, 12},
+	hideChipInventory = true,
 	doorOpenState = {},
 	player = {
 		{
