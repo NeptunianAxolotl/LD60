@@ -8,6 +8,7 @@ local def = {
 		"level1",
 		"level2_alt",
 		"level3",
+		"level4",
 		"test",
 	}
 }
