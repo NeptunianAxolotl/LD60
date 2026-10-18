@@ -130,6 +130,12 @@ function api.GoalSatisfied()
 	return self.player and self.player.GoalSatisfied()
 end
 
+function api.MoveEverything(offset)
+	if self.player then
+		return self.player.ForceReposition(offset)
+	end
+end
+
 function api.Update(dt)
 	if not self.player then
 		return

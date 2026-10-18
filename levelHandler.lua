@@ -108,8 +108,14 @@ function api.SaveLevel(name)
 	return success
 end
 
+local function MoveLevel(offset)
+	PlayerHandler.MoveEverything(offset)
+	RobotHandler.MoveEverything(offset)
+	TerrainHandler.MoveEverything(offset)
+end
+
 function api.InEditMode()
-	return self.editMode
+	return self.world.GetCosmos().InEditMode()
 end
 
 function api.IsMenuOpen()
@@ -120,7 +126,7 @@ function api.MousePressed(mx, my, button)
 	if self.loadingLevelGetName or self.saveLevelGetName then
 		return true
 	end
-	if not self.editMode then
+	if not api.InEditMode() then
 		return
 	end
 	if button ~= 1 then
@@ -149,7 +155,7 @@ function api.MousePressed(mx, my, button)
 end
 
 function api.MouseMoved(mx, my, dx, dy)
-	if not self.editMode then
+	if not api.InEditMode() then
 		return
 	end
 	if not love.mouse.isDown(1) then
@@ -196,16 +202,19 @@ function api.KeyPressed(key, scancode, isRepeat)
 	
 	if key == "l" and (love.keyboard.isDown("lctrl") or love.keyboard.isDown("rctrl")) then
 		self.loadingLevelGetName = true
-	end
-	if key == "k" and (love.keyboard.isDown("lctrl") or love.keyboard.isDown("rctrl")) then
+	elseif key == "k" and (love.keyboard.isDown("lctrl") or love.keyboard.isDown("rctrl")) then
 		self.saveLevelGetName = true
-	end
-	if key == "j" and (love.keyboard.isDown("lctrl") or love.keyboard.isDown("rctrl")) then
-		self.editMode = not self.editMode
-		print("editMode", self.editMode)
+	elseif key == "left" then
+		MoveLevel({-1, 0})
+	elseif key == "right" then
+		MoveLevel({1, 0})
+	elseif key == "up" then
+		MoveLevel({0, -1})
+	elseif key == "down" then
+		MoveLevel({0, 1})
 	end
 	
-	if not self.editMode then
+	if not api.InEditMode() then
 		return
 	end
 	
@@ -277,7 +286,7 @@ local function DrawEditor()
 		love.graphics.printf("Saving to " .. (love.filesystem.getSaveDirectory() or "DIR_ERROR") .. "/levels", overX + overWidth*0.05, overY + overHeight * 0.65, overWidth*0.9, "center")
 	end
 	
-	if self.editMode then
+	if api.InEditMode() then
 		Font.SetSize(4)
 		offset = 10
 		love.graphics.printf([[
@@ -288,8 +297,9 @@ Door: ]] .. self.editor.doorIndex .. [[
 
 Ctrl+J - Edit mode
 Ctrl+K - Save level
-Ctrl+L = Load level
+Ctrl+L - Load level
 
+Arrow keys - Move
 E,R - Rotate
 T,Y - Place command
 Z - Delete
@@ -307,7 +317,7 @@ function api.DrawInterface()
 end
 
 function api.Draw(drawQueue)
-	if not self.editMode then
+	if not api.InEditMode() then
 		return
 	end
 	local mousePos = api.WorldToGrid(self.world.GetMousePosition())
@@ -335,7 +345,6 @@ function api.Initialize(world, levelData)
 	self = {
 		world = world,
 		levelData = levelData,
-		editMode = false,
 		tileSize = Global.TILE_SIZE,
 		editor = {
 			direction = 0,

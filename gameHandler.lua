@@ -22,7 +22,7 @@ end
 
 function api.AllowMovement()
 	local _, won = self.world.GetGameOver()
-	return not won
+	return not won and not LevelHandler.InEditMode()
 end
 
 --------------------------------------------------

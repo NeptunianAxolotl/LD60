@@ -393,6 +393,10 @@ local function NewRobot(self)
 		end
 	end
 	
+	function self.ForceReposition(offset)
+		self.pos = util.Add(self.pos, offset)
+	end
+	
 	function self.Export(objList)
 		local data = {
 			name = self.robotType,

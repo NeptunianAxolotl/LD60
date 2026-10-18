@@ -95,6 +95,11 @@ function api.GetDoorWantOpen(doorIndex)
 	return self.doorOpen[doorIndex] and not self.doorOpenTimer[doorIndex]
 end
 
+function api.MoveEverything(offset)
+	IterableMap.ApplySelf(self.blocks, "ForceReposition", offset)
+	IterableMap.RemakeGridMap(self.blocks)
+end
+
 function api.Update(dt)
 	for doorIndex, value in pairs(self.doorOpenTimer) do
 		self.doorOpenTimer[doorIndex] = util.UpdateTimer(value, dt)

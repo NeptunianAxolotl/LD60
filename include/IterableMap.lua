@@ -58,6 +58,13 @@ function IterableMap.GetAt(self, pos)
 	return key and self.dataByKey[key]
 end
 
+function IterableMap.RemakeGridMap(self)
+	self.gridKey = {}
+	for i = 1, #self.keyByIndex do
+		IterableMap.AddToGrid(self, self.dataByKey[self.keyByIndex[i]])
+	end
+end
+
 function IterableMap.Add(self, key, data)
 	if not key then
 		return

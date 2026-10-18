@@ -120,6 +120,10 @@ local function NewPlayer(self, position, direction)
 		return util.Equal(self.pos, pos)
 	end
 	
+	function self.ForceReposition(offset)
+		self.pos = util.Add(self.pos, offset)
+	end
+	
 	function self.Export(objList)
 		objList[#objList + 1] = {
 			name = "player",

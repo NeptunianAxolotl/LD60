@@ -41,7 +41,6 @@ local function NewBlock(self)
 		if self.def.pickupFunc then
 			self.def.pickupFunc(self, other)
 		end
-		
 	end
 	
 	function self.GoalSatisfied()
@@ -60,6 +59,10 @@ local function NewBlock(self)
 			return false
 		end
 		return true
+	end
+	
+	function self.ForceReposition(offset)
+		self.pos = util.Add(self.pos, offset)
 	end
 	
 	function self.Export(objList)

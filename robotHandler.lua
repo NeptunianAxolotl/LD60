@@ -46,6 +46,10 @@ function api.Update(dt)
 	end
 end
 
+function api.MoveEverything(offset)
+	IterableMap.ApplySelf(self.robots, "ForceReposition", offset)
+end
+
 function api.Draw(drawQueue)
 	IterableMap.ApplySelf(self.robots, "Draw", drawQueue)
 end

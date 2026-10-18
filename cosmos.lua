@@ -121,6 +121,10 @@ function api.ToggleDebug()
 	self.drawDebug = not self.drawDebug
 end
 
+function api.InEditMode()
+	return self.editMode
+end
+
 function api.ToggleLocalisation()
 	self.localisation = not self.localisation
 end
@@ -185,6 +189,9 @@ function api.KeyPressed(key, scancode, isRepeat)
 		api.SwitchLevel(false)
 		return true
 	end
+	if key == "j" and (love.keyboard.isDown("lctrl") or love.keyboard.isDown("rctrl")) then
+		self.editMode = not self.editMode
+	end
 	return World.KeyPressed(key, scancode, isRepeat)
 end
 
@@ -219,6 +226,7 @@ function api.Initialize()
 		currentLevel = LevelDefs.levels[LevelDefs.levelOrder[1]],
 		musicEnabled = true,
 		soundEnabled = true,
+		editMode = false,
 		drawDebug = Global.DRAW_DEBUG,
 	}
 	BGMHandler.Initialize(api)
