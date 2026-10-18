@@ -38,7 +38,7 @@ return {
 					actions = {"set_1"},
 				},
 				{
-					trigger = "set_1",
+					trigger = "register_1",
 					actions = {"u_turn", "u_turn", "reset_1"},
 				},
 				{

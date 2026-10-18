@@ -25,7 +25,7 @@ return {
 					actions = {"reset_1", "right"},
 				},
 				{
-					trigger = "set_1",
+					trigger = "register_1",
 					actions = {"move_fast"},
 				},
 				{

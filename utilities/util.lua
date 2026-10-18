@@ -446,6 +446,7 @@ end
 
 function util.CardinalToVector(cardinal, length)
 	length = length or 1
+	cardinal = cardinal%4
 	if cardinal == 0 then
 		return {length, 0}
 	elseif cardinal == 1 then

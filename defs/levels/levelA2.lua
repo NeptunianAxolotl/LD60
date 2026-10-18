@@ -52,7 +52,7 @@ return {
 					actions = {"wait"},
 				},
 				{
-					trigger = "set_1",
+					trigger = "register_1",
 					actions = {"right"},
 				},
 				{
