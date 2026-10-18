@@ -90,6 +90,10 @@ function api.KeyPressed(key, scancode, isRepeat)
 	end
 end
 
+function api.KeyReleased(key, scancode)
+	return PlayerHandler.KeyReleased(key, scancode)
+end
+
 function api.MousePressed(x, y, button)
 	local iPos = api.ScreenToInterface({x, y})
 	if MainMenuHandler.MousePressed(iPos[1], iPos[2], button) then

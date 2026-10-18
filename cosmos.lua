@@ -26,8 +26,10 @@ end
 
 function api.ToggleMusic()
 	self.musicEnabled = not self.musicEnabled
-	if not self.musicEnabled then
-		MusicHandler.StopCurrentTrack()
+	if self.musicEnabled then
+		BGMHandler.Start()
+	else
+		BGMHandler.Stop()
 	end
 end
 
@@ -193,6 +195,10 @@ function api.KeyPressed(key, scancode, isRepeat)
 		self.editMode = not self.editMode
 	end
 	return World.KeyPressed(key, scancode, isRepeat)
+end
+
+function api.KeyReleased(key, scancode)
+	return World.KeyReleased(key, scancode)
 end
 
 function api.MousePressed(x, y, button)

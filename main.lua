@@ -37,6 +37,10 @@ function love.keypressed(key, scancode, isRepeat)
 	Cosmos.KeyPressed(key, scancode, isRepeat)
 end
 
+function love.keyreleased(key, scancode)
+	Cosmos.KeyReleased(key, scancode)
+end
+
 function love.mousepressed(x, y, button, istouch, presses)
 	Cosmos.MousePressed(x, y, button, istouch, presses)
 end

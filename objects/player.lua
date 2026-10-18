@@ -34,7 +34,7 @@ local function NewPlayer(self, position, direction)
 	
 	function self.Move(direction)
 		if not GameHandler.AllowMovement() then
-			return
+			return false
 		end
 		if self.moveBlockDt then
 			return false
@@ -47,6 +47,21 @@ local function NewPlayer(self, position, direction)
 		self.prevPos = self.pos
 		self.pos = newPos
 		self.moveBlockDt = Global.PLAYER_MOVE_TIME
+		self.moveBlockMax = Global.PLAYER_MOVE_TIME
+		self.undoingMove = false
+		return true
+	end
+	
+	function self.UndoMove(window)
+		if self.undoingMove or not (self.prevPos and self.moveBlockDt and self.moveBlockMax - self.moveBlockDt < window) then
+			return false
+		end
+		if TerrainHandler.InteractWithObjectsAt(self.prevPos, self, "BlockMoveIntoByObject", direction) then
+			return false
+		end
+		self.pos, self.prevPos = self.prevPos, self.pos
+		self.moveBlockDt = (self.moveBlockMax - self.moveBlockDt)*1.5
+		self.undoingMove = true
 		return true
 	end
 	
@@ -117,7 +132,7 @@ local function NewPlayer(self, position, direction)
 	function self.GetDrawPos()
 		local drawPos = LevelHandler.GridToWorld(self.pos)
 		if self.moveBlockDt then
-			local prevProp = self.moveBlockDt/Global.PLAYER_MOVE_TIME
+			local prevProp = self.moveBlockDt / self.moveBlockMax
 			drawPos = util.Average(drawPos, LevelHandler.GridToWorld(self.prevPos), prevProp)
 		end
 		return drawPos

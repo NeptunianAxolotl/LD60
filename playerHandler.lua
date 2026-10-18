@@ -103,9 +103,11 @@ local function TryMove()
 		return
 	end
 	if self.player.Move(self.moveKeys[self.bufferKey]) then
-		self.bufferKey = false
+		self.repeatedMove = (self.lastMoveKey == self.bufferKey)
 		self.lastMoveKey = self.bufferKey
+		self.bufferKey = false
 		self.lastMoveDt = Global.BUFFER_KEY_LEEWAY
+		self.lastMoveSameKeyDt = Global.SAME_MOVE_BUFFER_KEY_LEEWAY
 	end
 end
 
@@ -123,6 +125,18 @@ function api.KeyPressed(key, scancode, isRepeat)
 		if not TrySwapCommand() then
 			TryDropCommand()
 		end
+	end
+end
+
+function api.KeyReleased(key, scancode)
+	if key == self.lastMoveKey then
+		if self.repeatedMove and self.player then
+			self.player.UndoMove(Global.PLAYER_REPEAT_MOVE_UNDO_WINDOW)
+			self.bufferKey = false
+		end
+		self.lastMoveKey = false
+		self.repeatedMove = false
+		self.lastMoveDt = Global.PLAYER_REPEAT_MOVE_UNDO_WINDOW
 	end
 end
 
@@ -164,14 +178,17 @@ function api.Update(dt)
 	if not self.player then
 		return
 	end
+	self.lastMoveDt = util.UpdateTimer(self.lastMoveDt, dt)
+	self.lastMoveSameKeyDt = util.UpdateTimer(self.lastMoveSameKeyDt, dt)
 	if not self.bufferKey and not self.lastMoveDt then
 		for key,_ in pairs(self.moveKeys) do
-			if key ~= self.lastMoveKey and love.keyboard.isDown(key) then
-				self.bufferKey = key
+			if love.keyboard.isDown(key) then
+				if (not self.lastMoveSameKeyDt) or self.lastMoveKey ~= key then
+					self.bufferKey = key
+				end
 			end
 		end
 	end
-	self.lastMoveDt = util.UpdateTimer(self.lastMoveDt, dt)
 	TryMove()
 	self.player.Update(dt)
 end
