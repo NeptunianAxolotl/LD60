@@ -1,10 +1,11 @@
 return {
 	humanName = "Slip and Slide",
 	description = [[
-Slidy Bot follows paint while Cleaner Bot tidies it up. Corral both of them to their charging ports. Their programs require adjustment.
+Slidy Bot follows paint while Cleaner Bot tidies it up.  Their programs require adjustment.
 
-Run over a chip to pick it up.
-Use E or Left Mouse to drop it or place it in a nearby robot.
+Use Z/M/Right Mouse Button to place commands.
+
+Press Ctrl+R to restart the level if you get stuck.
 ]],
 	dimensions = {16, 10},
 	doorOpenState = {},

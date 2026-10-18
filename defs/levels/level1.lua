@@ -1,7 +1,7 @@
 return {
 	humanName = "Painting",
 	description = [[
-Use Space/Enter or Right Mouse to put paint on the floor.
+Use the X or N keys or the Left Mouse button to paint the floor.
 
 Paint can also be removed with the same controls.
 

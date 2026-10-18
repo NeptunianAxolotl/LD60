@@ -115,11 +115,11 @@ function api.KeyPressed(key, scancode, isRepeat)
 	end
 	self.bufferKey = key
 	TryMove()
-	if key == "space" or key == "return" or key == "kpenter" then
+	if key == "x" or key == "n" then
 		self.player.DropOrCleanPaint()
 		return true
 	end
-	if key == "e" or love.keyboard.isDown("lshift") or love.keyboard.isDown("rshift") then
+	if key == "z" or key == "m" then
 		if not TrySwapCommand() then
 			TryDropCommand()
 		end
@@ -131,12 +131,12 @@ function api.MousePressed(mx, my, button)
 		return
 	end
 	if button == 1 then
+		self.player.DropOrCleanPaint()
+	end
+	if button == 2 then
 		if not TrySwapCommand() then
 			TryDropCommand()
 		end
-	end
-	if button == 2 then
-		self.player.DropOrCleanPaint()
 	end
 end
 

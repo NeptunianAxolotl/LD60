@@ -1,11 +1,11 @@
 return {
 	humanName = "Standby Mode",
 	description = [[
-1. Run over a chip to pick it up.
+1. Run over a command to grab it.
 2. Move next to a robot.
-3. Press Shift/E or Left Mouse to socket the chip.
+3. Use the Z or M keys or the Right Mouse button to socket it.
 
-This robot has an empty program. Chips can only be swapped with the highlighted slot.
+Commands can be swapped out of the highlighted slot of each robot.
 ]],
 	dimensions = {16, 10},
 	doorOpenState = {},

@@ -5,7 +5,7 @@ These sentries restlessly patrol the hallway to keep it clean of paint.
 
 Win by putting all three robots on charging points, even if momentarily.
 
-Use Space or Right Mouse to place paint.
+Use X/N/Left Mouse Button to add or remove paint.
 ]],
 	dimensions = {14, 10},
 	doorOpenState = {},

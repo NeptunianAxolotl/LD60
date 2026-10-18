@@ -82,7 +82,7 @@ function api.DrawInterface()
 	
 	if levelData.description then
 		Font.SetSize(4)
-		love.graphics.printf(levelData.description, Global.WINDOW_X - Global.UI_WIDTH + 20, offsetY, Global.UI_WIDTH - 28, "left")
+		love.graphics.printf(levelData.description, Global.WINDOW_X - Global.UI_WIDTH + 20, offsetY, Global.UI_WIDTH - 15, "left")
 	end
 	offsetY = offsetY + api.GetRobotCommandsOffset() - 150
 	
