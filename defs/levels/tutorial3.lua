@@ -1,11 +1,11 @@
 return {
 	humanName = "Standby Mode",
 	description = [[
-Run over a chip to pick it up.
-Move next to a robot.
-Press Shift/E or Left Mouse to socket the chip.
+1. Run over a chip to pick it up.
+2. Move next to a robot.
+3. Press Shift/E or Left Mouse to socket the chip.
 
-This robot has an empty program. Feed it chips to guide it to its charging port.
+This robot has an empty program. Chips can only be swapped with the highlighted slot.
 ]],
 	dimensions = {16, 10},
 	doorOpenState = {},
@@ -24,6 +24,14 @@ This robot has an empty program. Feed it chips to guide it to its charging port.
 			humanName = "Sleepy Bot",
 			swapAction = {trigger = "wildcard", slot = 1},
 			program = {
+				{
+					trigger = "robot_goal",
+					actions = {"wait"},
+				},
+				{
+					trigger = "player_front",
+					actions = {"wait"},
+				},
 				{
 					trigger = "wildcard",
 					actions = {"empty"},

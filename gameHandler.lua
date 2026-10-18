@@ -13,9 +13,9 @@ local api = {}
 --------------------------------------------------
 
 function api.MousePressed(x, y)
-	if self.hovered == "You Win! Click to continue." then
+	if self.hovered == "You Win! Space to continue." then
 		self.world.GetCosmos().SwitchLevel(true)
-	elseif self.hovered == "You Died! Click to restart." then
+	elseif self.hovered == "You Died! Space to restart." then
 		self.world.Restart()
 	end
 end
@@ -23,6 +23,19 @@ end
 function api.AllowMovement()
 	local _, won = self.world.GetGameOver()
 	return not won and not LevelHandler.InEditMode()
+end
+
+function api.KeyPressed(key, scancode, isRepeat)
+	if key == "return" or key == "space" or key == "kpenter" then
+		local _, won, lost = self.world.GetGameOver()
+		if won then
+			self.world.GetCosmos().SwitchLevel(true)
+			return true
+		elseif lost then
+			self.world.Restart()
+			return true
+		end
+	end
 end
 
 --------------------------------------------------
@@ -95,9 +108,9 @@ function api.DrawInterface()
 	local mousePos = self.world.GetMousePositionInterface()
 	self.hovered = false
 	if won then
-		self.hovered = InterfaceUtil.DrawButton(600, 500, 700, 100, mousePos, "You Win! Click to continue.", false, false, false, false, 1, 15, false, 0.85)
+		self.hovered = InterfaceUtil.DrawButton(600, 500, 700, 100, mousePos, "You Win! Space to continue.", false, false, false, false, 1, 15, false, 0.85)
 	elseif lost then
-		self.hovered = InterfaceUtil.DrawButton(600, 500, 700, 100, mousePos, "You Died! Click to restart.", false, false, false, false, 1, 15, false, 0.85)
+		self.hovered = InterfaceUtil.DrawButton(600, 500, 700, 100, mousePos, "You Died! Space to restart.", false, false, false, false, 1, 15, false, 0.85)
 	end
 end
 

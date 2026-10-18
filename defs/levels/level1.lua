@@ -1,9 +1,11 @@
 return {
 	humanName = "Painting",
 	description = [[
-Use Space/Enter or Right Mouse to put paint on the floor or to remove it.
+Use Space/Enter or Right Mouse to put paint on the floor.
 
-This robot turns left when it encounters paint. Stay of of its way as it will crush you. Send everyone to their charging ports.
+Paint can also be removed with the same controls.
+
+This robot turns left when it encounters paint. It will run over you if you get in the way.
 ]],
 	hideChipInventory = true,
 	dimensions = {16, 10},

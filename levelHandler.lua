@@ -206,7 +206,13 @@ function api.KeyPressed(key, scancode, isRepeat)
 		self.loadingLevelGetName = true
 	elseif key == "k" and (love.keyboard.isDown("lctrl") or love.keyboard.isDown("rctrl")) then
 		self.saveLevelGetName = true
-	elseif key == "left" then
+	end
+	
+	if not api.InEditMode() then
+		return
+	end
+	
+	if key == "left" then
 		if (love.keyboard.isDown("lctrl") or love.keyboard.isDown("rctrl")) then
 			self.dimensions[1] = math.max(3, self.dimensions[1] - 1)
 		else
@@ -230,10 +236,6 @@ function api.KeyPressed(key, scancode, isRepeat)
 		else
 			MoveLevel({0, 1})
 		end
-	end
-	
-	if not api.InEditMode() then
-		return
 	end
 	
 	local varyRate = ((love.keyboard.isDown("lshift") or love.keyboard.isDown("rshift")) and 5) or 1
