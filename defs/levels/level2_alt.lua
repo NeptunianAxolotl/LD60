@@ -20,8 +20,8 @@ Use X/N/Left Mouse Button to add or remove paint.
 	robots = {
 		{
 			name = "basic_robot",
-			humanName = "Patrol Bot",
-			pos = {7, 5},
+			humanName = "Sentry Bot",
+			pos = {8, 4},
 			direction = 2,
 			program = {
 				{
@@ -40,8 +40,8 @@ Use X/N/Left Mouse Button to add or remove paint.
 		},
 		{
 			name = "basic_robot",
-			humanName = "Sentry Bot",
-			pos = {8, 4},
+			humanName = "Patrol Bot",
+			pos = {7, 5},
 			direction = 2,
 			program = {
 				{
