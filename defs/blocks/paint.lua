@@ -1,7 +1,7 @@
 
 local def = {
 	image = "paint",
-	randomRotation = 0.35,
+	randomRotation = 0.2,
 	randomScale = 0.15,
 	randomColor = true,
 	fixedDirection = 0,

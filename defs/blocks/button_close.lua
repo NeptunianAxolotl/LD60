@@ -2,6 +2,9 @@
 local def = {
 	image = "button",
 	needDoorIndex = true,
+	partialTopDrawFunc = function (self)
+		return TerrainHandler.GetDoorWantOpen(self.doorIndex) and 0.3 or 0.15
+	end,
 	drawColorFunc = function (self)
 		return TerrainHandler.GetDoorWantOpen(self.doorIndex) and Global.DOOR_ON_COLOR[self.doorIndex] or Global.DOOR_OFF_COLOR[self.doorIndex]
 	end,

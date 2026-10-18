@@ -97,13 +97,19 @@ local function NewBlock(self)
 	end
 	
 	function self.Draw(drawQueue)
+		local drawPos = LevelHandler.GridToWorld(self.pos)
+		local drawRot = util.CardinalToDirection(self.direction) + (self.randomRotation or 0)
+		local image = self.def.imageFunc and self.def.imageFunc(self) or self.def.image
+		local color = self.def.drawColorFunc and self.def.drawColorFunc(self) or self.randomColor
 		drawQueue:push({y=self.pos[2]; f=function()
-			local drawPos = LevelHandler.GridToWorld(self.pos)
-			local drawRot = util.CardinalToDirection(self.direction) + (self.randomRotation or 0)
-			local image = self.def.imageFunc and self.def.imageFunc(self) or self.def.image
-			local color = self.def.drawColorFunc and self.def.drawColorFunc(self) or self.randomColor
 			Resources.DrawImage(image, drawPos[1], drawPos[2], drawRot, false, self.randomScale, color)
 		end})
+		if self.def.partialTopDrawFunc then
+			local alpha = self.def.partialTopDrawFunc(self)
+			drawQueue:push({y=self.pos[2] + 100; f=function()
+				Resources.DrawImage(image, drawPos[1], drawPos[2], drawRot, alpha, self.randomScale, color)
+			end})
+		end
 	end
 	
 	return self
