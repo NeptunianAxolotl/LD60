@@ -1,5 +1,5 @@
 return {
-	file = "music/Arp.ogg",
+	file = "music/arp.ogg",
 	volMult = 1.0,
   track = "arp"
 }
