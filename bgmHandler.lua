@@ -56,7 +56,7 @@ function api.Update(dt)
       if bgmTrackTargetVolumes[v.track]["time"] == 0 then
         targetVol = bgmTrackTargetVolumes[v.track]["vol"] * self.cosmos.GetMusicVolume()
       else
-      print(bgmTrackTargetVolumes[v.track]["vol"])
+      --print(bgmTrackTargetVolumes[v.track]["vol"])
       deltaV = (bgmTrackTargetVolumes[v.track]["vol"] - currentVolumeRel) * (dt / bgmTrackTargetVolumes[v.track]["time"])
       
       targetVol = currentVolumeRel + deltaV

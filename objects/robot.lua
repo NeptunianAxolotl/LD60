@@ -274,6 +274,7 @@ local function NewRobot(self)
 		self.pos = newPos
 		self.moveBlockDt = moveAnimTime
 		self.maxMoveBlock = moveAnimTime
+		self.bouncePos = false
 		return true
 	end
 	
@@ -283,6 +284,7 @@ local function NewRobot(self)
 		end
 		local newPos = util.Add(self.pos, util.CardinalToVector(direction))
 		if TerrainHandler.InteractWithObjectsAt(newPos, self, "BlockMoveIntoByObject", direction) then
+			self.bouncePos = newPos
 			return false
 		end
 		self.pos = newPos
@@ -329,6 +331,9 @@ local function NewRobot(self)
 	function self.Update(dt, commandUpdate)
 		self.moveBlockDt = util.UpdateTimer(self.moveBlockDt, dt)
 		self.prevCommandDt = util.UpdateTimer(self.prevCommandDt, dt)
+		if not self.moveBlockDt then
+			self.bouncePos = false
+		end
 		if commandUpdate and self.def.isRobot then
 			self.commandAcc = self.commandAcc + self.commandSpeed
 		end
@@ -425,6 +430,24 @@ local function NewRobot(self)
 		objList[#objList + 1] = data
 	end
 	
+	function self.GetDrawPosAndRot()
+		local drawPos = LevelHandler.GridToWorld(self.pos)
+		local drawRot = util.CardinalToDirection(self.direction)
+		if self.moveBlockDt then
+			local prevProp = self.moveBlockDt / self.maxMoveBlock
+			if self.bouncePos then
+				local bounceProp = prevProp*(1 - prevProp) * 0.2
+				drawPos = util.Average(drawPos, LevelHandler.GridToWorld(self.bouncePos), bounceProp)
+			else
+				drawPos = util.Average(drawPos, LevelHandler.GridToWorld(self.prevPos), prevProp)
+			end
+			if not (self.previousAction and self.previousAction.skipRotationAnimate) and self.prevDir then
+				drawRot = util.AngleAverageShortest(drawRot, util.CardinalToDirection(self.prevDir), prevProp)
+			end
+		end
+		return drawPos, drawRot
+	end
+	
 	function self.DrawProgram(drawPos)
 		if #self.program == 0 or not self.def.isRobot then
 			return
@@ -461,15 +484,7 @@ local function NewRobot(self)
 	
 	function self.Draw(drawQueue)
 		drawQueue:push({y=self.pos[2] + 10; f=function()
-			local drawPos = LevelHandler.GridToWorld(self.pos)
-			local drawRot = util.CardinalToDirection(self.direction)
-			if self.moveBlockDt then
-				local prevProp = self.moveBlockDt / self.maxMoveBlock
-				drawPos = util.Average(drawPos, LevelHandler.GridToWorld(self.prevPos), prevProp)
-				if not (self.previousAction and self.previousAction.skipRotationAnimate) and self.prevDir then
-					drawRot = util.AngleAverageShortest(drawRot, util.CardinalToDirection(self.prevDir), prevProp)
-				end
-			end
+			local drawPos, drawRot = self.GetDrawPosAndRot()
 			Resources.DrawImage(self.def.image, drawPos[1], drawPos[2], drawRot)
 			if self.def.isRobot then
 				Font.SetSize(3)
