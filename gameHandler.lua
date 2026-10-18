@@ -75,9 +75,9 @@ function api.DrawInterface()
 	
 	local commandQueue = PlayerHandler.GetCommandQueue()
 	Font.SetSize(3)
-	love.graphics.printf("Chips:", Global.WINDOW_X - Global.UI_WIDTH + 20, offsetY, Global.UI_WIDTH - 40, "left")
-	local offsetX = Global.WINDOW_X - Global.UI_WIDTH + 130
-	local CMD_SCALE = 0.75
+	love.graphics.printf("Held Chip:", Global.WINDOW_X - Global.UI_WIDTH + 20, offsetY, Global.UI_WIDTH - 40, "left")
+	local offsetX = Global.WINDOW_X - Global.UI_WIDTH + 190
+	local CMD_SCALE = 1.2
 	for i = 1, #commandQueue do
 		local highlight = (i == 1) and 1
 		if highlight and PlayerHandler.GetTargetForCommand() then

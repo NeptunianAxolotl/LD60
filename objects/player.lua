@@ -4,6 +4,10 @@ local function NewPlayer(self, position, direction)
 	self.direction = direction
 	self.pos = position
 	
+	function self.GetRelativeTile(direction)
+		return util.Add(self.pos, util.CardinalToVector((self.direction + direction)%4))
+	end
+	
 	function self.ObjInDirection(direction)
 		local newPos = util.Add(self.pos, util.CardinalToVector(direction))
 		return TerrainHandler.GetMobileObjectAt(newPos)

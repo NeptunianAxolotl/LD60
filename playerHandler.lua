@@ -65,7 +65,7 @@ end
 local function TrySwapCommand()
 	local target = api.GetTargetForCommand()
 	if not target then
-		return
+		return false
 	end
 	local command = self.commandQueue[1] or "empty"
 	for i = 1, #self.commandQueue do
@@ -75,6 +75,23 @@ local function TrySwapCommand()
 	if newCommand and not CommandDefs[newCommand].isEmpty then
 		self.commandQueue[#self.commandQueue + 1] = newCommand
 	end
+	return true
+end
+
+local function TryDropCommand()
+	if self.player.ObjInRelativeDirection(0) or self.player.BlockInRelativeDirection(0) then
+		return false
+	end
+	local command = self.commandQueue[1]
+	if not command then
+		return false
+	end
+	for i = 1, #self.commandQueue do
+		self.commandQueue[i] = self.commandQueue[i + 1]
+	end
+	local dropPos = self.player.GetRelativeTile(0)
+	TerrainHandler.AddBlock("cmd_" .. command, dropPos, 0)
+	return true
 end
 
 local function TryMove()
@@ -109,7 +126,9 @@ function api.MousePressed(mx, my, button)
 		return
 	end
 	if button == 1 then
-		TrySwapCommand()
+		if not TrySwapCommand() then
+			TryDropCommand()
+		end
 	end
 	if button == 2 then
 		self.player.DropOrCleanPaint()

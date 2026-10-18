@@ -66,11 +66,15 @@ local function NewBlock(self)
 	end
 	
 	function self.Export(objList)
-		objList[#objList + 1] = {
+		local data = {
 			name = self.blockType,
 			pos = self.pos,
 			direction = self.direction,
 		}
+		for k, v in pairs(self.params) do
+			data[k] = v
+		end
+		objList[#objList + 1] = data
 	end
 	
 	function self.Draw(drawQueue)
