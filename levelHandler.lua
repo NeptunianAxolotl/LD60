@@ -52,10 +52,8 @@ end
 
 local function SetupLevel()
 	self.dimensions = util.CopyTable(self.levelData.dimensions)
-	if self.levelData.doorOpenState then
-		for i = 1, #self.levelData.doorOpenState do
-			TerrainHandler.SetDoorOpen(i, doorOpenState[i], true)
-		end
+	for i = 1, Global.DOOR_TYPE_COUNT do
+		TerrainHandler.SetDoorOpen(i, doorOpenState and doorOpenState[i] or false, true)
 	end
 	for spawnType, spawnData in pairs(EditorDefs.spawnTypes) do
 		for i = 1, #(self.levelData[spawnType] or {}) do
@@ -311,10 +309,9 @@ function api.Draw(drawQueue)
 		return
 	end
 	local toDraw = false
-	
 	for spawnType, spawnData in pairs(EditorDefs.spawnTypes) do
 		if spawnData.defs[self.editor.tile] then
-			toDraw = spawnData.defs[self.editor.tile].image
+			toDraw = spawnData.defs[self.editor.tile]
 		end
 	end
 	if not toDraw then
@@ -323,8 +320,8 @@ function api.Draw(drawQueue)
 	drawQueue:push({y=0; f=function()
 		local drawPos = api.GridToWorld(mousePos)
 		local drawRot = util.CardinalToDirection(self.editor.direction)
-		local color = spawnData.defs[self.editor.tile].drawColorFunc and spawnData.defs[self.editor.tile].drawColorFunc({doorIndex = self.doorIndex})
-		Resources.DrawImage(toDraw, drawPos[1], drawPos[2], drawRot, 0.5, false, color)
+		local color = toDraw.drawColorFunc and toDraw.drawColorFunc({doorIndex = self.doorIndex})
+		Resources.DrawImage(toDraw.image, drawPos[1], drawPos[2], drawRot, 0.5, false, color)
 	end})
 end
 

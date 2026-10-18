@@ -40,6 +40,7 @@ local globals = {
 	DOOR_OFF_COLOR = {
 		{0.1, 0.45, 0.1},
 	},
+	DOOR_TYPE_COUNT = 3,
 	DOOR_CLOSE_DELAY = 0.3,
 	DOOR_OPEN_DELAY = 0.1,
 	

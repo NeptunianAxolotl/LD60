@@ -62,6 +62,9 @@ def.spawnKey = {
 	a = "player_goal",
 	s = "robot_goal",
 	u = "paint",
+	f = "door",
+	v = "button_open",
+	b = "button_close",
 }
 
 def.spawnString = [[
@@ -72,6 +75,11 @@ F - Fast Robot
 A - Player Goal
 S - Robot Goal
 U - Paint
+
+G - Door type select
+F - Door
+V - Open Button
+B - Close Button
 
 ]]
 
