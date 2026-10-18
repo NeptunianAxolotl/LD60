@@ -1,6 +1,12 @@
 return {
-	humanName = "Training 3",
-	description = "WSAD or arrows to move.\nMove next to a robot then\nLMB to swap its highlighted\ncommand with one you carry.\nCtrl+R to restart\n",
+	humanName = "Standby Mode",
+	description = [[
+Run over a chip to pick it up.
+Move next to a robot and press E or Left Mouse to swap in into the slot.
+Chips can also be dropped.
+
+This robot has an empty program. Feed it chips to guide it to its charging port.
+]],
 	dimensions = {16, 10},
 	doorOpenState = {},
 	player = {

@@ -119,6 +119,11 @@ function api.KeyPressed(key, scancode, isRepeat)
 		self.player.DropOrCleanPaint()
 		return true
 	end
+	if key == "e" or love.keyboard.isDown("lshift") or love.keyboard.isDown("rshift") then
+		if not TrySwapCommand() then
+			TryDropCommand()
+		end
+	end
 end
 
 function api.MousePressed(mx, my, button)

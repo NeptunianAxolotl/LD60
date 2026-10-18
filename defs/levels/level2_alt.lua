@@ -1,19 +1,28 @@
 return {
-	humanName = "Level 2",
-	dimensions = {16, 10},
+	humanName = "Hall Cleaners",
+	description = [[
+These sentries restlessly patrol the hallway to keep it clean of paint.
+
+Win by putting all three robots on charging points, even if momentarily.
+
+Use Space or Right Mouse to place paint.
+]],
+	dimensions = {14, 10},
+	doorOpenState = {},
+	hideChipInventory = true,
 	player = {
 		{
 			name = "player",
-			pos = {4, 3},
+			pos = {3, 3},
 			direction = 0,
 		},
 	},
 	robots = {
 		{
 			name = "basic_robot",
-			pos = {7, 5},
-			direction = 0,
 			humanName = "Patrol Bot",
+			pos = {7, 5},
+			direction = 2,
 			program = {
 				{
 					trigger = "robot_goal",
@@ -31,9 +40,9 @@ return {
 		},
 		{
 			name = "basic_robot",
-			pos = {8, 4},
-			direction = 0,
 			humanName = "Sentry Bot",
+			pos = {8, 4},
+			direction = 2,
 			program = {
 				{
 					trigger = "robot_goal",
@@ -53,13 +62,13 @@ return {
 	blocks = {
 		{
 			name = "robot_goal",
-			pos = {5, 4},
-			direction = 2,
+			pos = {4, 4},
+			direction = 0,
 		},
 		{
 			name = "robot_goal",
-			pos = {4, 5},
-			direction = 2,
+			pos = {3, 5},
+			direction = 0,
 		},
 		{
 			name = "robot_goal",
@@ -78,13 +87,13 @@ return {
 		},
 		{
 			name = "wall",
-			pos = {6, 2},
-			direction = 2,
+			pos = {5, 3},
+			direction = 0,
 		},
 		{
 			name = "wall",
-			pos = {6, 1},
-			direction = 2,
+			pos = {5, 2},
+			direction = 0,
 		},
 		{
 			name = "wall",
@@ -108,23 +117,23 @@ return {
 		},
 		{
 			name = "wall",
-			pos = {2, 2},
-			direction = 2,
+			pos = {1, 3},
+			direction = 0,
 		},
 		{
 			name = "wall",
-			pos = {2, 3},
-			direction = 2,
+			pos = {1, 4},
+			direction = 0,
 		},
 		{
 			name = "wall",
-			pos = {2, 4},
-			direction = 2,
+			pos = {1, 5},
+			direction = 0,
 		},
 		{
 			name = "wall",
-			pos = {2, 5},
-			direction = 2,
+			pos = {1, 6},
+			direction = 0,
 		},
 		{
 			name = "wall",
@@ -256,6 +265,15 @@ return {
 			pos = {11, 6},
 			direction = 2,
 		},
+		{
+			name = "wall",
+			pos = {1, 1},
+			direction = 0,
+		},
+		{
+			name = "wall",
+			pos = {1, 2},
+			direction = 0,
+		},
 	},
-	description = "WSAD or arrows to move.\nSpace/Right Mouse to paint.\n\nDirect all the robots (including yourself) to their designated charging ports.\n\nCtrl+J to toggle editor\nCtrl+R to restart\n",
 }

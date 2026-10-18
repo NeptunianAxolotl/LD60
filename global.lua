@@ -54,7 +54,8 @@ local globals = {
 	
 	SAVE_ORDER = {
 		"name", "humanName", "description",
-		"dimensions", "doorOpenState", "doorIndex",
+		"dimensions", "textSize", "hideChipInventory",
+		"doorOpenState", "doorIndex",
 		"player", "robots", "blocks",
 		"pos", "direction",
 		"swapTrigger", "swapAction",

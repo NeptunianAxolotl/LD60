@@ -51,7 +51,7 @@ function api.DrawCommandBox(x, y, highlight, scale)
 end
 
 function api.GetRobotCommandsOffset()
-	return LevelHandler.GetLevelData().description and 410 or 160
+	return LevelHandler.GetLevelData().textSize or LevelHandler.GetLevelData().description and 425 or 160
 end
 
 function api.DrawInterface()
@@ -75,17 +75,19 @@ function api.DrawInterface()
 	
 	local commandQueue = PlayerHandler.GetCommandQueue()
 	Font.SetSize(3)
-	love.graphics.printf("Held Chip:", Global.WINDOW_X - Global.UI_WIDTH + 20, offsetY, Global.UI_WIDTH - 40, "left")
-	local offsetX = Global.WINDOW_X - Global.UI_WIDTH + 190
-	local CMD_SCALE = 1.2
-	for i = 1, #commandQueue do
-		local highlight = (i == 1) and 1
-		if highlight and PlayerHandler.GetTargetForCommand() then
-			highlight = 2
+	if not LevelHandler.GetLevelData().hideChipInventory then
+		love.graphics.printf("Held Chip:", Global.WINDOW_X - Global.UI_WIDTH + 20, offsetY, Global.UI_WIDTH - 40, "left")
+		local offsetX = Global.WINDOW_X - Global.UI_WIDTH + 190
+		local CMD_SCALE = 1.2
+		for i = 1, #commandQueue do
+			local highlight = (i == 1) and 1
+			if highlight and PlayerHandler.GetTargetForCommand() then
+				highlight = 2
+			end
+			api.DrawCommandBox(offsetX, offsetY + Global.COMMAND_DRAW_SIZE*0.38, highlight, CMD_SCALE)
+			Resources.DrawImage(CommandDefs[commandQueue[i]].image, offsetX, offsetY + Global.COMMAND_DRAW_SIZE*0.38, false, false, CMD_SCALE)
+			offsetX = offsetX + Global.COMMAND_DRAW_SIZE*CMD_SCALE + 5
 		end
-		api.DrawCommandBox(offsetX, offsetY + Global.COMMAND_DRAW_SIZE*0.38, highlight, CMD_SCALE)
-		Resources.DrawImage(CommandDefs[commandQueue[i]].image, offsetX, offsetY + Global.COMMAND_DRAW_SIZE*0.38, false, false, CMD_SCALE)
-		offsetX = offsetX + Global.COMMAND_DRAW_SIZE*CMD_SCALE + 5
 	end
 	offsetY = offsetY + 60
 	

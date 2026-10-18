@@ -93,6 +93,8 @@ function api.SaveLevel(name)
 		dimensions = self.dimensions,
 		doorOpenState = self.levelData.doorOpenState or {},
 		description = self.levelData.description,
+		textSize = self.levelData.textSize,
+		hideChipInventory = self.levelData.hideChipInventory,
 	}
 	for spawnType, spawnData in pairs(EditorDefs.spawnTypes) do
 		save[spawnType] = spawnData.exportFunc()

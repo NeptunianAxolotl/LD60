@@ -1,14 +1,11 @@
 return {
-	humanName = "Level 1",
+	humanName = "Painting",
 	description = [[
-WSAD or arrows to move.
-Space/Right Mouse to paint.
+Use Space/Right Mouse to put paint on the floor or to remove it.
 
-Direct all the robots (including yourself) to their designated charging ports.
-
-Ctrl+J to toggle editor
-Ctrl+R to restart
+This robot turns left when it encounters paint. Stay of of its way as it will crush you. Send everyone to their charging ports.
 ]],
+	hideChipInventory = true,
 	dimensions = {16, 10},
 	player = {
 		{
@@ -20,7 +17,7 @@ Ctrl+R to restart
 	robots = {
 		{
 			name = "basic_robot",
-			humanName = "Left Turner",
+			humanName = "Left Paint Turner",
 			pos = {6, 6},
 			direction = 0,
 			program = {

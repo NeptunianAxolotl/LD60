@@ -1,7 +1,8 @@
 return {
-	humanName = "Training 1",
-	description = "WSAD or arrows to move.\nThis polite robot will turn aside\nrather than crush you.\nDirect all the robots (including yourself) to their designated charging ports.\n\nCtrl+J to toggle editor\nCtrl+R to restart\n",
+	humanName = "Polite Training",
+	description = "You are the red robot.\nUse WSAD or arrows to move.\n\nThis polite robot will turn left when it encounters you, as per its programming.\nDirect all the robots (including yourself) to their designated charging ports.",
 	dimensions = {14, 9},
+	hideChipInventory = true,
 	doorOpenState = {},
 	player = {
 		{
