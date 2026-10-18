@@ -375,11 +375,17 @@ local function NewRobot(self)
 		return block and block.GoalSatisfied()
 	end
 	
-	function self.CanSwapTrigger()
+	function self.CanSwapTrigger(command)
+		if self.swapTrigger and command == "empty" and self.program[self.swapTrigger].trigger.isEmpty then
+			return false
+		end
 		return self.swapTrigger
 	end
 	
-	function self.CanSwapAction()
+	function self.CanSwapAction(command)
+		if self.swapAction and command == "empty" and self.program[self.swapAction[1]].actions[self.swapAction[2]].isEmpty then
+			return false
+		end
 		return self.swapAction
 	end
 	

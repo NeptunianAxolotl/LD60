@@ -47,10 +47,10 @@ function api.GetTargetForCommand()
 	for i = 1, #directions do
 		local candidate = self.player.ObjInRelativeDirection(directions[i])
 		if candidate and candidate.IsRobot() then
-			if CommandDefs[command].executeFunc and candidate.CanSwapAction() then
+			if CommandDefs[command].executeFunc and candidate.CanSwapAction(command) then
 				return candidate
 			end
-			if CommandDefs[command].acceptFunc and candidate.CanSwapTrigger() then
+			if CommandDefs[command].acceptFunc and candidate.CanSwapTrigger(command) then
 				return candidate
 			end
 		end
