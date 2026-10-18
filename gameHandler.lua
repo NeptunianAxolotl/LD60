@@ -47,6 +47,10 @@ function api.DrawCommandBox(x, y)
 	love.graphics.rectangle("line", x, y, Global.COMMAND_DRAW_SIZE, Global.COMMAND_DRAW_SIZE, 4, 4, 16)
 end
 
+function api.GetRobotCommandsOffset()
+	return LevelHandler.GetLevelData().description and 430 or 180
+end
+
 function api.DrawInterface()
 	love.graphics.setLineWidth(5)
 	love.graphics.setColor(Global.PANEL_COL)
@@ -63,10 +67,8 @@ function api.DrawInterface()
 	if levelData.description then
 		Font.SetSize(4)
 		love.graphics.printf(levelData.description, Global.WINDOW_X - Global.UI_WIDTH + 20, offsetY, Global.UI_WIDTH - 28, "left")
-		offsetY = offsetY + 270
-	else
-		offsetY = offsetY + 20
 	end
+	offsetY = offsetY + api.GetRobotCommandsOffset() - 160
 	
 	local commandQueue = PlayerHandler.GetCommandQueue()
 	Font.SetSize(3)
