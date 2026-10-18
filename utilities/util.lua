@@ -329,6 +329,16 @@ function util.AverageMulti(pointList)
 	}
 end
 
+function util.AverageTriple(u, v, vFactor)
+	vFactor = vFactor or 0.5
+	local result = {
+		u[1]*(1 - vFactor) + v[1] * vFactor,
+		u[2]*(1 - vFactor) + v[2] * vFactor,
+		u[3]*(1 - vFactor) + v[3] * vFactor
+	}
+	return result
+end
+
 function util.AverageScalar(u, v, vFactor)
 	vFactor = vFactor or 0.5
 	return u*(1 - vFactor) + v * vFactor
@@ -436,6 +446,7 @@ end
 
 function util.CardinalToVector(cardinal, length)
 	length = length or 1
+	cardinal = cardinal%4
 	if cardinal == 0 then
 		return {length, 0}
 	elseif cardinal == 1 then

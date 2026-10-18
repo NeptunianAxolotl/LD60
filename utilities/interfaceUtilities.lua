@@ -202,12 +202,17 @@ function api.DrawButton(x, y, width, height, mousePos, text, disabled, flash, ca
 	return hovered and text
 end
 
-function api.DrawPanel(x, y, width, height, borderThickness, flash)
+function api.DrawPanel(x, y, width, height, borderThickness, flash, alpha)
 	borderThickness = borderThickness or 8
+	alpha = alpha or 1
 	
 	local panelColor = Global.PANEL_COL
 	if (flash and (self.animDt%Global.BUTTON_FLASH_PERIOD < Global.BUTTON_FLASH_PERIOD/2)) then
 		panelColor = Global.BUTTON_HIGHLIGHT_COL
+	end
+	if alpha ~= 1 then
+		panelColor = util.CopyTable(panelColor)
+		panelColor[4] = alpha
 	end
 	love.graphics.setColor(unpack(panelColor))
 	
@@ -217,6 +222,10 @@ function api.DrawPanel(x, y, width, height, borderThickness, flash)
 	local borderColor = Global.PANEL_BORDER_COL
 	if (flash and (self.animDt%Global.BUTTON_FLASH_PERIOD < Global.BUTTON_FLASH_PERIOD/2)) then
 		borderColor = Global.PANEL_COL
+	end
+	if alpha ~= 1 then
+		borderColor = util.CopyTable(borderColor)
+		borderColor[4] = alpha
 	end
 	love.graphics.setColor(unpack(borderColor))
 	

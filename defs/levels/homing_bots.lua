@@ -1,6 +1,7 @@
 return {
 	humanName = "Homing Bots",
 	dimensions = {19, 12},
+	hideChipInventory = true,
 	doorOpenState = {},
 	player = {
 		{
@@ -25,7 +26,7 @@ return {
 					actions = {"reset_1", "right"},
 				},
 				{
-					trigger = "set_1",
+					trigger = "register_1",
 					actions = {"move_fast"},
 				},
 				{
