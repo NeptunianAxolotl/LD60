@@ -45,6 +45,7 @@ local globals = {
 		{0.1, 0.1, 0.45},
 	},
 	DOOR_TYPE_COUNT = 3,
+	DOOR_DELAY = 0.05,
 	
 	TILE_SIZE = 100,
 	COMMAND_DRAW_SIZE = 50,

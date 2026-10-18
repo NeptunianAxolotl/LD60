@@ -90,8 +90,8 @@ return {
 			direction = 0,
 		},
 		{
-			name = "player_goal",
-			pos = {4, 5},
+			name = "cmd_box_front",
+			pos = {11, 2},
 			direction = 0,
 		},
 		{
@@ -266,9 +266,8 @@ return {
 			direction = 0,
 		},
 		{
-			name = "button_close",
-			doorIndex = 1,
-			pos = {10, 4},
+			name = "cmd_paint_see_right",
+			pos = {6, 4},
 			direction = 0,
 		},
 		{
@@ -313,13 +312,14 @@ return {
 			direction = 0,
 		},
 		{
-			name = "cmd_box_front",
-			pos = {11, 2},
+			name = "player_goal",
+			pos = {4, 6},
 			direction = 0,
 		},
 		{
-			name = "cmd_paint_see_right",
-			pos = {6, 5},
+			name = "button_close",
+			doorIndex = 1,
+			pos = {4, 2},
 			direction = 0,
 		},
 	},
