@@ -368,6 +368,9 @@ local function NewRobot(self)
 	end
 	
 	function self.GoalSatisfied()
+		if not self.def.isRobot then
+			return true
+		end
 		local block = TerrainHandler.GetBlockAt(self.pos)
 		return block and block.GoalSatisfied()
 	end
