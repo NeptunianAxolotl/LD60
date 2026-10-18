@@ -1,9 +1,4 @@
 
-local Font = require("include/font")
-
-local EffectsHandler = require("effectsHandler")
-local Resources = require("resourceHandler")
-
 local CommandDefs = util.LoadDefDirectory("defs/commands")
 
 local self = {}

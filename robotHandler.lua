@@ -13,15 +13,15 @@ function api.RemoveRobot(pos)
 	IterableMap.ApplySelf(self.robots, "IsAtPos", pos)
 end
 
-function api.AddRobot(robotType, pos, direction, program)
+function api.AddRobot(robotType, pos, direction, params)
 	api.RemoveRobot(pos)
 	local def = RobotDefs[robotType]
 	local robotData = {}
 	robotData.robotType = robotType
 	robotData.pos = pos
 	robotData.direction = direction
-	robotData.program = program
-	IterableMap.Add(self.robots, NewRobot(robotData))
+	robotData.params = params or {}
+	IterableMap.Add(self.robots, NewRobot(robotData, params))
 end
 
 function api.ExportObjects()
@@ -51,7 +51,7 @@ function api.Draw(drawQueue)
 end
 function api.DrawInterface()
 	love.graphics.setLineWidth(3)
-	IterableMap.ApplySelf(self.robots, "DrawProgram", {Global.WINDOW_X - Global.UI_WIDTH + Global.COMMAND_DRAW_SIZE, 500})
+	IterableMap.ApplySelf(self.robots, "DrawProgram", {Global.WINDOW_X - Global.UI_WIDTH + Global.COMMAND_DRAW_SIZE - 5, 440})
 end
 
 function api.Initialize(world, levelIndex, mapDataOverride)

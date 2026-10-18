@@ -20,7 +20,11 @@ local def = {
 		robots = {
 			defs = RobotDefs,
 			spawnFunc = function (data)
-				RobotHandler.AddRobot(data.name, data.pos, data.direction, data.program)
+				local params = {
+					program = data.program,
+					humanName = data.humanName,
+				}
+				RobotHandler.AddRobot(data.name, data.pos, data.direction, params)
 			end,
 			deleteFunc = function (pos)
 				RobotHandler.RemoveRobot(pos)

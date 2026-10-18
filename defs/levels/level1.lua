@@ -20,6 +20,7 @@ Ctrl+R to restart
 	robots = {
 		{
 			name = "basic_robot",
+			humanName = "Left Turner",
 			pos = {6, 6},
 			direction = 0,
 			program = {

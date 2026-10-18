@@ -2,10 +2,10 @@
 util = require("utilities/util")
 Global = require("global")
 IterableMap = require("include/IterableMap")
-
-local Font = require("include/font")
-local Cosmos = require("cosmos")
 Resources = require("resourceHandler")
+Font = require("include/font")
+
+local Cosmos = require("cosmos")
 
 local api = {}
 

@@ -98,8 +98,8 @@ local function NewRobot(self)
 	self.def = RobotDefs[self.robotType]
 	self.commandSpeed = 1
 	self.commandAcc = 3
-	self.programRaw = self.program -- Save/load stability
-	self.program = InitProgram(self.program)
+	self.humanName = self.params.humanName or "Unnamed"
+	self.program = InitProgram(self.params.program)
 	self.nextAction = {}
 	self.registerValues = {}
 	
@@ -241,7 +241,7 @@ local function NewRobot(self)
 			name = self.robotType,
 			pos = self.pos,
 			direction = self.direction,
-			program = self.programRaw,
+			params = self.params,
 		}
 	end
 	
@@ -250,6 +250,11 @@ local function NewRobot(self)
 			return
 		end
 		offsetY = drawPos[2]
+		Font.SetSize(3)
+		love.graphics.setColor(0, 0, 0)
+		love.graphics.printf(self.humanName, drawPos[1] - 25, offsetY, Global.UI_WIDTH, "left")
+		offsetY = offsetY + Global.COMMAND_DRAW_SIZE + 15
+		
 		for i = 1, #self.program do
 			local offsetX = drawPos[1]
 			local actions = self.program[i].actions
@@ -271,7 +276,7 @@ local function NewRobot(self)
 			end
 			offsetY = offsetY + Global.COMMAND_DRAW_SIZE + 10
 		end
-		drawPos[2] = offsetY + Global.COMMAND_DRAW_SIZE
+		drawPos[2] = offsetY - 22
 	end
 	
 	function self.Draw(drawQueue)
@@ -286,6 +291,9 @@ local function NewRobot(self)
 				end
 			end
 			Resources.DrawImage(self.def.image, drawPos[1], drawPos[2], drawRot)
+			Font.SetSize(3)
+			love.graphics.setColor(0, 0, 0)
+			love.graphics.printf(string.sub(self.humanName, 0, 1), drawPos[1] - 25, drawPos[2] - 15, 50, "center")
 		end})
 	end
 	
