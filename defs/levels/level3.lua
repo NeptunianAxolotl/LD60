@@ -13,6 +13,7 @@ return {
 			name = "basic_robot",
 			pos = {7, 6},
 			direction = 3,
+			humanName = "Slidy Bot",
 			program = {
 				{
 					trigger = "robot_goal",
@@ -32,6 +33,7 @@ return {
 			name = "basic_robot",
 			pos = {10, 5},
 			direction = 3,
+			humanName = "Cleaner Bot",
 			program = {
 				{
 					trigger = "robot_goal",

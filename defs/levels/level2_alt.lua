@@ -13,6 +13,7 @@ return {
 			name = "basic_robot",
 			pos = {7, 5},
 			direction = 0,
+			humanName = "Patrol Bot",
 			program = {
 				{
 					trigger = "robot_goal",
@@ -32,6 +33,7 @@ return {
 			name = "basic_robot",
 			pos = {8, 4},
 			direction = 0,
+			humanName = "Sentry Bot",
 			program = {
 				{
 					trigger = "robot_goal",
