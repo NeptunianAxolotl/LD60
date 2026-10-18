@@ -38,7 +38,7 @@ local function NewPlayer(self, position, direction)
 		local newPos = util.Add(self.pos, util.CardinalToVector(direction))
 		self.direction = direction
 		if TerrainHandler.InteractWithObjectsAt(newPos, self, "DoMoveOnto") then
-			return
+			return true
 		end
 		self.prevPos = self.pos
 		self.pos = newPos
