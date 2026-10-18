@@ -52,6 +52,11 @@ end
 
 local function SetupLevel()
 	self.dimensions = util.CopyTable(self.levelData.dimensions)
+	if self.levelData.doorOpenState then
+		for i = 1, #self.levelData.doorOpenState do
+			TerrainHandler.SetDoorOpen(i, doorOpenState[i], true)
+		end
+	end
 	for spawnType, spawnData in pairs(EditorDefs.spawnTypes) do
 		for i = 1, #(self.levelData[spawnType] or {}) do
 			spawnData.spawnFunc(self.levelData[spawnType][i])
@@ -88,6 +93,7 @@ function api.SaveLevel(name)
 	local save = {
 		humanName = self.humanName,
 		dimensions = self.dimensions,
+		doorOpenState = self.levelData.doorOpenState or {},
 		description = self.levelData.description,
 	}
 	for spawnType, spawnData in pairs(EditorDefs.spawnTypes) do
@@ -317,7 +323,8 @@ function api.Draw(drawQueue)
 	drawQueue:push({y=0; f=function()
 		local drawPos = api.GridToWorld(mousePos)
 		local drawRot = util.CardinalToDirection(self.editor.direction)
-		Resources.DrawImage(toDraw, drawPos[1], drawPos[2], drawRot, 0.5)
+		local color = spawnData.defs[self.editor.tile].drawColorFunc and spawnData.defs[self.editor.tile].drawColorFunc
+		Resources.DrawImage(toDraw, drawPos[1], drawPos[2], drawRot, 0.5, false, color)
 	end})
 end
 

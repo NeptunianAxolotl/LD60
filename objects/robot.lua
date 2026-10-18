@@ -31,23 +31,33 @@ local function ExecuteNextCommand(self, index)
 	local actionToTake = actions[self.nextAction[index]]
 	self.lastStepTriggers[index] = true
 	self.lastStepActions[index] = self.lastStepActions[index] or {}
+	local alreadyExecutedBefore = self.lastStepActions[index][self.nextAction[index]]
 	self.lastStepActions[index][self.nextAction[index]] = true
 	FindNextNonEmpty(self, index)
 	self.previousAction = actionToTake
 	actionToTake.executeFunc(self)
+	if actionToTake.chainToNextTriggerAction and not alreadyExecutedBefore then
+		self.chainAction = true
+		self.chainTriggerIndex = index
+	end
 end
 
 local function FindAndExecuteCommand(self)
 	-- Look down the list of triggers and execute the next action of the first one
-	self.chainAction = true
+	self.chainAction = true -- Whether to keep executing the whole program
+	self.chainTriggerIndex = false -- When set, the chain is forced into the next command of the trigger
 	self.lastStepTriggers = {}
 	self.lastStepActions = {}
 	while self.chainAction do
 		self.chainAction = false -- Set by actions
-		for i = 1, #self.program do
-			if self.program[i].trigger.acceptFunc(self) and not AllSkip(self, self.program[i].actions) then
-				ExecuteNextCommand(self, i)
-				break
+		if self.chainTriggerIndex then
+			ExecuteNextCommand(self, self.chainTriggerIndex)
+		else
+			for i = 1, #self.program do
+				if self.program[i].trigger.acceptFunc(self) and not AllSkip(self, self.program[i].actions) then
+					ExecuteNextCommand(self, i)
+					break
+				end
 			end
 		end
 	end

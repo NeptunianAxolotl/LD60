@@ -1,12 +1,16 @@
 
 local def = {
 	image = "robot_goal",
-	imageGoalDone = "robot_goal_done",
-	goalFunc = function (self)
+	imageFunc = function (self)
+		return self.goalDone and "robot_goal_done" or "robot_goal"
+	end,
+	updateFunc = function (self)
 		local other = TerrainHandler.GetMobileObjectAt(self.pos)
 		if other and other.IsRobot() and other.HasArrived() then
-			return true
+			self.goalDone = true
+			return
 		end
+		self.goalDone = false
 	end,
 }
 

@@ -3,10 +3,13 @@ local BlockDefs = require("defs/blockDefs")
 
 local function NewBlock(self)
 	self.def = BlockDefs[self.blockType]
+	if self.def.initFunc then
+		self.def.initFunc(self)
+	end
 	
 	function self.Update(dt)
-		if self.def.goalFunc then
-			self.goalDone = self.def.goalFunc(self)
+		if self.def.updateFunc then
+			self.def.updateFunc(self)
 		end
 		return self.toDestroy
 	end
@@ -24,7 +27,7 @@ local function NewBlock(self)
 	end
 	
 	function self.DoMoveOnto(object)
-		if self.def.isBlocking then
+		if self.def.isBlocking or (self.def.blockingFunc and self.def.blockingFunc(self)) then
 			return true
 		end
 	end
@@ -56,11 +59,9 @@ local function NewBlock(self)
 		drawQueue:push({y=self.pos[2]; f=function()
 			local drawPos = LevelHandler.GridToWorld(self.pos)
 			local drawRot = util.CardinalToDirection(self.direction)
-			local image = self.def.image
-			if self.goalDone then
-				image = self.def.imageGoalDone
-			end
-			Resources.DrawImage(image, drawPos[1], drawPos[2], drawRot)
+			local image = self.def.imageFunc and self.def.imageFunc(self) or self.def.image
+			local color = self.def.drawColorFunc and self.def.drawColorFunc(self)
+			Resources.DrawImage(image, drawPos[1], drawPos[2], drawRot, false, false, color)
 		end})
 	end
 	

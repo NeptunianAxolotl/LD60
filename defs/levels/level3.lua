@@ -39,7 +39,7 @@ return {
 				},
 				{
 					trigger = "paint",
-					actions = {"left","paint_up"},
+					actions = {"paint_up","left"},
 				},
 				{
 					trigger = "wall_front",

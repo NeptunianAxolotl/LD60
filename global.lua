@@ -34,6 +34,15 @@ local globals = {
 	TEXT_COL            = {9/255, 11/255, 17/255},
 	FLOATING_TEXT_COL   = {0.95,0.95,0.9},
 	
+	DOOR_ON_COLOR = {
+		{0.2, 0.95, 0.2},
+	},
+	DOOR_OFF_COLOR = {
+		{0.1, 0.45, 0.1},
+	},
+	DOOR_CLOSE_DELAY = 0.3,
+	DOOR_OPEN_DELAY = 0.1,
+	
 	TILE_SIZE = 100,
 	COMMAND_DRAW_SIZE = 50,
 	VIEW_PADDING = 50,
@@ -41,13 +50,13 @@ local globals = {
 	
 	SAVE_ORDER = {
 		"name", "humanName", "description",
-		"dimensions",
+		"dimensions", "doorOpenState",
 		"player", "robots", "blocks",
 		"pos", "direction",
 		"swapTrigger", "swapAction",
 		"trigger", "actions",
 	},
-	SAVE_INLINE = {"pos", "dimensions", "actions", "swapAction"},
+	SAVE_INLINE = {"pos", "dimensions", "doorOpenState", "actions", "swapAction"},
 	
 	BUFFER_KEY_LEEWAY = 0.16,
 	ARRIVAL_LEEWAY = 0.05,
