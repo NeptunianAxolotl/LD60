@@ -62,6 +62,7 @@ def.spawnKey = {
 	a = "player_goal",
 	s = "robot_goal",
 	u = "paint",
+	i = "fire",
 	f = "door",
 	v = "button_open",
 	b = "button_close",
@@ -75,6 +76,7 @@ F - Fast Robot
 A - Player Goal
 S - Robot Goal
 U - Paint
+I - Fire
 
 G - Door type select
 F - Door

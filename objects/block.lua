@@ -32,6 +32,9 @@ local function NewBlock(self)
 		if self.def.isBlocking or (self.def.blockingFunc and self.def.blockingFunc(self)) then
 			return true
 		end
+		if object.GetType() == "player" and self.def.playerBlocking then
+			return true
+		end
 	end
 	
 	function self.TryPickup(other)
