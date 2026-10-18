@@ -36,7 +36,7 @@ function api.Update(dt)
 	if not self.world.GetGameOver() then
 		if not PlayerHandler.GetPlayer() and not LevelHandler.InEditMode() then
 			self.world.SetGameOver(false, "player_died")
-		elseif TerrainHandler.GoalSatisfied() then
+		elseif PlayerHandler.GoalSatisfied() and RobotHandler.GoalSatisfied() then
 			self.world.SetGameOver(true, "all_charging")
 		end
 	end

@@ -239,6 +239,11 @@ local function NewRobot(self)
 		return true
 	end
 	
+	function self.GoalSatisfied()
+		local block = TerrainHandler.GetBlockAt(self.pos)
+		return block and block.GoalSatisfied()
+	end
+	
 	function self.Export(objList)
 		objList[#objList + 1] = {
 			name = self.robotType,

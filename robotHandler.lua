@@ -34,6 +34,10 @@ function api.GetRobotAt(pos)
 	return IterableMap.GetFirstSatisfies(self.robots, "IsAtPos", pos)
 end
 
+function api.GoalSatisfied()
+	return IterableMap.IfAllSatisfy(self.robots, "GoalSatisfied")
+end
+
 function api.Update(dt)
 	self.commandDt = util.UpdateTimer(self.commandDt, dt)
 	IterableMap.ApplySelf(self.robots, "Update", dt, not self.commandDt)

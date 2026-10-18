@@ -75,6 +75,10 @@ function api.GetPlayerAt(pos)
 	end
 end
 
+function api.GoalSatisfied()
+	return self.player and self.player.GoalSatisfied()
+end
+
 function api.Update(dt)
 	if not self.player then
 		return

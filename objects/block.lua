@@ -24,9 +24,6 @@ local function NewBlock(self)
 	end
 	
 	function self.GoalSatisfied()
-		if not self.def.goalFunc then
-			return true
-		end
 		return self.goalDone
 	end
 	

@@ -79,6 +79,11 @@ local function NewPlayer(self, position, direction)
 		return false
 	end
 	
+	function self.GoalSatisfied()
+		local block = TerrainHandler.GetBlockAt(self.pos)
+		return block and block.GoalSatisfied()
+	end
+	
 	function self.GetType()
 		return "player"
 	end
