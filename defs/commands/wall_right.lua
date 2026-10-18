@@ -1,5 +1,7 @@
 local def = {
 	image = "cmd_wall_right",
+	humanName = "Blocked on Right",
+	description = "Triggers when a wall, box or closed door is directly to the right of the robot.",
 	color = {0.2, 0.2, 0.2},
 	acceptFunc = function (self)
 		local object = self.BlockInRelativeDirection(1)

@@ -245,11 +245,11 @@ function api.KeyPressed(key, scancode, isRepeat)
 	elseif key == "e" then
 		self.editor.direction = (self.editor.direction - 1)%4
 		return true
-	elseif key == "t" then
+	elseif key == "y" then
 		self.editor.commandIndex = (self.editor.commandIndex or 0)%(#EditorDefs.commandBlocks) + 1
 		self.editor.tile = EditorDefs.commandBlocks[self.editor.commandIndex]
 		return true
-	elseif key == "y" then
+	elseif key == "t" then
 		self.editor.commandIndex = ((self.editor.commandIndex or 0) - 2)%(#EditorDefs.commandBlocks) + 1
 		self.editor.tile = EditorDefs.commandBlocks[self.editor.commandIndex]
 		return true

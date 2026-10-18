@@ -444,16 +444,14 @@ local function NewRobot(self)
 			love.graphics.setColor(Global.PANEL_BORDER_COL)
 			love.graphics.rectangle("line", offsetX, offsetY - 3, Global.COMMAND_DRAW_SIZE, 6, 4, 4, 16)
 			
-			GameHandler.DrawCommandBox(offsetX, offsetY, highlight, scale, lastTrigger)
-			Resources.DrawImage(self.program[i].trigger.image, offsetX, offsetY, false, false, scale)
+			GameHandler.DrawCommandBox(self.program[i].trigger.name, offsetX, offsetY, highlight, scale, 1, lastTrigger, false, false, false, self)
 			offsetX = offsetX + Global.COMMAND_DRAW_SIZE + 20
 			for j = 1, #actions do
 				local lastAction = (self.lastStepActions and self.lastStepActions[i] and self.lastStepActions[i][j])
 				local nextAction = (j == (self.nextAction[i] or 1))
 				local highlight = CheckSelfTargetHighlight(self, self.swapAction and self.swapAction[1] == i and self.swapAction[2] == j, "action")
 				local scale = lastAction and ((self.prevCommandDt or 0)*0.6 + 1) or 1
-				GameHandler.DrawCommandBox(offsetX, offsetY, highlight, scale, lastAction, nextAction, lastAction and self.prevCommandDt and self.prevCommandDt / Global.PREV_COMMAND_PULSE_TIME)
-				Resources.DrawImage(actions[j].image, offsetX, offsetY, false, false, scale)
+				GameHandler.DrawCommandBox(actions[j].name, offsetX, offsetY, highlight, scale, 1, lastAction, nextAction, lastAction and self.prevCommandDt and self.prevCommandDt / Global.PREV_COMMAND_PULSE_TIME)
 				offsetX = offsetX + Global.COMMAND_DRAW_SIZE + 5
 			end
 			offsetY = offsetY + Global.COMMAND_DRAW_SIZE + 10

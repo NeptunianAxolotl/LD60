@@ -1,5 +1,7 @@
 local def = {
 	image = "cmd_empty",
+	humanName = "Empty",
+	description = "An empty slot.",
 	isEmpty = true,
 	skipFunc = function (self)
 		return true
