@@ -6,6 +6,7 @@ local def = {
 	levelOrder = {
 		"level1",
 		"level2_alt",
+		"level3",
 		"test",
 	}
 }
