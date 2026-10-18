@@ -51,7 +51,7 @@ function api.KeyPressed(key, scancode, isRepeat)
 	self.bufferKey = key
 	TryMove()
 	if key == "space" then
-		self.player.DropPaint()
+		self.player.DropOrCleanPaint()
 		return true
 	end
 end
@@ -59,6 +59,9 @@ end
 function api.MousePressed(mx, my, button)
 	if not self.player then
 		return
+	end
+	if button == 2 then
+		self.player.DropOrCleanPaint()
 	end
 end
 

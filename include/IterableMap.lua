@@ -47,7 +47,7 @@ function IterableMap.AddToGrid(self, data)
 end
 
 function IterableMap.RemoveFromGrid(self, data)
-	local x, y = self.dataByKey[key].pos[1], self.dataByKey[key].pos[2]
+	local x, y = data.pos[1], data.pos[2]
 	self.gridKey[x] = self.gridKey[x] or {}
 	self.gridKey[x][y] = nil
 end
