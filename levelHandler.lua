@@ -205,13 +205,29 @@ function api.KeyPressed(key, scancode, isRepeat)
 	elseif key == "k" and (love.keyboard.isDown("lctrl") or love.keyboard.isDown("rctrl")) then
 		self.saveLevelGetName = true
 	elseif key == "left" then
-		MoveLevel({-1, 0})
+		if (love.keyboard.isDown("lctrl") or love.keyboard.isDown("rctrl")) then
+			self.dimensions[1] = math.max(3, self.dimensions[1] - 1)
+		else
+			MoveLevel({-1, 0})
+		end
 	elseif key == "right" then
-		MoveLevel({1, 0})
+		if (love.keyboard.isDown("lctrl") or love.keyboard.isDown("rctrl")) then
+			self.dimensions[1] = self.dimensions[1] + 1
+		else
+			MoveLevel({1, 0})
+		end
 	elseif key == "up" then
-		MoveLevel({0, -1})
+		if (love.keyboard.isDown("lctrl") or love.keyboard.isDown("rctrl")) then
+			self.dimensions[2] = math.max(3, self.dimensions[2] - 1)
+		else
+			MoveLevel({0, -1})
+		end
 	elseif key == "down" then
-		MoveLevel({0, 1})
+		if (love.keyboard.isDown("lctrl") or love.keyboard.isDown("rctrl")) then
+			self.dimensions[2] = self.dimensions[2] + 1
+		else
+			MoveLevel({0, 1})
+		end
 	end
 	
 	if not api.InEditMode() then
@@ -299,7 +315,8 @@ Ctrl+J - Edit mode
 Ctrl+K - Save level
 Ctrl+L - Load level
 
-Arrow keys - Move
+Arrows - Move
+Ctrl+Arrows - Size
 E,R - Rotate
 T,Y - Place command
 Z - Delete
