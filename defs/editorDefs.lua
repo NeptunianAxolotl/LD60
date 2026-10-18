@@ -23,6 +23,8 @@ local def = {
 				local params = {
 					program = data.program,
 					humanName = data.humanName,
+					swapAction = data.swapAction,
+					swapTrigger = data.swapTrigger,
 				}
 				RobotHandler.AddRobot(data.name, data.pos, data.direction, params)
 			end,

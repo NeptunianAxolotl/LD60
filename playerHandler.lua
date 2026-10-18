@@ -1,4 +1,6 @@
 
+local CommandDefs = util.LoadDefDirectory("defs/commands")
+
 local NewPlayer = require("objects/player")
 
 local self = {}
@@ -33,8 +35,46 @@ function api.PickupCommand(command)
 	self.commandQueue[#self.commandQueue + 1] = command
 end
 
+function api.GetTargetForCommand()
+	if not self.player then
+		return false
+	end
+	local command = self.commandQueue[1]
+	if not command then
+		return
+	end
+	local directions = {0, 1, -1, 2}
+	for i = 1, #directions do
+		local candidate = self.player.ObjInRelativeDirection(directions[i])
+		if candidate and candidate.IsRobot() then
+			if CommandDefs[command].executeFunc and candidate.CanSwapAction() then
+				return candidate
+			end
+			if CommandDefs[command].acceptFunc and candidate.CanSwapTrigger() then
+				return candidate
+			end
+		end
+	end
+	return false
+end
+
 function api.GetCommandQueue()
 	return self.commandQueue
+end
+
+local function TrySwapCommand()
+	local target = api.GetTargetForCommand()
+	if not target then
+		return
+	end
+	local command = self.commandQueue[1]
+	for i = 1, #self.commandQueue do
+		self.commandQueue[i] = self.commandQueue[i + 1]
+	end
+	local newCommand = target.SwapCommand(command)
+	if newCommand and not CommandDefs[newCommand].isEmpty then
+		self.commandQueue[#self.commandQueue + 1] = newCommand
+	end
 end
 
 local function TryMove()
@@ -67,6 +107,9 @@ end
 function api.MousePressed(mx, my, button)
 	if not self.player then
 		return
+	end
+	if button == 1 then
+		TrySwapCommand()
 	end
 	if button == 2 then
 		self.player.DropOrCleanPaint()

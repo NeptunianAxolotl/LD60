@@ -39,16 +39,19 @@ function api.Update(dt)
 	end
 end
 
-function api.DrawCommandBox(x, y)
-	x, y = x - Global.COMMAND_DRAW_SIZE/2, y - Global.COMMAND_DRAW_SIZE/2
-	love.graphics.setColor(Global.PANEL_COL)
-	love.graphics.rectangle("fill", x, y, Global.COMMAND_DRAW_SIZE, Global.COMMAND_DRAW_SIZE, 4, 4, 16)
-	love.graphics.setColor(Global.PANEL_BORDER_COL)
-	love.graphics.rectangle("line", x, y, Global.COMMAND_DRAW_SIZE, Global.COMMAND_DRAW_SIZE, 4, 4, 16)
+function api.DrawCommandBox(x, y, highlight, scale)
+	love.graphics.setLineWidth(3*(scale or 1))
+	highlight = highlight or 0
+	local size = (scale or 1)*Global.COMMAND_DRAW_SIZE
+	x, y = x - size/2, y - size/2
+	love.graphics.setColor((highlight >= 2) and Global.BUTTON_HIGHLIGHT or Global.BUTTON_BACK)
+	love.graphics.rectangle("fill", x, y, size, size, 4, 4, 16)
+	love.graphics.setColor((highlight >= 1) and Global.HOVER_HIGHLIGHT or Global.PUSH_BUTTON_BORDER)
+	love.graphics.rectangle("line", x, y, size, size, 4, 4, 16)
 end
 
 function api.GetRobotCommandsOffset()
-	return LevelHandler.GetLevelData().description and 430 or 180
+	return LevelHandler.GetLevelData().description and 410 or 160
 end
 
 function api.DrawInterface()
@@ -59,8 +62,8 @@ function api.DrawInterface()
 	love.graphics.rectangle("line", Global.WINDOW_X - Global.UI_WIDTH, -1000, 1200, 3000, 4, 4, 16)
 	
 	local levelData = LevelHandler.GetLevelData()
-	local offsetY = 120
-	Font.SetSize(0)
+	local offsetY = 100
+	Font.SetSize(1)
 	love.graphics.setColor(Global.TEXT_COL)
 	love.graphics.printf(levelData.humanName, Global.WINDOW_X - Global.UI_WIDTH, 30, Global.UI_WIDTH, "center")
 	
@@ -68,16 +71,21 @@ function api.DrawInterface()
 		Font.SetSize(4)
 		love.graphics.printf(levelData.description, Global.WINDOW_X - Global.UI_WIDTH + 20, offsetY, Global.UI_WIDTH - 28, "left")
 	end
-	offsetY = offsetY + api.GetRobotCommandsOffset() - 160
+	offsetY = offsetY + api.GetRobotCommandsOffset() - 150
 	
 	local commandQueue = PlayerHandler.GetCommandQueue()
 	Font.SetSize(3)
 	love.graphics.printf("Chips:", Global.WINDOW_X - Global.UI_WIDTH + 20, offsetY, Global.UI_WIDTH - 40, "left")
 	local offsetX = Global.WINDOW_X - Global.UI_WIDTH + 130
+	local CMD_SCALE = 0.75
 	for i = 1, #commandQueue do
-		api.DrawCommandBox(offsetX, offsetY + Global.COMMAND_DRAW_SIZE*0.4)
-		Resources.DrawImage(CommandDefs[commandQueue[i]].image, offsetX, offsetY + Global.COMMAND_DRAW_SIZE*0.4)
-		offsetX = offsetX + Global.COMMAND_DRAW_SIZE + 5
+		local highlight = (i == 1) and 1
+		if highlight and PlayerHandler.GetTargetForCommand() then
+			highlight = 2
+		end
+		api.DrawCommandBox(offsetX, offsetY + Global.COMMAND_DRAW_SIZE*0.38, highlight, CMD_SCALE)
+		Resources.DrawImage(CommandDefs[commandQueue[i]].image, offsetX, offsetY + Global.COMMAND_DRAW_SIZE*0.38, false, false, CMD_SCALE)
+		offsetX = offsetX + Global.COMMAND_DRAW_SIZE*CMD_SCALE + 5
 	end
 	offsetY = offsetY + 60
 	

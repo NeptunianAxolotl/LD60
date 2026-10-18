@@ -94,6 +94,35 @@ local function GetLastCommandSpeed(self)
 	return speed
 end
 
+local function InitSwapSlot(self)
+	if self.params.swapTrigger then
+		for i = 1, #self.params.program do
+			if self.params.program[i].trigger == self.params.swapTrigger then
+				self.swapTrigger = i
+				return
+			end
+		end
+	elseif self.params.swapAction then
+		for i = 1, #self.params.program do
+			if self.params.program[i].trigger == self.params.swapAction.trigger then
+				self.swapAction = {i, self.params.swapAction.slot}
+				return
+			end
+		end
+	end
+end
+
+local function CheckSelfTargetHighlight(self, highlight)
+	if not highlight then
+		return false
+	end
+	local target = PlayerHandler.GetTargetForCommand()
+	if target and self.map_key == target.map_key then
+		return 2
+	end
+	return 1
+end
+
 local function NewRobot(self)
 	self.def = RobotDefs[self.robotType]
 	self.commandSpeed = 1
@@ -102,6 +131,7 @@ local function NewRobot(self)
 	self.program = InitProgram(self.params.program)
 	self.nextAction = {}
 	self.registerValues = {}
+	InitSwapSlot(self)
 	
 	function self.ObjInDirection(direction)
 		local newPos = util.Add(self.pos, util.CardinalToVector(direction))
@@ -236,13 +266,37 @@ local function NewRobot(self)
 		return block and block.GoalSatisfied()
 	end
 	
+	function self.CanSwapTrigger()
+		return self.swapTrigger
+	end
+	
+	function self.CanSwapAction()
+		return self.swapAction
+	end
+	
+	function self.SwapCommand(command)
+		if self.swapTrigger then
+			local oldCommand = self.program[self.swapTrigger].trigger.name
+			self.program[self.swapTrigger].trigger = CommandDefs[command]
+			return oldCommand
+		end
+		if self.swapAction then
+			local oldCommand = self.program[self.swapAction[1]].actions[self.swapAction[2]].name
+			self.program[self.swapAction[1]].actions[self.swapAction[2]] = CommandDefs[command]
+			return oldCommand
+		end
+	end
+	
 	function self.Export(objList)
-		objList[#objList + 1] = {
+		local data = {
 			name = self.robotType,
 			pos = self.pos,
 			direction = self.direction,
-			params = self.params,
 		}
+		for k, v in pairs(self.params) do
+			data[k] = v
+		end
+		objList[#objList + 1] = data
 	end
 	
 	function self.DrawProgram(drawPos)
@@ -260,17 +314,19 @@ local function NewRobot(self)
 			local actions = self.program[i].actions
 			local lastTrigger = (self.lastStepTriggers and self.lastStepTriggers[i])
 			local color = (lastTrigger and {1, 0.5, 0.5}) or self.program[i].trigger.color or {0.85, 0.85, 0.85}
+			local highlight = CheckSelfTargetHighlight(self, (self.swapTrigger == i))
 			love.graphics.setColor(Global.PANEL_BORDER_COL)
 			love.graphics.rectangle("line", offsetX, offsetY - 3, Global.COMMAND_DRAW_SIZE, 6, 4, 4, 16)
 			
-			GameHandler.DrawCommandBox(offsetX, offsetY)
+			GameHandler.DrawCommandBox(offsetX, offsetY, highlight)
 			Resources.DrawImage(self.program[i].trigger.image, offsetX, offsetY, false, false, false, color)
 			offsetX = offsetX + Global.COMMAND_DRAW_SIZE + 20
 			for j = 1, #actions do
 				local lastAction = (self.lastStepActions and self.lastStepActions[i] and self.lastStepActions[i][j])
 				local nextAction = (j == (self.nextAction[i] or 1))
 				local color = (lastAction and {1, 0, 0}) or (nextAction and {0, 0, 0}) or {0.35, 0.35, 0.35}
-				GameHandler.DrawCommandBox(offsetX, offsetY)
+				local highlight = CheckSelfTargetHighlight(self, self.swapAction and self.swapAction[1] == i and self.swapAction[2] == j)
+				GameHandler.DrawCommandBox(offsetX, offsetY, highlight)
 				Resources.DrawImage(actions[j].image, offsetX, offsetY, false, false, false, color)
 				offsetX = offsetX + Global.COMMAND_DRAW_SIZE + 5
 			end

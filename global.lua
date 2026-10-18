@@ -8,7 +8,7 @@ local globals = {
 	
 	PUSH_BUTTON_BORDER = {61/255, 149/255, 124/255},
 	BUTTON_HIGHLIGHT = {198/255, 206/255, 105/255},
-	BUTTON_BACK = {92/255, 185/255, 175/255},
+	BUTTON_BACK = {72/255, 145/255, 125/255},
 	
 	HINT_BACK = {198/255, 206/255, 105/255},
 	HINT_OUTLINE = {74/255, 91/255, 32/255},
@@ -19,7 +19,7 @@ local globals = {
 	OUTLINE_COL = {0/255, 94/255, 182/255},
 	OUTLINE_DISABLE_COL = {50/255, 50/255, 50/255},
 	OUTLINE_FLASH_COL = {45/255,48/255,61/255},
-	OUTLINE_HIGHLIGHT_COL = {94/255, 120/255, 142/255},
+	OUTLINE_HIGHLIGHT_COL = {61/255, 149/255, 124/255},
 	AFFINITY_COLOR = {0, 0, 0},
 	
 	BUTTON_COL = {76/255, 156/255, 185/255},
@@ -40,19 +40,21 @@ local globals = {
 	UI_WIDTH = 350,
 	
 	SAVE_ORDER = {
-		"humanName", "dimensions",
+		"name", "humanName", "description",
+		"dimensions",
 		"player", "robots", "blocks",
-		"name", "humanName", "pos", "direction",
+		"pos", "direction",
+		"swapTrigger", "swapAction",
 		"trigger", "actions",
 	},
-	SAVE_INLINE = {"pos", "dimensions", "actions"},
+	SAVE_INLINE = {"pos", "dimensions", "actions", "swapAction"},
 	
 	BUFFER_KEY_LEEWAY = 0.16,
 	ARRIVAL_LEEWAY = 0.05,
 	PLAYER_MOVE_TIME = 0.3,
 	ROBOT_ANIMATE_TIME = 0.3,
 	ROBOT_MOVE_TIME = 0.8,
-	COMMAND_QUEUE_LIMIT = 1,
+	COMMAND_QUEUE_LIMIT = 3,
 	
 	WINDOW_X = 1960,
 	WINDOW_Y = 1080,
