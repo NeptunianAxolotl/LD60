@@ -36,12 +36,16 @@ local globals = {
 	
 	DOOR_ON_COLOR = {
 		{0.2, 0.95, 0.2},
+		{0.95, 0.2, 0.2},
+		{0.2, 0.2, 0.95},
 	},
 	DOOR_OFF_COLOR = {
 		{0.1, 0.45, 0.1},
+		{0.45, 0.1, 0.1},
+		{0.1, 0.1, 0.45},
 	},
 	DOOR_TYPE_COUNT = 3,
-	DOOR_CLOSE_DELAY = 0.3,
+	DOOR_CLOSE_DELAY = 0.25,
 	DOOR_OPEN_DELAY = 0.1,
 	
 	TILE_SIZE = 100,
@@ -51,7 +55,7 @@ local globals = {
 	
 	SAVE_ORDER = {
 		"name", "humanName", "description",
-		"dimensions", "doorOpenState",
+		"dimensions", "doorOpenState", "doorIndex",
 		"player", "robots", "blocks",
 		"pos", "direction",
 		"swapTrigger", "swapAction",
@@ -60,7 +64,7 @@ local globals = {
 	SAVE_INLINE = {"pos", "dimensions", "doorOpenState", "actions", "swapAction"},
 	
 	BUFFER_KEY_LEEWAY = 0.16,
-	ARRIVAL_LEEWAY = 0.05,
+	ARRIVAL_LEEWAY = 0.1,
 	PLAYER_MOVE_TIME = 0.3,
 	ROBOT_ANIMATE_TIME = 0.3,
 	ROBOT_MOVE_TIME = 0.8,

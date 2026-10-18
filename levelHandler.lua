@@ -134,11 +134,13 @@ function api.MousePressed(mx, my, button)
 		return
 	end
 	for spawnType, spawnData in pairs(EditorDefs.spawnTypes) do
-		if spawnData.defs[self.editor.tile] then
+		local toSpawn = spawnData.defs[self.editor.tile]
+		if toSpawn then
 			local data = {
 				name = self.editor.tile,
 				pos = clickPos,
 				direction = self.editor.direction,
+				doorIndex = toSpawn.needDoorIndex and self.editor.doorIndex,
 			}
 			spawnData.spawnFunc(data)
 			self.prevClickPos = clickPos
@@ -222,6 +224,9 @@ function api.KeyPressed(key, scancode, isRepeat)
 		self.editor.commandIndex = ((self.editor.commandIndex or 0) - 2)%(#EditorDefs.commandBlocks) + 1
 		self.editor.tile = EditorDefs.commandBlocks[self.editor.commandIndex]
 		return true
+	elseif key == "g" then
+		self.editor.doorIndex = self.editor.doorIndex%Global.DOOR_TYPE_COUNT + 1
+		return true
 	elseif key == "z" then
 		self.editor.tile = "delete"
 		return true
@@ -279,6 +284,7 @@ local function DrawEditor()
 Editing Level
 Piece: ]] .. self.editor.tile .. [[ 
 Direction: ]] .. self.editor.direction .. [[ 
+Door: ]] .. self.editor.doorIndex .. [[ 
 
 Ctrl+J - Edit mode
 Ctrl+K - Save level
@@ -320,7 +326,7 @@ function api.Draw(drawQueue)
 	drawQueue:push({y=0; f=function()
 		local drawPos = api.GridToWorld(mousePos)
 		local drawRot = util.CardinalToDirection(self.editor.direction)
-		local color = toDraw.drawColorFunc and toDraw.drawColorFunc({doorIndex = self.doorIndex})
+		local color = toDraw.drawColorFunc and toDraw.drawColorFunc({doorIndex = self.editor.doorIndex})
 		Resources.DrawImage(toDraw.image, drawPos[1], drawPos[2], drawRot, 0.5, false, color)
 	end})
 end

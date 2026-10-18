@@ -91,7 +91,7 @@ function api.SetDoorOpen(doorIndex, newState, force)
 	end
 end
 
-function api.GetDoorOpen(doorIndex)
+function api.GetDoorWantOpen(doorIndex)
 	return self.doorOpen[doorIndex] and not self.doorOpenTimer[doorIndex]
 end
 

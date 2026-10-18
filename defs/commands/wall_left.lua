@@ -3,7 +3,7 @@ local def = {
 	color = {0.2, 0.2, 0.2},
 	acceptFunc = function (self)
 		local object = self.BlockInRelativeDirection(-1)
-		return object and object.GetType() == "wall"
+		return object and object.WallTrigger and object.WallTrigger()
 	end
 }
 

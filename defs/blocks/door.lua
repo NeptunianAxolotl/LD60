@@ -2,6 +2,7 @@
 local def = {
 	image = "door",
 	needDoorIndex = true,
+	triggerAsWall = true,
 	blockingFunc = function (self)
 		return not self.open
 	end,
@@ -12,8 +13,8 @@ local def = {
 		local open = (self.open or self.closeDelayDt)
 		return open and "door_open" or "door"
 	end,
-	updateFunc = function (self)
-		self.closeDelayDt = util.UpdateTimer(self.closeDelayDt)
+	updateFunc = function (self, dt)
+		self.closeDelayDt = util.UpdateTimer(self.closeDelayDt, dt)
 		local wantOpen = TerrainHandler.GetDoorWantOpen(self.doorIndex)
 		if wantOpen == self.open then
 			return
@@ -25,11 +26,12 @@ local def = {
 			if blockage then
 				if blockage.GetType() == "player" then
 					PlayerHandler.KillPlayer()
+					self.open = wantOpen -- Close instantly?
 				end
 				return
 			end
 			self.open = wantOpen
-			self.closeDelayDt = GLOBAL.DOOR_CLOSE_DELAY
+			self.closeDelayDt = Global.DOOR_CLOSE_DELAY
 		end
 	end,
 	initFunc = function (self)

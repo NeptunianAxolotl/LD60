@@ -11,7 +11,7 @@ local function NewBlock(self)
 	
 	function self.Update(dt)
 		if self.def.updateFunc then
-			self.def.updateFunc(self)
+			self.def.updateFunc(self, dt)
 		end
 		return self.toDestroy
 	end
@@ -47,6 +47,16 @@ local function NewBlock(self)
 	
 	function self.GetType()
 		return self.blockType
+	end
+	
+	function self.WallTrigger()
+		if not self.def.triggerAsWall then
+			return false
+		end
+		if self.def.blockingFunc and not self.def.blockingFunc(self) then
+			return false
+		end
+		return true
 	end
 	
 	function self.Export(objList)
