@@ -8,6 +8,22 @@ local function NewBlock(self)
 		self.direction = self.def.fixedDirection
 	end
 	
+	if self.def.randomRotation then
+		self.randomRotation = math.random()*self.def.randomRotation*2 - self.def.randomRotation
+	end
+	if self.def.randomScale then
+		self.randomScale = {
+			1 + math.random()*self.def.randomScale*2 - self.def.randomScale,
+			1 + math.random()*self.def.randomScale*2 - self.def.randomScale,
+		}
+	end
+	if self.def.randomColor then
+		local blue = math.pow(math.random()*0.9, 2)
+		local colPos = util.Mult(1 - blue, util.RandomPointInAnnulus(0.7, 0.9, 0, math.pi/2))
+		colPos[3] = blue
+		self.randomColor = colPos
+	end
+	
 	if self.def.initFunc then
 		self.def.initFunc(self)
 	end
@@ -83,10 +99,10 @@ local function NewBlock(self)
 	function self.Draw(drawQueue)
 		drawQueue:push({y=self.pos[2]; f=function()
 			local drawPos = LevelHandler.GridToWorld(self.pos)
-			local drawRot = util.CardinalToDirection(self.direction)
+			local drawRot = util.CardinalToDirection(self.direction) + (self.randomRotation or 0)
 			local image = self.def.imageFunc and self.def.imageFunc(self) or self.def.image
-			local color = self.def.drawColorFunc and self.def.drawColorFunc(self)
-			Resources.DrawImage(image, drawPos[1], drawPos[2], drawRot, false, false, color)
+			local color = self.def.drawColorFunc and self.def.drawColorFunc(self) or self.randomColor
+			Resources.DrawImage(image, drawPos[1], drawPos[2], drawRot, false, self.randomScale, color)
 		end})
 	end
 	
