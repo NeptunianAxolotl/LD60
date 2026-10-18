@@ -400,6 +400,10 @@ local function NewRobot(self)
 		self.pos = util.Add(self.pos, offset)
 	end
 	
+	function self.GetPos()
+		return self.pos
+	end
+	
 	function self.Export(objList)
 		local data = {
 			name = self.robotType,

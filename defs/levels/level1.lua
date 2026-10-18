@@ -1,7 +1,7 @@
 return {
 	humanName = "Painting",
 	description = [[
-Use Space/Right Mouse to put paint on the floor or to remove it.
+Use Space/Enter or Right Mouse to put paint on the floor or to remove it.
 
 This robot turns left when it encounters paint. Stay of of its way as it will crush you. Send everyone to their charging ports.
 ]],

@@ -2,8 +2,8 @@ return {
 	humanName = "Standby Mode",
 	description = [[
 Run over a chip to pick it up.
-Move next to a robot and press E or Left Mouse to swap in into the slot.
-Chips can also be dropped.
+Move next to a robot.
+Press Shift/E or Left Mouse to socket the chip.
 
 This robot has an empty program. Feed it chips to guide it to its charging port.
 ]],

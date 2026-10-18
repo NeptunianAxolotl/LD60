@@ -1,6 +1,13 @@
 return {
-	humanName = "Level 3",
+	humanName = "Slip and Slide",
+	description = [[
+Slidy Bot follows paint while Cleaner Bot tidies it up. Corral both of them to their charging ports. Their programs require adjustment.
+
+Run over a chip to pick it up.
+Use E or Left Mouse to drop it or place it in a nearby robot.
+]],
 	dimensions = {16, 10},
+	doorOpenState = {},
 	player = {
 		{
 			name = "player",
@@ -11,13 +18,14 @@ return {
 	robots = {
 		{
 			name = "basic_robot",
+			humanName = "Slidy Bot",
 			pos = {7, 6},
 			direction = 3,
-			humanName = "Slidy Bot",
+			swapAction = {trigger = "robot_goal", slot = 1},
 			program = {
 				{
 					trigger = "robot_goal",
-					actions = {"wait"},
+					actions = {"empty"},
 				},
 				{
 					trigger = "paint",
@@ -25,15 +33,16 @@ return {
 				},
 				{
 					trigger = "wildcard",
-					actions = {"move","move","left"},
+					actions = {"move", "move", "left"},
 				},
 			},
 		},
 		{
 			name = "basic_robot",
+			humanName = "Cleaner Bot",
 			pos = {10, 5},
 			direction = 3,
-			humanName = "Cleaner Bot",
+			swapAction = {trigger = "paint", slot = 2},
 			program = {
 				{
 					trigger = "robot_goal",
@@ -41,7 +50,7 @@ return {
 				},
 				{
 					trigger = "paint",
-					actions = {"paint_up","left"},
+					actions = {"paint_up", "wait"},
 				},
 				{
 					trigger = "wall_front",
@@ -305,6 +314,10 @@ return {
 			pos = {13, 6},
 			direction = 3,
 		},
+		{
+			name = "cmd_left",
+			pos = {6, 5},
+			direction = 0,
+		},
 	},
-	description = "WSAD or arrows to move.\nSpace/Right Mouse to paint.\n\nDirect all the robots (including yourself) to their designated charging ports.\n\nCtrl+J to toggle editor\nCtrl+R to restart\n",
 }

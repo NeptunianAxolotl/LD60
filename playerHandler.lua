@@ -115,7 +115,7 @@ function api.KeyPressed(key, scancode, isRepeat)
 	end
 	self.bufferKey = key
 	TryMove()
-	if key == "space" then
+	if key == "space" or key == "return" or key == "kpenter" then
 		self.player.DropOrCleanPaint()
 		return true
 	end

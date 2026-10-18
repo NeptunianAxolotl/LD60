@@ -141,6 +141,13 @@ local function NewPlayer(self, position, direction)
 			local drawPos = self.GetDrawPos()
 			local drawRot = util.CardinalToDirection(self.direction)
 			Resources.DrawImage("player", drawPos[1], drawPos[2], drawRot)
+			local target = PlayerHandler.GetTargetForCommand()
+			if target then
+				local targetPos = LevelHandler.GridToWorld(target.GetPos())
+				love.graphics.setLineWidth(5)
+				love.graphics.setColor(Global.HOVER_HIGHLIGHT)
+				love.graphics.rectangle("line", targetPos[1] - Global.TILE_SIZE/2, targetPos[2] - Global.TILE_SIZE/2, Global.TILE_SIZE, Global.TILE_SIZE, 4, 4, 32)
+			end
 		end})
 	end
 	
