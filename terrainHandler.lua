@@ -79,20 +79,32 @@ function api.InteractWithObjectsAt(pos, object, funcName, direction)
 end
 
 function api.SetDoorOpen(doorIndex, newState, force)
-	if newState == self.doorOpen[doorIndex] then
-		return
-	end
-	self.doorOpen[doorIndex] = newState
-	if newState then
-		self.doorOpenTimer[doorIndex] = Global.DOOR_OPEN_DELAY
-	end
 	if force then
-		self.doorOpenTimer[doorIndex] = nil
+		self.doorOpen[doorIndex] = newState
+	end
+	if newState then
+		self.doorWantOpen[doorIndex] = true
+	else
+		self.doorWantClosed[doorIndex] = true
 	end
 end
 
 function api.GetDoorWantOpen(doorIndex)
-	return self.doorOpen[doorIndex] and not self.doorOpenTimer[doorIndex]
+	return self.doorOpen[doorIndex]
+end
+
+local function UpdateDoors()
+	for doorIndex = 1, Global.DOOR_TYPE_COUNT do
+		if self.doorWantOpen[doorIndex] ~= self.doorWantClosed[doorIndex] then
+			if self.doorWantOpen[doorIndex] then
+				self.doorOpen[doorIndex] = true
+			elseif self.doorWantClosed[doorIndex] then
+				self.doorOpen[doorIndex] = false
+			end
+		end
+		self.doorWantOpen[doorIndex] = false
+		self.doorWantClosed[doorIndex] = false
+	end
 end
 
 function api.MoveEverything(offset)
@@ -101,13 +113,8 @@ function api.MoveEverything(offset)
 end
 
 function api.Update(dt)
-	for doorIndex, value in pairs(self.doorOpenTimer) do
-		self.doorOpenTimer[doorIndex] = util.UpdateTimer(value, dt)
-		if not self.doorOpenTimer[doorIndex] then
-			self.doorOpenTimer[doorIndex] = nil
-		end
-	end
 	IterableMap.ApplySelf(self.blocks, "Update", dt)
+	UpdateDoors()
 end
 
 function api.Draw(drawQueue)
@@ -130,7 +137,8 @@ function api.Initialize(world)
 		world = world,
 		blocks = IterableMap.New({gridPos = true}),
 		doorOpen = {},
-		doorOpenTimer = {}
+		doorWantClosed = {},
+		doorWantOpen = {},
 	}
 end
 

@@ -10,29 +10,33 @@ local def = {
 		return Global.DOOR_ON_COLOR[self.doorIndex]
 	end,
 	imageFunc = function (self)
-		local open = (self.open or self.closeDelayDt)
+		local open = self.open
+		if self.closeDelayDt then
+			open = self.oldOpen
+		end
 		return open and "door_open" or "door"
 	end,
 	updateFunc = function (self, dt)
-		self.closeDelayDt = util.UpdateTimer(self.closeDelayDt, dt)
+		self.doorDelayDt = util.UpdateTimer(self.doorDelayDt, dt)
 		local wantOpen = TerrainHandler.GetDoorWantOpen(self.doorIndex)
 		if wantOpen == self.open then
 			return
 		end
-		if wantOpen then
-			self.open = wantOpen -- Open delay happens in TerrainHandler
-		else
+		if not wantOpen then
 			local blockage = TerrainHandler.GetMobileObjectAt(self.pos)
 			if blockage then
 				if blockage.GetType() == "player" then
 					PlayerHandler.KillPlayer()
-					self.open = wantOpen -- Close instantly?
+				else
+					return
 				end
-				return
 			end
-			self.open = wantOpen
-			self.closeDelayDt = Global.DOOR_CLOSE_DELAY
 		end
+		if not self.doorDelayDt then
+			self.oldOpen = self.open
+		end
+		self.open = wantOpen
+		self.doorDelayDt = Global.DOOR_DELAY
 	end,
 	initFunc = function (self)
 		self.open = TerrainHandler.GetDoorWantOpen(self.doorIndex)

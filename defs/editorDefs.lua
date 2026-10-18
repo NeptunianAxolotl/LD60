@@ -64,6 +64,7 @@ def.spawnKey = {
 	i = "fire",
 	h = "box",
 	f = "door",
+	n = "door_reverse",
 	v = "button_open",
 	b = "button_close",
 }
@@ -81,6 +82,7 @@ H - Box
 
 G - Door type select
 F - Door
+N - Reverse Door
 V - Open Button
 B - Close Button
 
