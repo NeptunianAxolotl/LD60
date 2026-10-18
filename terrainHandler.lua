@@ -13,13 +13,14 @@ function api.RemoveBlock(pos)
 	IterableMap.ApplySelf(self.blocks, "IsAtPos", pos)
 end
 
-function api.AddBlock(blockType, pos, direction)
+function api.AddBlock(blockType, pos, direction, params)
 	api.RemoveBlock(pos)
 	local def = BlockDefs[blockType]
 	local blockData = {}
 	blockData.blockType = blockType
 	blockData.pos = pos
 	blockData.direction = direction
+	blockData.params = params or {}
 	IterableMap.Add(self.blocks, NewBlock(blockData))
 end
 

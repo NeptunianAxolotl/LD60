@@ -8,7 +8,10 @@ local def = {
 		blocks = {
 			defs = BlockDefs,
 			spawnFunc = function (data)
-				TerrainHandler.AddBlock(data.name, data.pos, data.direction)
+				local params = {
+					doorIndex = data.doorIndex
+				}
+				TerrainHandler.AddBlock(data.name, data.pos, data.direction, params)
 			end,
 			deleteFunc = function (pos)
 				TerrainHandler.RemoveBlock(pos)

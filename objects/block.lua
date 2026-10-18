@@ -3,6 +3,8 @@ local BlockDefs = require("defs/blockDefs")
 
 local function NewBlock(self)
 	self.def = BlockDefs[self.blockType]
+	self.doorIndex = self.params.doorIndex
+	
 	if self.def.initFunc then
 		self.def.initFunc(self)
 	end

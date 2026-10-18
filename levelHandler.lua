@@ -323,7 +323,7 @@ function api.Draw(drawQueue)
 	drawQueue:push({y=0; f=function()
 		local drawPos = api.GridToWorld(mousePos)
 		local drawRot = util.CardinalToDirection(self.editor.direction)
-		local color = spawnData.defs[self.editor.tile].drawColorFunc and spawnData.defs[self.editor.tile].drawColorFunc
+		local color = spawnData.defs[self.editor.tile].drawColorFunc and spawnData.defs[self.editor.tile].drawColorFunc({doorIndex = self.doorIndex})
 		Resources.DrawImage(toDraw, drawPos[1], drawPos[2], drawRot, 0.5, false, color)
 	end})
 end
@@ -336,6 +336,7 @@ function api.Initialize(world, levelData)
 		tileSize = Global.TILE_SIZE,
 		editor = {
 			direction = 0,
+			doorIndex = 1,
 			tile = "wall",
 		},
 	}

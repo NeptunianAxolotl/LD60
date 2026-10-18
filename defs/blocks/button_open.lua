@@ -1,6 +1,7 @@
 
 local def = {
 	image = "button",
+	needDoorIndex = true,
 	drawColorFunc = function (self)
 		return TerrainHandler.GetDoorOpen(self.doorIndex) and Global.DOOR_OFF_COLOR[self.doorIndex] or Global.DOOR_ON_COLOR[self.doorIndex]
 	end,

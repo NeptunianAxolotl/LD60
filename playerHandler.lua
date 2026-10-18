@@ -41,7 +41,7 @@ function api.GetTargetForCommand()
 	end
 	local command = self.commandQueue[1]
 	if not command then
-		return
+		command = "empty"
 	end
 	local directions = {0, 1, -1, 2}
 	for i = 1, #directions do
@@ -67,7 +67,7 @@ local function TrySwapCommand()
 	if not target then
 		return
 	end
-	local command = self.commandQueue[1]
+	local command = self.commandQueue[1] or "empty"
 	for i = 1, #self.commandQueue do
 		self.commandQueue[i] = self.commandQueue[i + 1]
 	end

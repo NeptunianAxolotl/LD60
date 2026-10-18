@@ -1,6 +1,7 @@
 
 local def = {
 	image = "door",
+	needDoorIndex = true,
 	blockingFunc = function (self)
 		return not self.open
 	end,
