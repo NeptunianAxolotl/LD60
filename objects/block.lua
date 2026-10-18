@@ -28,7 +28,7 @@ local function NewBlock(self)
 		return util.Equal(self.pos, pos)
 	end
 	
-	function self.DoMoveOnto(object)
+	function self.BlockMoveIntoByObject(object, direction)
 		if self.def.isBlocking or (self.def.blockingFunc and self.def.blockingFunc(self)) then
 			return true
 		end

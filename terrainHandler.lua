@@ -62,17 +62,17 @@ function api.GetMobileObjectAt(pos)
 	return false
 end
 
-function api.InteractWithObjectsAt(pos, object, funcName)
+function api.InteractWithObjectsAt(pos, object, funcName, direction)
 	local block = api.GetBlockAt(pos)
-	if block and block[funcName](object) then
+	if block and block[funcName](object, direction) then
 		return block
 	end
 	local robot = RobotHandler.GetRobotAt(pos)
-	if robot and robot[funcName](object) then
+	if robot and robot[funcName](object, direction) then
 		return robot
 	end
 	local player = PlayerHandler.GetPlayerAt(pos)
-	if player and player[funcName](object) then
+	if player and player[funcName](object, direction) then
 		return player
 	end
 	return false

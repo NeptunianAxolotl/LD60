@@ -37,7 +37,7 @@ local function NewPlayer(self, position, direction)
 		end
 		local newPos = util.Add(self.pos, util.CardinalToVector(direction))
 		self.direction = direction
-		if TerrainHandler.InteractWithObjectsAt(newPos, self, "DoMoveOnto") then
+		if TerrainHandler.InteractWithObjectsAt(newPos, self, "BlockMoveIntoByObject", direction) then
 			return true
 		end
 		self.prevPos = self.pos
@@ -48,6 +48,10 @@ local function NewPlayer(self, position, direction)
 	
 	function self.HasArrived()
 		return (not self.moveBlockDt) or self.moveBlockDt < Global.ARRIVAL_LEEWAY
+	end
+	
+	function self.FullyStationary()
+		return (not self.moveBlockDt) or util.Equal(self.pos, self.prevPos)
 	end
 	
 	function self.DropOrCleanPaint()
@@ -81,12 +85,16 @@ local function NewPlayer(self, position, direction)
 		end
 	end
 	
-	function self.DoMoveOnto(object)
+	function self.BlockMoveIntoByObject(object)
 		PlayerHandler.KillPlayer()
 		return false
 	end
 	
 	function self.IsRobot()
+		return false
+	end
+	
+	function self.IsPushable()
 		return false
 	end
 	

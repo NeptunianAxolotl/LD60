@@ -6,6 +6,29 @@ local function SkipAction(self, action)
 	return action.skipFunc and action.skipFunc(self)
 end
 
+local function GetCommandSpeedAndMoveTime(self, action)
+	local commandSpeed = (action or {}).commandSpeed or 1
+	if action.commandType == "move" then
+		commandSpeed = commandSpeed * (self.def.moveSpeed or 1)
+	elseif action.commandType == "turn" then
+		commandSpeed = commandSpeed * (self.def.turnSpeed or 1)
+	else
+		commandSpeed = commandSpeed * (self.def.otherCommandSpeed or 1)
+	end
+	if commandSpeed ~= 1 and commandSpeed ~= 2 and commandSpeed ~= 4 then
+		commandSpeed = 1
+	end
+	
+	local moveTime = Global.ROBOT_ANIMATE_TIME
+	moveTime = moveTime / commandSpeed
+	moveTime = moveTime / ((action.animateSpeed) or 1)
+	if commandSpeed > 1 then
+		local triggerTime = Global.ROBOT_MOVE_TIME / commandSpeed
+		moveTime = util.AverageScalar(moveTime, triggerTime, math.min(1, (commandSpeed - 1)/3))
+	end
+	return commandSpeed, moveTime
+end
+
 local function AllSkip(self, actions)
 	for i = 1, #actions do
 		if not SkipAction(self, actions[i]) then
@@ -41,6 +64,11 @@ local function ExecuteNextCommand(self, index)
 	self.lastStepActions[index][self.nextAction[index]] = true
 	FindNextNonEmpty(self, index)
 	self.previousAction = actionToTake
+	
+	self.commandSpeed, self.maxMoveBlock = GetCommandSpeedAndMoveTime(self, actionToTake)
+	self.moveBlockDt = self.maxMoveBlock
+	self.commandAcc = 0
+	
 	actionToTake.executeFunc(self)
 	if actionToTake.chainToNextTriggerAction and not alreadyExecutedBefore then
 		self.chainAction = true
@@ -106,22 +134,6 @@ local function InitProgram(programDef)
 	return program
 end
 
-local function GetLastCommandSpeed(self)
-	local speed = (self.previousAction or {}).commandSpeed or 1
-	
-	if self.lastCommandType == "move" then
-		speed = speed * self.def.moveSpeed
-	elseif self.lastCommandType == "turn" then
-		speed = speed * self.def.turnSpeed
-	else
-		speed = speed * self.def.otherCommandSpeed
-	end
-	if speed ~= 1 and speed ~= 2 and speed ~= 4 then
-		speed = 1
-	end
-	return speed
-end
-
 local function InitSwapSlot(self)
 	if self.params.swapTrigger then
 		for i = 1, #self.params.program do
@@ -167,6 +179,10 @@ local function NewRobot(self)
 		local checkPos = self.pos
 		for _ = 1, 30 do
 			checkPos = util.Add(checkPos, checkVec)
+			local obj = TerrainHandler.GetMobileObjectAt(checkPos)
+			if obj and obj.WallTrigger and obj.WallTrigger() then
+				return false -- Blocked by boxes as well
+			end
 			local block = TerrainHandler.GetBlockAt(checkPos)
 			if block then 
 				if block.WallTrigger and block.WallTrigger() then
@@ -190,10 +206,41 @@ local function NewRobot(self)
 				return false -- Blocked by walls and doors
 			end
 			local obj = TerrainHandler.GetMobileObjectAt(checkPos)
+			if obj and obj.WallTrigger and obj.WallTrigger() then
+				return false -- Blocked by boxes as well
+			end
 			if obj and obj.GetType() == objType then
 				return obj
 			end
 		end
+	end
+	
+	function self.PushBoxes(direction)
+		local checkVec = util.CardinalToVector(direction)
+		local checkPos = self.pos
+		local boxes = {}
+		for _ = 1, 30 do
+			checkPos = util.Add(checkPos, checkVec)
+			local block = TerrainHandler.GetBlockAt(checkPos)
+			if block and block.WallTrigger and block.WallTrigger() then
+				return false -- Blocked by walls and doors
+			end
+			local obj = TerrainHandler.GetMobileObjectAt(checkPos)
+			if obj and obj.IsPushable() then
+				if not obj.FullyStationary() then
+					return false -- Do not move boxes in motion
+				end
+				boxes[#boxes + 1] = obj -- A box to push
+			elseif obj and obj.IsRobot() then
+				return false -- cannot push through Robots
+			else
+				break -- Free space, start pushing
+			end
+		end
+		for i = 1, #boxes do
+			boxes[i].ForceMove(direction, self.maxMoveBlock)
+		end
+		return true
 	end
 	
 	function self.ObjInDirection(direction)
@@ -220,16 +267,25 @@ local function NewRobot(self)
 		return TerrainHandler.GetBlockAt(self.pos)
 	end
 	
+	function self.ForceMove(direction, moveAnimTime)
+		local newPos = util.Add(self.pos, util.CardinalToVector(direction))
+		self.prevPos = self.pos
+		self.pos = newPos
+		self.moveBlockDt = moveAnimTime
+		self.maxMoveBlock = moveAnimTime
+		return true
+	end
+	
 	function self.Move(direction)
 		if not GameHandler.AllowMovement() then
-			return
+			return false
 		end
 		local newPos = util.Add(self.pos, util.CardinalToVector(direction))
-		if TerrainHandler.InteractWithObjectsAt(newPos, self, "DoMoveOnto") then
-			return
+		if TerrainHandler.InteractWithObjectsAt(newPos, self, "BlockMoveIntoByObject", direction) then
+			return false
 		end
 		self.pos = newPos
-		self.moveBlockDt = Global.ROBOT_ANIMATE_TIME
+		return true
 	end
 	
 	function self.Rotate(direction)
@@ -237,7 +293,6 @@ local function NewRobot(self)
 			return
 		end
 		self.direction = (self.direction + direction)%4
-		self.moveBlockDt = Global.ROBOT_ANIMATE_TIME
 	end
 	
 	function self.GetRegister(index)
@@ -266,27 +321,19 @@ local function NewRobot(self)
 		return (not self.moveBlockDt) or self.moveBlockDt < Global.ARRIVAL_LEEWAY or util.Equal(self.pos, self.prevPos)
 	end
 	
+	function self.FullyStationary()
+		return (not self.moveBlockDt) or util.Equal(self.pos, self.prevPos)
+	end
+	
 	function self.Update(dt, commandUpdate)
 		self.moveBlockDt = util.UpdateTimer(self.moveBlockDt, dt)
-		if commandUpdate then
+		if commandUpdate and self.def.isRobot then
 			self.commandAcc = self.commandAcc + self.commandSpeed
 		end
 		if self.commandAcc >= 4 then
 			self.prevPos = self.pos
 			self.prevDir = self.direction
-			self.lastCommandType = false
 			FindAndExecuteCommand(self)
-			self.commandSpeed = GetLastCommandSpeed(self)
-			self.commandAcc = 0
-			if self.moveBlockDt then
-				self.moveBlockDt = self.moveBlockDt / self.commandSpeed
-				self.moveBlockDt = self.moveBlockDt / ((self.previousAction and self.previousAction.animateSpeed) or 1)
-				if self.commandSpeed > 1 then
-					local triggerTime = Global.ROBOT_MOVE_TIME / self.commandSpeed
-					self.moveBlockDt = util.AverageScalar(self.moveBlockDt, triggerTime, math.min(1, (self.commandSpeed - 1)/3))
-				end
-				self.maxMoveBlock = self.moveBlockDt
-			end
 		end
 	end
 	
@@ -297,10 +344,11 @@ local function NewRobot(self)
 		return util.Equal(self.pos, pos)
 	end
 	
-	function self.DoMoveOnto(object)
-		if self.def.isBlocking then
-			return true
+	function self.BlockMoveIntoByObject(object, direction)
+		if self.def.robotCanPush and object.IsRobot() then
+			return not object.PushBoxes(direction)
 		end
+		return self.def.isBlocking
 	end
 	
 	function self.GetType()
@@ -308,7 +356,15 @@ local function NewRobot(self)
 	end
 	
 	function self.IsRobot()
-		return true
+		return self.def.isRobot
+	end
+	
+	function self.IsPushable()
+		return self.def.robotCanPush
+	end
+	
+	function self.WallTrigger()
+		return self.def.triggerAsWall
 	end
 	
 	function self.GoalSatisfied()
@@ -350,7 +406,7 @@ local function NewRobot(self)
 	end
 	
 	function self.DrawProgram(drawPos)
-		if #self.program == 0 then
+		if #self.program == 0 or not self.def.isRobot then
 			return
 		end
 		offsetY = drawPos[2]
@@ -392,14 +448,16 @@ local function NewRobot(self)
 			if self.moveBlockDt then
 				local prevProp = self.moveBlockDt / self.maxMoveBlock
 				drawPos = util.Average(drawPos, LevelHandler.GridToWorld(self.prevPos), prevProp)
-				if not (self.previousAction and self.previousAction.skipRotationAnimate) then
+				if not (self.previousAction and self.previousAction.skipRotationAnimate) and self.prevDir then
 					drawRot = util.AngleAverageShortest(drawRot, util.CardinalToDirection(self.prevDir), prevProp)
 				end
 			end
 			Resources.DrawImage(self.def.image, drawPos[1], drawPos[2], drawRot)
-			Font.SetSize(3)
-			love.graphics.setColor(0, 0, 0)
-			love.graphics.printf(string.sub(self.humanName, 0, 1), drawPos[1] - 25, drawPos[2] - 15, 50, "center")
+			if self.def.isRobot then
+				Font.SetSize(3)
+				love.graphics.setColor(0, 0, 0)
+				love.graphics.printf(string.sub(self.humanName, 0, 1), drawPos[1] - 25, drawPos[2] - 15, 50, "center")
+			end
 		end})
 	end
 	
