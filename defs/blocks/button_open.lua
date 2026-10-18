@@ -7,7 +7,7 @@ local def = {
 	end,
 	updateFunc = function (self)
 		local other = TerrainHandler.GetMobileObjectAt(self.pos)
-		if other and other.HasArrived() then
+		if other then
 			TerrainHandler.SetDoorOpen(self.doorIndex, true)
 		end
 	end,

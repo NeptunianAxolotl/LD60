@@ -59,6 +59,9 @@ local function NewPlayer(self, position, direction)
 	end
 	
 	function self.DropOrCleanPaint()
+		if not GameHandler.AllowMovement() then
+			return
+		end
 		local dropPos = LevelHandler.WorldToGrid(self.GetDrawPos())
 		local block = TerrainHandler.GetBlockAt(dropPos)
 		if not block then
