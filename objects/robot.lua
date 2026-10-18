@@ -21,7 +21,7 @@ local function FindNextNonEmpty(self, index)
 	local finalIndex = index
 	while increment do
 		self.nextAction[index] = (self.nextAction[index])%(#actions) + 1
-		increment =  SkipAction(self, actions[self.nextAction[index]]) and (self.nextAction[index] ~= finalIndex)
+		increment = SkipAction(self, actions[self.nextAction[index]]) and (self.nextAction[index] ~= finalIndex)
 	end
 end
 
@@ -29,6 +29,12 @@ local function ExecuteNextCommand(self, index)
 	local actions = self.program[index].actions
 	self.nextAction[index] = self.nextAction[index] or 1
 	local actionToTake = actions[self.nextAction[index]]
+	if actionToTake.exclusiveAction then
+		if self.completedExclusiveAction then
+			return true -- No more actions this turn
+		end
+		self.completedExclusiveAction = true
+	end
 	self.lastStepTriggers[index] = true
 	self.lastStepActions[index] = self.lastStepActions[index] or {}
 	local alreadyExecutedBefore = self.lastStepActions[index][self.nextAction[index]]
@@ -40,6 +46,13 @@ local function ExecuteNextCommand(self, index)
 		self.chainAction = true
 		self.chainTriggerIndex = index
 	end
+	if actionToTake.chainAction then
+		self.chainAction = true
+	end
+	if actions[self.nextAction[index]].chainFromPreviousAction then
+		self.chainAction = true
+		self.chainTriggerIndex = index
+	end
 end
 
 local function FindAndExecuteCommand(self)
@@ -48,14 +61,19 @@ local function FindAndExecuteCommand(self)
 	self.chainTriggerIndex = false -- When set, the chain is forced into the next command of the trigger
 	self.lastStepTriggers = {}
 	self.lastStepActions = {}
+	self.completedExclusiveAction = false
 	while self.chainAction do
 		self.chainAction = false -- Set by actions
 		if self.chainTriggerIndex then
-			ExecuteNextCommand(self, self.chainTriggerIndex)
+			if ExecuteNextCommand(self, self.chainTriggerIndex) then
+				return
+			end
 		else
 			for i = 1, #self.program do
 				if self.program[i].trigger.acceptFunc(self) and not AllSkip(self, self.program[i].actions) then
-					ExecuteNextCommand(self, i)
+					if ExecuteNextCommand(self, i) then
+						return
+					end
 					break
 				end
 			end
@@ -143,6 +161,41 @@ local function NewRobot(self)
 	self.registerValues = {}
 	InitSwapSlot(self)
 	
+	function self.SeeBlockInRelativeDirection(direction, blockType)
+		direction = (self.direction + direction)%4
+		local checkVec = util.CardinalToVector(direction)
+		local checkPos = self.pos
+		for _ = 1, 30 do
+			checkPos = util.Add(checkPos, checkVec)
+			local block = TerrainHandler.GetBlockAt(checkPos)
+			if block then 
+				if block.WallTrigger and block.WallTrigger() then
+					return false -- Blocked by walls and doors
+				end
+				if block.GetType() == blockType then
+					return block
+				end
+			end
+		end
+	end
+	
+	function self.SeeObjectInRelativeDirection(direction, objType)
+		direction = (self.direction + direction)%4
+		local checkVec = util.CardinalToVector(direction)
+		local checkPos = self.pos
+		for _ = 1, 30 do
+			checkPos = util.Add(checkPos, checkVec)
+			local block = TerrainHandler.GetBlockAt(checkPos)
+			if block and block.WallTrigger and block.WallTrigger() then
+				return false -- Blocked by walls and doors
+			end
+			local obj = TerrainHandler.GetMobileObjectAt(checkPos)
+			if obj and obj.GetType() == objType then
+				return obj
+			end
+		end
+	end
+	
 	function self.ObjInDirection(direction)
 		local newPos = util.Add(self.pos, util.CardinalToVector(direction))
 		return TerrainHandler.GetMobileObjectAt(newPos)
@@ -211,19 +264,6 @@ local function NewRobot(self)
 	
 	function self.HasArrived()
 		return (not self.moveBlockDt) or self.moveBlockDt < Global.ARRIVAL_LEEWAY or util.Equal(self.pos, self.prevPos)
-	end
-	
-	function self.ForceExecuteCommand(triggerName, actionIndex)
-		for i = 1, #self.program do
-			if self.program[i].trigger.name == triggerName then
-				if actionIndex then
-					self.nextAction[i] = actionIndex
-					FindNextNonEmpty(self, i)
-				end
-				ExecuteNextCommand(self, i)
-				return
-			end
-		end
 	end
 	
 	function self.Update(dt, commandUpdate)

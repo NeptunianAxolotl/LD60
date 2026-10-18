@@ -1,7 +1,7 @@
 local def = {
 	image = "cmd_reflect",
-	skipRotationAnimate = true,
 	commandType = "move",
+	exclusiveAction = true,
 	executeFunc = function (self)
 		self.Move(self.direction + 2)
 	end,
