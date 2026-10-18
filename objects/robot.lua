@@ -307,7 +307,7 @@ local function NewRobot(self)
 	function self.AddPaint()
 		local block = TerrainHandler.GetBlockAt(self.pos)
 		if not block then
-			TerrainHandler.AddBlock("paint", self.pos, self.direction)
+			TerrainHandler.AddBlock("paint", self.pos, 0)
 		end
 	end
 	

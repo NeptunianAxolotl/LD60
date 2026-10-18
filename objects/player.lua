@@ -65,7 +65,7 @@ local function NewPlayer(self, position, direction)
 		local dropPos = LevelHandler.WorldToGrid(self.GetDrawPos())
 		local block = TerrainHandler.GetBlockAt(dropPos)
 		if not block then
-			TerrainHandler.AddBlock("paint", dropPos, self.direction)
+			TerrainHandler.AddBlock("paint", dropPos, 0)
 		elseif block.GetType() == "paint" then
 			TerrainHandler.RemoveBlock(dropPos)
 		end
