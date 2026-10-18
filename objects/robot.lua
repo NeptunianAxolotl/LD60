@@ -328,12 +328,14 @@ local function NewRobot(self)
 	
 	function self.Update(dt, commandUpdate)
 		self.moveBlockDt = util.UpdateTimer(self.moveBlockDt, dt)
+		self.prevCommandDt = util.UpdateTimer(self.prevCommandDt, dt)
 		if commandUpdate and self.def.isRobot then
 			self.commandAcc = self.commandAcc + self.commandSpeed
 		end
 		if self.commandAcc >= 4 then
 			self.prevPos = self.pos
 			self.prevDir = self.direction
+			self.prevCommandDt = Global.PREV_COMMAND_PULSE_TIME
 			FindAndExecuteCommand(self)
 		end
 	end
@@ -437,21 +439,21 @@ local function NewRobot(self)
 			local offsetX = drawPos[1]
 			local actions = self.program[i].actions
 			local lastTrigger = (self.lastStepTriggers and self.lastStepTriggers[i])
-			local color = (lastTrigger and {1, 0.5, 0.5}) or self.program[i].trigger.color or {0.85, 0.85, 0.85}
 			local highlight = CheckSelfTargetHighlight(self, (self.swapTrigger == i), "trigger")
+			local scale = lastTrigger and ((self.prevCommandDt or 0)*0.6 + 1) or 1
 			love.graphics.setColor(Global.PANEL_BORDER_COL)
 			love.graphics.rectangle("line", offsetX, offsetY - 3, Global.COMMAND_DRAW_SIZE, 6, 4, 4, 16)
 			
-			GameHandler.DrawCommandBox(offsetX, offsetY, highlight)
-			Resources.DrawImage(self.program[i].trigger.image, offsetX, offsetY, false, false, false, color)
+			GameHandler.DrawCommandBox(offsetX, offsetY, highlight, scale, lastTrigger)
+			Resources.DrawImage(self.program[i].trigger.image, offsetX, offsetY, false, false, scale)
 			offsetX = offsetX + Global.COMMAND_DRAW_SIZE + 20
 			for j = 1, #actions do
 				local lastAction = (self.lastStepActions and self.lastStepActions[i] and self.lastStepActions[i][j])
 				local nextAction = (j == (self.nextAction[i] or 1))
-				local color = (lastAction and {1, 0, 0}) or (nextAction and {0, 0, 0}) or {0.35, 0.35, 0.35}
 				local highlight = CheckSelfTargetHighlight(self, self.swapAction and self.swapAction[1] == i and self.swapAction[2] == j, "action")
-				GameHandler.DrawCommandBox(offsetX, offsetY, highlight)
-				Resources.DrawImage(actions[j].image, offsetX, offsetY, false, false, false, color)
+				local scale = lastAction and ((self.prevCommandDt or 0)*0.6 + 1) or 1
+				GameHandler.DrawCommandBox(offsetX, offsetY, highlight, scale, lastAction, nextAction, lastAction and self.prevCommandDt and self.prevCommandDt / Global.PREV_COMMAND_PULSE_TIME)
+				Resources.DrawImage(actions[j].image, offsetX, offsetY, false, false, scale)
 				offsetX = offsetX + Global.COMMAND_DRAW_SIZE + 5
 			end
 			offsetY = offsetY + Global.COMMAND_DRAW_SIZE + 10

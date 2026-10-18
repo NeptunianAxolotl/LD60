@@ -52,14 +52,19 @@ function api.Update(dt)
 	end
 end
 
-function api.DrawCommandBox(x, y, highlight, scale)
+function api.DrawCommandBox(x, y, highlight, scale, lastAction, nextAction, backColorProp)
 	love.graphics.setLineWidth(3*(scale or 1))
 	highlight = highlight or 0
 	local size = (scale or 1)*Global.COMMAND_DRAW_SIZE
 	x, y = x - size/2, y - size/2
-	love.graphics.setColor((highlight >= 2) and Global.BUTTON_HIGHLIGHT or Global.BUTTON_BACK)
+	local backColor = (highlight >= 2) and Global.BUTTON_HIGHLIGHT or nextAction and Global.BUTTON_BACK_NEXT or Global.BUTTON_BACK
+	local borderColor = (highlight >= 1) and Global.HOVER_HIGHLIGHT or Global.PUSH_BUTTON_BORDER
+	if backColorProp and highlight < 2 and not nextAction then
+		backColor = util.AverageTriple(Global.BUTTON_BACK, Global.BUTTON_BACK_NEXT, backColorProp)
+	end
+	love.graphics.setColor(backColor)
 	love.graphics.rectangle("fill", x, y, size, size, 4, 4, 16)
-	love.graphics.setColor((highlight >= 1) and Global.HOVER_HIGHLIGHT or Global.PUSH_BUTTON_BORDER)
+	love.graphics.setColor(borderColor)
 	love.graphics.rectangle("line", x, y, size, size, 4, 4, 16)
 end
 
