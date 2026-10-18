@@ -60,8 +60,19 @@ local function NewPlayer(self, position, direction)
 		end
 	end
 	
+	function self.CheckPickup()
+		if not self.HasArrived() then
+			return
+		end
+		local block = TerrainHandler.GetBlockAt(self.pos)
+		if block then
+			block.TryPickup(self)
+		end
+	end
+	
 	function self.Update(dt)
 		self.moveBlockDt = util.UpdateTimer(self.moveBlockDt, dt)
+		self.CheckPickup()
 	end
 	
 	function self.Destroy(dt)

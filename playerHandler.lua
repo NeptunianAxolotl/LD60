@@ -29,6 +29,14 @@ function api.ExportObjects()
 	return objList
 end
 
+function api.PickupCommand(command)
+	self.commandQueue[#self.commandQueue + 1] = command
+end
+
+function api.GetCommandQueue()
+	return self.commandQueue
+end
+
 local function TryMove()
 	if not self.bufferKey then
 		return
@@ -99,12 +107,12 @@ function api.Draw(drawQueue)
 	if self.player then
 		self.player.Draw(drawQueue)
 	end
-end
-
+end
 function api.Initialize(world)
 	self = {
 		player = false,
 		world = world,
+		commandQueue = {},
 		moveKeys = {
 			right = 0,
 			down = 1,

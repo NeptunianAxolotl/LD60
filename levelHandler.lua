@@ -210,6 +210,14 @@ function api.KeyPressed(key, scancode, isRepeat)
 	elseif key == "e" then
 		self.editor.direction = (self.editor.direction - 1)%4
 		return true
+	elseif key == "t" then
+		self.editor.commandIndex = (self.editor.commandIndex or 0)%(#EditorDefs.commandBlocks) + 1
+		self.editor.tile = EditorDefs.commandBlocks[self.editor.commandIndex]
+		return true
+	elseif key == "y" then
+		self.editor.commandIndex = ((self.editor.commandIndex or 0) - 2)%(#EditorDefs.commandBlocks) + 1
+		self.editor.tile = EditorDefs.commandBlocks[self.editor.commandIndex]
+		return true
 	elseif key == "z" then
 		self.editor.tile = "delete"
 		return true
@@ -272,8 +280,8 @@ Ctrl+J - Edit mode
 Ctrl+K - Save level
 Ctrl+L = Load level
 
-R - Rotate
-E - Rotate backwards
+E,R - Rotate
+T,Y - Place command
 Z - Delete
 ]] .. EditorDefs.spawnString, 0, offset, 500, "left")
 	end

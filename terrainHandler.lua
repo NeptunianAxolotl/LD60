@@ -1,5 +1,5 @@
 
-local BlockDefs = util.LoadDefDirectory("defs/blocks")
+local BlockDefs = require("defs/blockDefs")
 local NewBlock = require("objects/block")
 
 local self = {}

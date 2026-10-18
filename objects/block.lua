@@ -1,5 +1,5 @@
 
-local BlockDefs = util.LoadDefDirectory("defs/blocks")
+local BlockDefs = require("defs/blockDefs")
 
 local function NewBlock(self)
 	self.def = BlockDefs[self.blockType]
@@ -8,9 +8,15 @@ local function NewBlock(self)
 		if self.def.goalFunc then
 			self.goalDone = self.def.goalFunc(self)
 		end
+		return self.toDestroy
 	end
 	
 	function self.Destroy(dt)
+		if self.toDestroy then
+			return false
+		end
+		self.toDestroy = true
+		return true
 	end
 	
 	function self.IsAtPos(pos)
@@ -21,6 +27,13 @@ local function NewBlock(self)
 		if self.def.isBlocking then
 			return true
 		end
+	end
+	
+	function self.TryPickup(other)
+		if self.def.pickupFunc then
+			self.def.pickupFunc(self, other)
+		end
+		
 	end
 	
 	function self.GoalSatisfied()

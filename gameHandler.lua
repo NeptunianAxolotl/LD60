@@ -4,6 +4,8 @@ local Font = require("include/font")
 local EffectsHandler = require("effectsHandler")
 local Resources = require("resourceHandler")
 
+local CommandDefs = util.LoadDefDirectory("defs/commands")
+
 local self = {}
 local api = {}
 
@@ -42,6 +44,14 @@ function api.Update(dt)
 	end
 end
 
+function api.DrawCommandBox(x, y)
+	x, y = x - Global.COMMAND_DRAW_SIZE/2, y - Global.COMMAND_DRAW_SIZE/2
+	love.graphics.setColor(Global.PANEL_COL)
+	love.graphics.rectangle("fill", x, y, Global.COMMAND_DRAW_SIZE, Global.COMMAND_DRAW_SIZE, 4, 4, 16)
+	love.graphics.setColor(Global.PANEL_BORDER_COL)
+	love.graphics.rectangle("line", x, y, Global.COMMAND_DRAW_SIZE, Global.COMMAND_DRAW_SIZE, 4, 4, 16)
+end
+
 function api.DrawInterface()
 	love.graphics.setLineWidth(5)
 	love.graphics.setColor(Global.PANEL_COL)
@@ -50,14 +60,29 @@ function api.DrawInterface()
 	love.graphics.rectangle("line", Global.WINDOW_X - Global.UI_WIDTH, -1000, 1200, 3000, 4, 4, 16)
 	
 	local levelData = LevelHandler.GetLevelData()
+	local offsetY = 120
 	Font.SetSize(0)
 	love.graphics.setColor(Global.TEXT_COL)
 	love.graphics.printf(levelData.humanName, Global.WINDOW_X - Global.UI_WIDTH, 30, Global.UI_WIDTH, "center")
 	
 	if levelData.description then
 		Font.SetSize(4)
-		love.graphics.printf(levelData.description, Global.WINDOW_X - Global.UI_WIDTH + 30, 120, Global.UI_WIDTH - 40, "left")
+		love.graphics.printf(levelData.description, Global.WINDOW_X - Global.UI_WIDTH + 20, offsetY, Global.UI_WIDTH - 28, "left")
+		offsetY = offsetY + 270
+	else
+		offsetY = offsetY + 20
 	end
+	
+	local commandQueue = PlayerHandler.GetCommandQueue()
+	Font.SetSize(3)
+	love.graphics.printf("Chips:", Global.WINDOW_X - Global.UI_WIDTH + 20, offsetY, Global.UI_WIDTH - 40, "left")
+	local offsetX = Global.WINDOW_X - Global.UI_WIDTH + 130
+	for i = 1, #commandQueue do
+		api.DrawCommandBox(offsetX, offsetY + Global.COMMAND_DRAW_SIZE*0.4)
+		Resources.DrawImage(CommandDefs[commandQueue[i]].image, offsetX, offsetY + Global.COMMAND_DRAW_SIZE*0.4)
+		offsetX = offsetX + Global.COMMAND_DRAW_SIZE + 5
+	end
+	offsetY = offsetY + 60
 	
 	local _, won, lost = self.world.GetGameOver()
 	local mousePos = self.world.GetMousePositionInterface()

@@ -94,14 +94,6 @@ local function GetLastCommandSpeed(self)
 	return speed
 end
 
-local function DrawUiBox(x, y)
-	x, y = x - Global.COMMAND_DRAW_SIZE/2, y - Global.COMMAND_DRAW_SIZE/2
-	love.graphics.setColor(Global.PANEL_COL)
-	love.graphics.rectangle("fill", x, y, Global.COMMAND_DRAW_SIZE, Global.COMMAND_DRAW_SIZE, 4, 4, 16)
-	love.graphics.setColor(Global.PANEL_BORDER_COL)
-	love.graphics.rectangle("line", x, y, Global.COMMAND_DRAW_SIZE, Global.COMMAND_DRAW_SIZE, 4, 4, 16)
-end
-
 local function NewRobot(self)
 	self.def = RobotDefs[self.robotType]
 	self.commandSpeed = 1
@@ -266,14 +258,14 @@ local function NewRobot(self)
 			love.graphics.setColor(Global.PANEL_BORDER_COL)
 			love.graphics.rectangle("line", offsetX, offsetY - 3, Global.COMMAND_DRAW_SIZE, 6, 4, 4, 16)
 			
-			DrawUiBox(offsetX, offsetY)
+			GameHandler.DrawCommandBox(offsetX, offsetY)
 			Resources.DrawImage(self.program[i].trigger.image, offsetX, offsetY, false, false, false, color)
 			offsetX = offsetX + Global.COMMAND_DRAW_SIZE + 20
 			for j = 1, #actions do
 				local lastAction = (self.lastStepActions and self.lastStepActions[i] and self.lastStepActions[i][j])
 				local nextAction = (j == (self.nextAction[i] or 1))
 				local color = (lastAction and {1, 0, 0}) or (nextAction and {0, 0, 0}) or {0.35, 0.35, 0.35}
-				DrawUiBox(offsetX, offsetY)
+				GameHandler.DrawCommandBox(offsetX, offsetY)
 				Resources.DrawImage(actions[j].image, offsetX, offsetY, false, false, false, color)
 				offsetX = offsetX + Global.COMMAND_DRAW_SIZE + 5
 			end

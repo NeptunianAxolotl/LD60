@@ -1,6 +1,7 @@
 
-local BlockDefs = util.LoadDefDirectory("defs/blocks")
+local BlockDefs = require("defs/blockDefs")
 local RobotDefs = util.LoadDefDirectory("defs/robots")
+local CommandDefs = util.LoadDefDirectory("defs/commands")
 
 local def = {
 	spawnTypes = {
@@ -64,5 +65,12 @@ S - Robot Goal
 U - Paint
 
 ]]
+
+def.commandBlocks = {}
+for name, _ in pairs(CommandDefs) do
+	local defName = "cmd_" .. name
+	def.commandBlocks[#def.commandBlocks + 1] = defName
+end
+table.sort(def.commandBlocks)
 
 return def
