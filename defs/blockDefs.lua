@@ -9,6 +9,8 @@ for name, def in pairs(CommandDefs) do
 		image = def.image,
 		command = def.name,
 		fixedDirection = 0,
+		extraDraw = "tube",
+		scaleOverride = 0.7,
 		pickupFunc = function (self, other)
 			if #PlayerHandler.GetCommandQueue() < Global.COMMAND_QUEUE_LIMIT and self.Destroy() then
 				PlayerHandler.PickupCommand(self.def.command)
