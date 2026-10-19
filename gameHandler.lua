@@ -20,7 +20,10 @@ end
 
 function api.AllowMovement()
 	local _, won = self.world.GetGameOver()
-	return not won and not LevelHandler.InEditMode()
+	if LevelHandler.InEditMode() then
+		return false
+	end
+	return (not won)
 end
 
 --------------------------------------------------
@@ -155,9 +158,29 @@ function api.DrawInterface()
 	end
 	offsetY = offsetY + 60
 	
+	if LevelHandler.InEditMode() then
+		return
+	end
+	
 	local _, won, lost = self.world.GetGameOver()
 	local mousePos = self.world.GetMousePositionInterface()
 	self.mousePos = mousePos
+	if won and LevelHandler.GetLevelData().specialEndText then
+		local width = 600
+		local panelX, panelY = (Global.WINDOW_X - Global.UI_WIDTH - width)/2 + 80, 400
+		local height = 320
+		local alpha = 1 - (self.brickTimer or 0)*5
+		local CMD_SCALE = 2
+		InterfaceUtil.DrawPanel(panelX, panelY, width, height, 5, false, 0.95)
+		Font.SetSize(2)
+		local textColor = Global.TEXT_COL
+		if alpha ~= 1 then
+			textColor = util.CopyTable(textColor)
+			textColor[4] = alpha
+		end
+		love.graphics.setColor(textColor)
+		love.graphics.printf(LevelHandler.GetLevelData().specialEndText or "???", panelX, panelY + 24, width, "center")
+	end
 	if self.brickedRobotName and (self.brickTimer or 0) < 0.2 then
 		local width = 670
 		local panelX, panelY = (Global.WINDOW_X - Global.UI_WIDTH - width)/2 + 80, 920
@@ -200,9 +223,11 @@ Press Ctrl+R to restart the level
 	
 	self.hovered = false
 	if won then
-		self.hovered = InterfaceUtil.DrawButton(620, 500, 640, 180, mousePos, "Level Complete!\nPress Space to continue", false, false, false, false, 1, 17, false, 0.85)
+		if not LevelHandler.GetLevelData().specialEndText then
+			self.hovered = InterfaceUtil.DrawButton(620, 500, 640, 180, mousePos, "Level Complete!\nPress Space to continue", false, false, false, false, 1, 17, false, 0.95)
+		end
 	elseif lost then
-		self.hovered = InterfaceUtil.DrawButton(620, 500, 640, 180, mousePos, "You Died!\nPress Space to restart", false, false, false, false, 1, 17, false, 0.85)
+		self.hovered = InterfaceUtil.DrawButton(620, 500, 640, 180, mousePos, "You Died!\nPress Space to restart", false, false, false, false, 1, 17, false, 0.95)
 	end
 end
 

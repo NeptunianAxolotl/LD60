@@ -1,7 +1,7 @@
 
 local globals = {
-	DEV_TOOLS_ENABLED = true,
-	DEBUG_SKIP_TO_LEVEL = 11,
+	DEV_TOOLS_ENABLED = false,
+	DEBUG_SKIP_TO_LEVEL = 13,
 	SAVE_WON_LEVELS = true,
 	
 	BACK_COL = {180/255, 180/255, 180/255},
@@ -68,7 +68,7 @@ local globals = {
 	SAVE_ORDER = {
 		"name", "humanName", "description",
 		"dimensions", "textSize", "hideChipInventory",
-		"doorOpenState", "doorIndex",
+		"doorOpenState", "doorIndex", "specialEndText",
 		"player", "robots", "blocks",
 		"pos", "direction",
 		"swapTrigger", "swapAction", "brickDetectionClauses",

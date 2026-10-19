@@ -449,18 +449,22 @@ local function NewRobot(self)
 	end
 	
 	function self.GetSwappableCommand()
+		local commands, capacity = {}, 0
 		if self.swapTrigger then
 			local command = self.program[self.swapTrigger].trigger
+			capacity = capacity + 1
 			if command and not command.isEmpty then
-				return command
+				commands[capacity] = command
 			end
 		end
 		if self.swapAction then
 			local command = self.program[self.swapAction[1]].actions[self.swapAction[2]]
+			capacity = capacity + 1
 			if command and not command.isEmpty then
-				return command
+				commands[capacity] = command
 			end
 		end
+		return commands, capacity
 	end
 	
 	function self.ForceReposition(offset)
@@ -541,13 +545,25 @@ local function NewRobot(self)
 	end
 	
 	function self.DrawHeldTube(drawPos, drawRot)
-		local command = self.GetSwappableCommand()
-		if not command then
-			return
+		local commands, capacity = self.GetSwappableCommand()
+		if capacity == 1 then
+			if commands and commands[1] then
+				local heldPos = util.Add(util.PolarToCart(-0.29*Global.TILE_SIZE, drawRot), drawPos)
+				Resources.DrawImage(commands[1].image, heldPos[1], heldPos[2], drawRot + math.pi*0.5, false, 0.33)
+				Resources.DrawImage("tube_held_robot", drawPos[1], drawPos[2], drawRot)
+			end
+		elseif capacity == 2 then
+			if commands and commands[1] then
+				local heldPos = util.Add(util.PolarToCart(-0.32*Global.TILE_SIZE, drawRot - 0.4), drawPos)
+				Resources.DrawImage(commands[1].image, heldPos[1], heldPos[2], drawRot + math.pi*0.5, false, 0.33)
+				Resources.DrawImage("tube_held_robot_1", drawPos[1], drawPos[2], drawRot)
+			end
+			if commands and commands[2] then
+				local heldPos = util.Add(util.PolarToCart(-0.32*Global.TILE_SIZE, drawRot + 0.4), drawPos)
+				Resources.DrawImage(commands[2].image, heldPos[1], heldPos[2], drawRot + math.pi*0.5, false, 0.33)
+				Resources.DrawImage("tube_held_robot_2", drawPos[1], drawPos[2], drawRot)
+			end
 		end
-		local heldPos = util.Add(util.PolarToCart(-0.29*Global.TILE_SIZE, drawRot), drawPos)
-		Resources.DrawImage(command.image, heldPos[1], heldPos[2], drawRot + math.pi*0.5, false, 0.3)
-		Resources.DrawImage("tube_held_robot", drawPos[1], drawPos[2], drawRot)
 	end
 	
 	function self.Draw(drawQueue)

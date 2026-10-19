@@ -264,7 +264,6 @@ function api.KeyPressed(key, scancode, isRepeat)
 		self.editor.tile = EditorDefs.spawnKey[key]
 		return true
 	end
-	print(key)
 end
 
 local function DrawEditor()
@@ -321,12 +320,16 @@ Ctrl+J - Edit mode
 Ctrl+K - Save level
 Ctrl+L - Load level
 
-Arrows - Move
-Ctrl+Arrows - Size
+Arrows - Reposition
+Ctrl+Arrows - Resize
 E,R - Rotate
 T,Y - Place command
 Z - Delete
-]] .. EditorDefs.spawnString, 30, offset, 500, "left")
+
+]] .. EditorDefs.spawnString .. [[
+Edit robot programs in the
+level file (save and open
+inbuilt levels for examples).]], 30, offset, 500, "left")
 	end
 end
 

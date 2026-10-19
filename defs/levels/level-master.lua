@@ -3,6 +3,13 @@ return {
 	description = "What does that so-called\n'Master Bot' think it is doing?\n\nThat is YOUR command center\nit is lounging around in.\n\nTake it back.",
 	dimensions = {14, 12},
 	hideChipInventory = false,
+	specialEndText = [[
+As you clear away the last of the rubble a thought sticks in your mind:
+It is time to replace those robots!
+
+Thanks for playing!
+(Ctrl+J opens the level editor)
+]],
 	doorOpenState = {},
 	player = {
 		{

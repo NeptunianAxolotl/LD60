@@ -201,18 +201,15 @@ local function NewPlayer(self, position, direction)
 		return alpha, scale, {color, color, color}
 	end
 	
-	function self.DrawHeldTube(drawPos, drawRot)
-		if self.dead then
-			return
-		end
+	function self.DrawHeldTube(drawPos, drawRot, alpha, scale, color)
 		local held = PlayerHandler.GetCommandQueue()
 		local held = held and held[1] and CommandDefs[held[1]]
 		if not held then
 			return held
 		end
-		local heldPos = util.Add(util.PolarToCart(-0.105*Global.TILE_SIZE, drawRot), drawPos)
-		Resources.DrawImage(held.image, heldPos[1], heldPos[2], drawRot + math.pi*0.25, false, 0.3)
-		Resources.DrawImage("tube_held", drawPos[1], drawPos[2], drawRot)
+		local heldPos = util.Add(util.PolarToCart(-0.105*Global.TILE_SIZE*scale, drawRot), drawPos)
+		Resources.DrawImage(held.image, heldPos[1], heldPos[2], drawRot + math.pi*0.25, alpha, 0.3*scale, color)
+		Resources.DrawImage("tube_held", drawPos[1], drawPos[2], drawRot, alpha, scale, color)
 	end
 	
 	function self.Draw(drawQueue)
@@ -229,7 +226,7 @@ local function NewPlayer(self, position, direction)
 				love.graphics.setColor(Global.HOVER_HIGHLIGHT)
 				love.graphics.rectangle("line", targetPos[1] - Global.TILE_SIZE/2, targetPos[2] - Global.TILE_SIZE/2, Global.TILE_SIZE, Global.TILE_SIZE, 4, 4, 32)
 			end
-			self.DrawHeldTube(drawPos, drawRot)
+			self.DrawHeldTube(drawPos, drawRot, alpha, scale, color)
 		end})
 	end
 	
