@@ -66,8 +66,8 @@ local function NewBlock(self)
 	
 	function self.TryPickup(other)
 		if self.def.pickupFunc then
-			self.def.pickupFunc(self, other)
       SoundHandler.PlaySound("csharp_3")
+			return self.def.pickupFunc(self, other)
 		end
 	end
 	
@@ -110,8 +110,15 @@ local function NewBlock(self)
 		local drawRot = util.CardinalToDirection(self.direction) + (self.randomRotation or 0)
 		local image = self.def.imageFunc and self.def.imageFunc(self) or self.def.image
 		local color = self.def.drawColorFunc and self.def.drawColorFunc(self) or self.randomColor
+		local mainDrawPos = drawPos
+		if self.def.mainDrawOffset then
+			mainDrawPos = util.Add(drawPos, self.def.mainDrawOffset)
+		end
 		drawQueue:push({y=self.pos[2] + (self.def.depth or 0); f=function()
-			Resources.DrawImage(image, drawPos[1], drawPos[2], drawRot, false, self.randomScale, color)
+			Resources.DrawImage(image, mainDrawPos[1], mainDrawPos[2], drawRot, false, self.def.scaleOverride or self.randomScale, color)
+			if self.def.extraDraw then
+				Resources.DrawImage(self.def.extraDraw, drawPos[1], drawPos[2], drawRot, false, 0.98)
+			end
 			if self.fireScale then
 				Resources.DrawImage("fire", drawPos[1], drawPos[2] + 0.28*Global.TILE_SIZE, drawRot, false, self.fireScale, color)
 			end
@@ -119,7 +126,7 @@ local function NewBlock(self)
 		if self.def.partialTopDrawFunc then
 			local alpha = self.def.partialTopDrawFunc(self)
 			drawQueue:push({y=self.pos[2] + 100; f=function()
-				Resources.DrawImage(image, drawPos[1], drawPos[2], drawRot, alpha, self.randomScale, color)
+				Resources.DrawImage(image, mainDrawPos[1], mainDrawPos[2], drawRot, alpha, self.randomScale, color)
 			end})
 		end
 	end

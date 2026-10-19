@@ -15,7 +15,7 @@ return {
 	robots = {
 		{
 			name = "basic_robot",
-			humanName = "Moth",
+			humanName = "Moth Bot",
 			pos = {4, 5},
 			direction = 2,
 			swapTrigger = "empty",
@@ -41,7 +41,7 @@ return {
 		},
 		{
 			name = "basic_robot",
-			humanName = "Sprinter",
+			humanName = "Sprinter Bot",
 			pos = {3, 6},
 			direction = 2,
 			brickDetectionClauses = {

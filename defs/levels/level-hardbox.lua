@@ -1,6 +1,6 @@
 return {
-	humanName = "Box Level",
-	description = "These old robots are strong enough to push boxes. They see boxes as walls though so take some convincing.",
+	humanName = "Hideyhole",
+	description = "You can't press a second button while the first is still held down by a box.\n\nRemember that the highlighted command will be the next one to fire, when its trigger is met.",
 	dimensions = {12, 9},
 	doorOpenState = {},
 	player = {
@@ -20,6 +20,7 @@ return {
 			name = "basic_robot",
 			pos = {3, 3},
 			direction = 3,
+			humanName = "Quixotic Bot",
 			swapTrigger = "paint",
 			program = {
 				{

@@ -141,7 +141,7 @@ function api.DrawInterface()
 	local commandQueue = PlayerHandler.GetCommandQueue()
 	Font.SetSize(3)
 	if not LevelHandler.GetLevelData().hideChipInventory then
-		love.graphics.printf("Held Chip:", Global.WINDOW_X - Global.UI_WIDTH + 20, offsetY, Global.UI_WIDTH - 40, "left")
+		love.graphics.printf("Held Tube:", Global.WINDOW_X - Global.UI_WIDTH + 20, offsetY, Global.UI_WIDTH - 40, "left")
 		local offsetX = Global.WINDOW_X - Global.UI_WIDTH + 190
 		local CMD_SCALE = 1.2
 		for i = 1, #commandQueue do

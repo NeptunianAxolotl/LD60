@@ -86,7 +86,7 @@ function love.load(arg)
 	local major, minor, revision, codename = love.getVersion()
 	print(string.format("Version %d.%d.%d - %s", major, minor, revision, codename))
 
-	love.window.setTitle("Ludam Dare 60")
+	love.window.setTitle("Buggy Bot Bedtime")
 	--love.graphics.setDefaultFilter("nearest", "nearest") -- Removing this helps some things and really hurts others
 
 	love.graphics.setBackgroundColor(Global.BACK_COL[1], Global.BACK_COL[2], Global.BACK_COL[3], 1)

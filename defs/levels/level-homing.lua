@@ -1,9 +1,9 @@
 return {
 	humanName = "Homing Bots",
 	description = [[
-Cleanbot lives to clean.
+Clean Bot lives to clean.
 
-Killbot lives to charge at you and run you over.
+Kill Bot lives to charge at you and run you over.
 ]],
 	textSize = 240,
 	dimensions = {18, 11},
@@ -19,7 +19,7 @@ Killbot lives to charge at you and run you over.
 	robots = {
 		{
 			name = "basic_robot",
-			humanName = "Killbot",
+			humanName = "Kill Bot",
 			pos = {14, 7},
 			direction = 2,
 			program = {
@@ -51,7 +51,7 @@ Killbot lives to charge at you and run you over.
 		},
 		{
 			name = "basic_robot",
-			humanName = "Cleanbot",
+			humanName = "Clean Bot",
 			pos = {6, 7},
 			direction = 0,
 			program = {
