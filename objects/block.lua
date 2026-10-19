@@ -66,7 +66,6 @@ local function NewBlock(self)
 	
 	function self.TryPickup(other)
 		if self.def.pickupFunc then
-      SoundHandler.PlaySound("csharp_3")
 			return self.def.pickupFunc(self, other)
 		end
 	end

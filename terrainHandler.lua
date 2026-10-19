@@ -94,7 +94,9 @@ function api.GetDoorWantOpen(doorIndex)
 end
 
 local function UpdateDoors()
+	local playSound = false
 	for doorIndex = 1, Global.DOOR_TYPE_COUNT do
+		local prevDoorState = self.doorOpen[doorIndex]
 		if self.doorWantOpen[doorIndex] ~= self.doorWantClosed[doorIndex] then
 			if self.doorWantOpen[doorIndex] then
 				self.doorOpen[doorIndex] = true
@@ -102,9 +104,16 @@ local function UpdateDoors()
 				self.doorOpen[doorIndex] = false
 			end
 		end
+		if prevDoorState ~= self.doorOpen[doorIndex] then
+			playSound = true
+		end
 		self.doorWantOpen[doorIndex] = false
 		self.doorWantClosed[doorIndex] = false
 	end
+	if not self.skipFirstDoorSound and playSound then
+		SoundHandler.PlaySound("csharp_7")
+	end
+	self.skipFirstDoorSound = false
 end
 
 function api.MoveEverything(offset)
@@ -146,6 +155,7 @@ function api.Initialize(world)
 		doorOpen = {},
 		doorWantClosed = {},
 		doorWantOpen = {},
+		skipFirstDoorSound = true,
 	}
 end
 

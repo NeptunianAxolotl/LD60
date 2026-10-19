@@ -86,10 +86,10 @@ local function NewPlayer(self, position, direction)
 		local block = TerrainHandler.GetBlockAt(dropPos)
 		if not block then
 			TerrainHandler.AddBlock("paint", dropPos, 0)
-      SoundHandler.PlaySound("gsharp_2")
+			SoundHandler.PlaySound("gsharp_2")
 		elseif block.GetType() == "paint" then
 			TerrainHandler.RemoveBlock(dropPos)
-      SoundHandler.PlaySound("gsharp_3")
+			SoundHandler.PlaySound("gsharp_3")
 		end
 	end
 	
@@ -98,8 +98,9 @@ local function NewPlayer(self, position, direction)
 			return
 		end
 		local block = TerrainHandler.GetBlockAt(self.pos)
-		if block then
-			return block.TryPickup(self)
+		if block and block.TryPickup(self) then
+			SoundHandler.PlaySound("csharp_3")
+			return true
 		end
 	end
 	
@@ -124,7 +125,7 @@ local function NewPlayer(self, position, direction)
 		end
 		self.deadDt = Global.DEAD_TIME
 		self.dead = true
-    SoundHandler.PlaySound("csharp_2")
+		SoundHandler.PlaySound("csharp_2")
 		return true
 	end
 	

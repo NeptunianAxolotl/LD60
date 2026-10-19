@@ -92,6 +92,9 @@ local function TryDropCommand()
 	end
 	local blockAtPos = self.player.BlockAtMyLocation()
 	if (not blockAtPos) or blockAtPos.TryPickup(self.player) then
+		if blockAtPos then
+			SoundHandler.PlaySound("csharp_3")
+		end
 		TerrainHandler.AddBlock("cmd_" .. command, self.player.GetPos(), 0)
 		return true
 	else
