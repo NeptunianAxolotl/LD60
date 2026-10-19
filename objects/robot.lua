@@ -448,6 +448,21 @@ local function NewRobot(self)
 		end
 	end
 	
+	function self.GetSwappableCommand()
+		if self.swapTrigger then
+			local command = self.program[self.swapTrigger].trigger
+			if command and not command.isEmpty then
+				return command
+			end
+		end
+		if self.swapAction then
+			local command = self.program[self.swapAction[1]].actions[self.swapAction[2]]
+			if command and not command.isEmpty then
+				return command
+			end
+		end
+	end
+	
 	function self.ForceReposition(offset)
 		self.pos = util.Add(self.pos, offset)
 	end
@@ -525,10 +540,21 @@ local function NewRobot(self)
 		drawPos[2] = offsetY - 10
 	end
 	
+	function self.DrawHeldTube(drawPos, drawRot)
+		local command = self.GetSwappableCommand()
+		if not command then
+			return
+		end
+		local heldPos = util.Add(util.PolarToCart(-0.29*Global.TILE_SIZE, drawRot), drawPos)
+		Resources.DrawImage(command.image, heldPos[1], heldPos[2], drawRot - math.pi*0.25, false, 0.3)
+		Resources.DrawImage("tube_held_robot", drawPos[1], drawPos[2], drawRot)
+	end
+	
 	function self.Draw(drawQueue)
 		drawQueue:push({y=self.pos[2] + 10 + (self.def.isRobot and 130 or 0); f=function()
 			local drawPos, drawRot = self.GetDrawPosAndRot()
 			Resources.DrawImage(self.def.image, drawPos[1], drawPos[2], drawRot)
+			self.DrawHeldTube(drawPos, drawRot)
 			if self.def.isRobot then
 				Font.SetSize(3)
 				love.graphics.setColor(0, 0, 0)
