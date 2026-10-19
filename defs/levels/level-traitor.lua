@@ -1,7 +1,8 @@
 return {
 	humanName = "Impasse",
 	description = "Remember the robots' programming sees boxes as walls.\n\nLoyal Bot would walk through walls for you.\n\nTraitor Bot... not so much.",
-	dimensions = {15, 11},
+	dimensions = {15, 12},
+	hideChipInventory = false,
 	doorOpenState = {},
 	player = {
 		{
@@ -24,7 +25,7 @@ return {
 				},
 				{
 					trigger = "robot_goal",
-					actions = {"wait","empty"},
+					actions = {"wait", "empty"},
 				},
 				{
 					trigger = "player_see_left",
@@ -562,6 +563,80 @@ return {
 			pos = {5, 3},
 			direction = 0,
 		},
+		{
+			name = "wall",
+			pos = {0, 11},
+			direction = 3,
+		},
+		{
+			name = "wall",
+			pos = {1, 11},
+			direction = 3,
+		},
+		{
+			name = "wall",
+			pos = {2, 11},
+			direction = 3,
+		},
+		{
+			name = "wall",
+			pos = {3, 11},
+			direction = 3,
+		},
+		{
+			name = "wall",
+			pos = {4, 11},
+			direction = 3,
+		},
+		{
+			name = "wall",
+			pos = {5, 11},
+			direction = 3,
+		},
+		{
+			name = "wall",
+			pos = {6, 11},
+			direction = 3,
+		},
+		{
+			name = "wall",
+			pos = {7, 11},
+			direction = 3,
+		},
+		{
+			name = "wall",
+			pos = {8, 11},
+			direction = 3,
+		},
+		{
+			name = "wall",
+			pos = {9, 11},
+			direction = 3,
+		},
+		{
+			name = "wall",
+			pos = {10, 11},
+			direction = 3,
+		},
+		{
+			name = "wall",
+			pos = {11, 11},
+			direction = 3,
+		},
+		{
+			name = "wall",
+			pos = {12, 11},
+			direction = 3,
+		},
+		{
+			name = "wall",
+			pos = {13, 11},
+			direction = 3,
+		},
+		{
+			name = "wall",
+			pos = {14, 11},
+			direction = 3,
+		},
 	},
-	hideChipInventory = false,
 }

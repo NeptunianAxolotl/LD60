@@ -17,6 +17,7 @@ local def = {
 		"level-firespiral",
 		"tutor-box",
 		"tutor-register",
+		"level-shy",
 		"level-bored",
 		"level-traitor",
 		"level-hardbox",
