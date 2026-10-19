@@ -29,6 +29,8 @@ function api.Update(dt)
     end
 	else
     -- set the target volumes
+    bgmTrackTargetVolumes["drums"]["vol"] = 1
+    
     -- snare is running as long as the game is not paused
     if(self.cosmos.GetWorld().GetPaused()) then
       bgmTrackTargetVolumes["snare"]["vol"] = 0
