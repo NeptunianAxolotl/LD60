@@ -213,6 +213,8 @@ end
 function api.Update(dt)
 	if api.GetPaused() then
 		UpdateCamera(dt)
+		InterfaceUtil.Update(dt)
+		GameHandler.Update(dt)
 		return
 	end
 	

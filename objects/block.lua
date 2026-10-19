@@ -7,6 +7,9 @@ local function NewBlock(self)
 	if self.def.fixedDirection then
 		self.direction = self.def.fixedDirection
 	end
+	if self.def.fireAnimate then
+		self.fireScale = {1, 1}
+	end
 	
 	if self.def.randomRotation then
 		self.randomRotation = math.random()*self.def.randomRotation*2 - self.def.randomRotation
@@ -31,6 +34,11 @@ local function NewBlock(self)
 	function self.Update(dt)
 		if self.def.updateFunc then
 			self.def.updateFunc(self, dt)
+		end
+		if self.fireScale then
+			local variation = util.RandomPointInAnnulus(dt*0.1, dt*0.6)
+			variation[2] = variation[2]*4
+			self.fireScale = util.ClampVector(util.Add(self.fireScale, variation), 0.9, 0.9, 1.2, 1.2)
 		end
 		return self.toDestroy
 	end
@@ -103,6 +111,9 @@ local function NewBlock(self)
 		local color = self.def.drawColorFunc and self.def.drawColorFunc(self) or self.randomColor
 		drawQueue:push({y=self.pos[2]; f=function()
 			Resources.DrawImage(image, drawPos[1], drawPos[2], drawRot, false, self.randomScale, color)
+			if self.fireScale then
+				Resources.DrawImage("fire", drawPos[1], drawPos[2] + 0.28*Global.TILE_SIZE, drawRot, false, self.fireScale, color)
+			end
 		end})
 		if self.def.partialTopDrawFunc then
 			local alpha = self.def.partialTopDrawFunc(self)

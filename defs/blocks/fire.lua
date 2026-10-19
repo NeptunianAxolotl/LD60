@@ -1,7 +1,8 @@
 
 local def = {
-	image = "fire",
+	image = "fire_base",
 	playerBlocking = true,
+	fireAnimate = true,
 	fixedDirection = 0,
 }
 

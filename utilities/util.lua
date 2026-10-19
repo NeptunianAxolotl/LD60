@@ -639,6 +639,13 @@ function util.PosInRectangle(pos, x1, y1, w1, h1)
 	return (x1 + w1 >= pos[1] and x1 <= pos[1]) and (y1 + h1 >= pos[2] and y1 <= pos[2])
 end
 
+function util.ClampVector(u, minX, minY, maxX, maxY)
+	local new = {}
+	new[1] = math.max(minX, math.min(maxX, u[1]))
+	new[2] = math.max(minY, math.min(maxY, u[2]))
+	return new
+end
+
 --------------------------------------------------
 --------------------------------------------------
 -- Circles
@@ -689,7 +696,6 @@ end
 --------------------------------------------------
 --------------------------------------------------
 -- Probability
-
 
 function util.RandomIntegerInRange(bot, top)
 	return bot + math.floor(math.random()*(top - bot + 1))

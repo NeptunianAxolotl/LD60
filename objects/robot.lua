@@ -245,6 +245,9 @@ local function NewRobot(self)
 				boxes[#boxes + 1] = obj -- A box to push
 			elseif obj and obj.IsRobot() then
 				return false -- cannot push through Robots
+			elseif obj.GetType() == "player" then
+				obj.BlockMoveIntoByObject()
+				break -- Kill player and start pushing
 			else
 				break -- Free space, start pushing
 			end
