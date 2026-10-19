@@ -93,9 +93,6 @@ local function TryDropCommand()
 	local blockAtPos = self.player.BlockAtMyLocation()
 	if (not blockAtPos) or blockAtPos.TryPickup(self.player) then
 		TerrainHandler.AddBlock("cmd_" .. command, self.player.GetPos(), 0)
-		if not blockAtPos then
-			self.player.SetCannotPickup()
-		end
 		return true
 	else
 		-- Did not manage to drop, readd my command
@@ -121,25 +118,30 @@ local function TryMove()
 	end
 end
 
+local function DoTubeInventoryAction()
+	if TrySwapCommand() then
+		return true
+	end
+	if TryDropCommand() then
+		return true
+	end
+	if self.player.CheckPickup() then
+		return true
+	end
+end
+
 function api.KeyPressed(key, scancode, isRepeat)
 	if not self.player or self.player.IsDead() then
 		return
 	end
 	self.bufferKey = key
 	TryMove()
-	if key == "c" or key == "b" then
+	if key == "x" or key == "n" then
 		self.player.DropOrCleanPaint()
 		return true
 	end
-	if key == "x" or key == "n" then
-		if TrySwapCommand() then
-			return true
-		end
-	end
 	if key == "z" or key == "m" then
-		if TryDropCommand() then
-			return true
-		end
+		return DoTubeInventoryAction()
 	end
 end
 
@@ -162,9 +164,7 @@ function api.MousePressed(mx, my, button)
 		self.player.DropOrCleanPaint()
 	end
 	if button == 2 then
-		if not TrySwapCommand() then
-			TryDropCommand()
-		end
+		return DoTubeInventoryAction()
 	end
 end
 

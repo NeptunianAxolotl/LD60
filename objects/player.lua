@@ -92,17 +92,13 @@ local function NewPlayer(self, position, direction)
 	end
 	
 	function self.CheckPickup()
-		if not self.HasArrived() or self.cannotPickup then
+		if not self.HasArrived() then
 			return
 		end
 		local block = TerrainHandler.GetBlockAt(self.pos)
 		if block then
-			block.TryPickup(self)
+			return block.TryPickup(self)
 		end
-	end
-	
-	function self.SetCannotPickup()
-		self.cannotPickup = true
 	end
 	
 	function self.Update(dt)
@@ -111,7 +107,6 @@ local function NewPlayer(self, position, direction)
 			return
 		end
 		self.moveBlockDt = util.UpdateTimer(self.moveBlockDt, dt)
-		self.CheckPickup()
 	end
 	
 	function self.Destroy(dt)
