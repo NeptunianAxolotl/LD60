@@ -1,6 +1,6 @@
 return {
 	humanName = "Widdershins",
-	description = "Paint puts out fires.\n\nYour robot is not strong enough to stand the heat.",
+	description = "Painting a fire extinguishes it.\n\nYour robot cannot stand on in long enough to paint it.",
 	dimensions = {14, 9},
 	textSize = 300,
 	hideChipInventory = false,

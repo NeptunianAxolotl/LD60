@@ -1,6 +1,6 @@
 return {
 	humanName = "Airlock",
-	description = "Warden Bot is already on its charging platform.Unfortunately, you are not.You can modify the trigger conditions of some bots.\n\nUse Z/M or the Right Mouse Button to drop your held command.\n\nPress Ctrl+R to restart the level if you get stuck.",
+	description = "Warden Bot is already on its charging platform. Unfortunately, you are not.\n\nYou can swap the trigger of this robot.\n\nPress Ctrl+R to restart the level if you get stuck.",
 	dimensions = {15, 9},
 	textSize = 480,
 	hideChipInventory = false,
