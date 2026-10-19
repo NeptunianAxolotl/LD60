@@ -1,6 +1,6 @@
 return {
 	humanName = "Stevedore",
-	description = "These old robots are strong enough to push boxes.\n\nUnfortunately their programming sees boxes as walls.\n\nStuck Bot will need some help to reach a charging port.\n\nPusher Bot doesn't have a wall sensor.",
+	description = "These old robots are strong enough to push boxes.\n\nMost bots treat boxes like they would a wall. Pusher bot cannot see walls.\n\nStuck Bot will need some help to reach a charging port.",
 	dimensions = {13, 10},
 	doorOpenState = {},
 	textSize = 480,

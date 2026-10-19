@@ -1,8 +1,8 @@
 return {
 	humanName = "Cleanup Duty",
-	description = "One of these robots is leaking. The next shift can worry about the mess - you just need to recharge the robots.",
+	description = "One of these robots is leaking.\n\nThe next shift can worry about the mess - you just need to recharge the robots.",
 	dimensions = {14, 9},
-	textSize = 250,
+	textSize = 300,
 	hideChipInventory = true,
 	doorOpenState = {},
 	player = {

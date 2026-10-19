@@ -2,6 +2,7 @@ return {
 	humanName = "Jump Scare",
 	description = "Bored Bot is waiting impatiently for a cleaning job.\n\nPerhaps it needs to be told to slow down a little...",
 	dimensions = {11, 10},
+	textSize = 300,
 	doorOpenState = {},
 	player = {
 		{

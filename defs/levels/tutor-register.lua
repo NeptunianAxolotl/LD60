@@ -1,8 +1,9 @@
 return {
 	humanName = "Fire Register",
-	description = [[Paint puts out fires.
+	description = [[
+Register commands enable or disable the [1] trigger.
 
-The [1] trigger activates as long its register is set. Register commands enable or disable the trigger.
+Reach the other side by having the robot paint fires.
 
 Press Ctrl+R to restart the level if you get stuck.
 ]],
