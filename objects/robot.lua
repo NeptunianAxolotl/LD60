@@ -164,11 +164,22 @@ local function CheckSelfTargetHighlight(self, highlight, controlType)
 	return 1
 end
 
+local function CheckBrick(self)
+	for i = 1, #self.brickDetection do
+		local check = self.brickDetection[i]
+		if not (CommandDefs[check].acceptFunc and CommandDefs[check].acceptFunc(self)) then
+			return
+		end
+	end
+	GameHandler.NofityRobotBrick(self.humanName)
+end
+
 local function NewRobot(self)
 	self.def = RobotDefs[self.robotType]
 	self.commandSpeed = 1
 	self.commandAcc = 3
 	self.humanName = self.params.humanName or "Unnamed"
+	self.brickDetection = self.params.brickDetection
 	self.program = InitProgram(self.params.program)
 	self.nextAction = {}
 	self.registerValues = {}
@@ -348,6 +359,9 @@ local function NewRobot(self)
 			self.prevDir = self.direction
 			self.prevCommandDt = Global.PREV_COMMAND_PULSE_TIME
 			FindAndExecuteCommand(self)
+		end
+		if self.brickDetection and not GameHandler.GetBrickedRobotName() then
+			CheckBrick(self)
 		end
 	end
 	

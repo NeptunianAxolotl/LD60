@@ -8,6 +8,21 @@ local api = {}
 -- Updating
 --------------------------------------------------
 
+
+function api.NofityRobotBrick(robotName)
+	self.brickedRobotName = robotName
+	self.brickTimer = Global.BRICK_ROBOT_TIMER
+end
+
+function api.GetBrickedRobotName()
+	return self.brickedRobotName
+end
+
+function api.AllowMovement()
+	local _, won = self.world.GetGameOver()
+	return not won and not LevelHandler.InEditMode()
+end
+
 --------------------------------------------------
 -- API
 --------------------------------------------------
@@ -20,11 +35,6 @@ function api.MousePressed(x, y)
 		self.world.Restart()
 		return true
 	end
-end
-
-function api.AllowMovement()
-	local _, won = self.world.GetGameOver()
-	return not won and not LevelHandler.InEditMode()
 end
 
 function api.KeyPressed(key, scancode, isRepeat)
@@ -45,12 +55,12 @@ end
 --------------------------------------------------
 
 function api.Update(dt)
-  if RobotHandler.AllRobotsStationary() then
-    BGMHandler.SetArp(0)
-  else
-    BGMHandler.SetArp(1)
-  end
-  
+	self.brickTimer = util.UpdateTimer(self.brickTimer, dt)
+	if RobotHandler.AllRobotsStationary() then
+		BGMHandler.SetArp(0)
+	else
+		BGMHandler.SetArp(1)
+	end
 	if not self.world.GetGameOver() then
 		if not PlayerHandler.GetPlayer() and not LevelHandler.InEditMode() then
 			self.world.SetGameOver(false, "player_died")
@@ -148,7 +158,25 @@ function api.DrawInterface()
 	local _, won, lost = self.world.GetGameOver()
 	local mousePos = self.world.GetMousePositionInterface()
 	self.mousePos = mousePos
-	if self.tooltipDisplay then
+	if self.brickedRobotName and (self.brickTimer or 0) < 0.2 then
+		local width = 670
+		local panelX, panelY = (Global.WINDOW_X - Global.UI_WIDTH - width)/2 + 80, 920
+		local height = Global.WINDOW_Y - panelY - 20
+		local alpha = 1 - (self.brickTimer or 0)*5
+		local CMD_SCALE = 2
+		InterfaceUtil.DrawPanel(panelX, panelY, width, height, 5, true, alpha)
+		Font.SetSize(2)
+		local textColor = Global.TEXT_COL
+		if alpha ~= 1 then
+			textColor = util.CopyTable(textColor)
+			textColor[4] = alpha
+		end
+		love.graphics.setColor(textColor)
+		love.graphics.printf((self.brickedRobotName or "A robot") .. [[
+ is permanently stuck
+Press Ctrl+R to restart the level
+]], panelX, panelY + 24, width, "center")
+	elseif self.tooltipDisplay then
 		local panelX, panelY = 800, 920
 		local width = (Global.WINDOW_X - Global.UI_WIDTH - 30) - panelX
 		local height = Global.WINDOW_Y - panelY - 20

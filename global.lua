@@ -54,6 +54,7 @@ local globals = {
 	VIEW_PADDING = 50,
 	UI_WIDTH = 350,
 	PREV_COMMAND_PULSE_TIME = 0.3,
+	BRICK_ROBOT_TIMER = 3.4,
 	
 	SAVE_ORDER = {
 		"name", "humanName", "description",
@@ -61,10 +62,10 @@ local globals = {
 		"doorOpenState", "doorIndex",
 		"player", "robots", "blocks",
 		"pos", "direction",
-		"swapTrigger", "swapAction",
+		"swapTrigger", "swapAction", "brickDetection",
 		"trigger", "actions",
 	},
-	SAVE_INLINE = {"pos", "dimensions", "doorOpenState", "actions", "swapAction"},
+	SAVE_INLINE = {"pos", "dimensions", "doorOpenState", "actions", "swapAction", "brickDetection"},
 	
 	BUFFER_KEY_LEEWAY = 0.16,
 	SAME_MOVE_BUFFER_KEY_LEEWAY = 0.25,
