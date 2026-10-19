@@ -22,7 +22,7 @@ return {
 			program = {
 				{
 					trigger = "wall_front",
-					actions = {"right","move"},
+					actions = {"paint_up","right"},
 				},
 				{
 					trigger = "wildcard",

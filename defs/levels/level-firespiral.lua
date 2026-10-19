@@ -16,7 +16,7 @@ return {
 		{
 			name = "basic_robot",
 			humanName = "Moth",
-			pos = {5, 5},
+			pos = {4, 5},
 			direction = 2,
 			swapTrigger = "empty",
 			swapAction = {trigger = "paint", slot = 1},
@@ -42,7 +42,7 @@ return {
 		{
 			name = "basic_robot",
 			humanName = "Sprinter",
-			pos = {5, 6},
+			pos = {3, 6},
 			direction = 2,
 			brickDetectionClauses = {
 				{
