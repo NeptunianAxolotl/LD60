@@ -19,6 +19,7 @@ local def = {
 		"level-traitor",
 		"level-homing",
 		"level-hardbox",
+		"level-master",
 		
 		-- "tutorial1",
 		-- "level1",
