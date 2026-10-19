@@ -16,11 +16,15 @@ return {
 			humanName = "Loyal Bot",
 			pos = {3, 8},
 			direction = 3,
-			swapAction = {trigger = "player_see_right", slot = 1},
+			swapAction = {trigger = "robot_goal", slot = 2},
 			program = {
 				{
 					trigger = "player_front",
 					actions = {"wait"},
+				},
+				{
+					trigger = "robot_goal",
+					actions = {"wait","empty"},
 				},
 				{
 					trigger = "player_see_left",
@@ -552,6 +556,11 @@ return {
 			name = "wall",
 			pos = {2, 0},
 			direction = 3,
+		},
+		{
+			name = "cmd_move",
+			pos = {5, 3},
+			direction = 0,
 		},
 	},
 	hideChipInventory = false,
