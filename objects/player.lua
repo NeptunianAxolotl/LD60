@@ -33,7 +33,7 @@ local function NewPlayer(self, position, direction)
 	end
 	
 	function self.Move(direction)
-		if not GameHandler.AllowMovement() then
+		if self.dead or not GameHandler.AllowMovement() then
 			return false
 		end
 		if self.moveBlockDt then
@@ -53,7 +53,7 @@ local function NewPlayer(self, position, direction)
 	end
 	
 	function self.UndoMove(window)
-		if self.undoingMove or not (self.prevPos and self.moveBlockDt and self.moveBlockMax - self.moveBlockDt < window) then
+		if self.dead or self.undoingMove or not (self.prevPos and self.moveBlockDt and self.moveBlockMax - self.moveBlockDt < window) then
 			return false
 		end
 		if TerrainHandler.InteractWithObjectsAt(self.prevPos, self, "BlockMoveIntoByObject", direction) then
@@ -74,7 +74,7 @@ local function NewPlayer(self, position, direction)
 	end
 	
 	function self.DropOrCleanPaint()
-		if not GameHandler.AllowMovement() then
+		if self.dead or not GameHandler.AllowMovement() then
 			return
 		end
 		local dropPos = LevelHandler.WorldToGrid(self.GetDrawPos())
@@ -97,14 +97,25 @@ local function NewPlayer(self, position, direction)
 	end
 	
 	function self.Update(dt)
+		if self.dead then
+			self.deadDt = util.UpdateTimer(self.deadDt, dt)
+			return
+		end
 		self.moveBlockDt = util.UpdateTimer(self.moveBlockDt, dt)
 		self.CheckPickup()
 	end
 	
 	function self.Destroy(dt)
-		if not GameHandler.AllowMovement() then
-			return
+		if self.dead or not GameHandler.AllowMovement() then
+			return false
 		end
+		self.deadDt = Global.DEAD_TIME
+		self.dead = true
+		return true
+	end
+	
+	function self.IsDead()
+		return self.dead
 	end
 	
 	function self.BlockMoveIntoByObject(object)
@@ -123,6 +134,9 @@ local function NewPlayer(self, position, direction)
 	end
 	
 	function self.GoalSatisfied()
+		if self.dead then
+			return false
+		end
 		local block = TerrainHandler.GetBlockAt(self.pos)
 		return block and block.GoalSatisfied()
 	end
@@ -156,11 +170,28 @@ local function NewPlayer(self, position, direction)
 			paintCount = self.paintCount,
 		}
 	end
+	
+	function self.GetDeadColors()
+		if not self.dead then
+			return 1, 1, false
+		end
+		if not self.deadDt then
+			return 0, 1, false
+		end
+		local alpha = self.deadDt / Global.DEAD_TIME
+		local scale = 1 + (Global.DEAD_TIME - self.deadDt)*0.35
+		local color = math.max(0.35, 1 + (1 - scale)*2)
+		return alpha, scale, {color, color, color}
+		
+	end
+	
 	function self.Draw(drawQueue)
-		drawQueue:push({y=self.pos[2] + 200; f=function()
+		local depth = self.dead and 400 or 200
+		drawQueue:push({y=self.pos[2] + depth; f=function()
 			local drawPos = self.GetDrawPos()
 			local drawRot = util.CardinalToDirection(self.direction)
-			Resources.DrawImage("player", drawPos[1], drawPos[2], drawRot)
+			local alpha, scale, color = self.GetDeadColors()
+			Resources.DrawImage("player", drawPos[1], drawPos[2], drawRot, alpha, scale, color)
 			local target = PlayerHandler.GetTargetForCommand()
 			if target then
 				local targetPos = LevelHandler.GridToWorld(target.GetPos())

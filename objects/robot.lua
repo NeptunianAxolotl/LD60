@@ -461,7 +461,7 @@ local function NewRobot(self)
 	
 	function self.GetDrawPosAndRot()
 		local drawPos = LevelHandler.GridToWorld(self.pos)
-		local drawRot = util.CardinalToDirection(self.direction)
+		local drawRot = util.CardinalToDirection(self.def.fixedDirection or self.direction)
 		if self.moveBlockDt then
 			local prevProp = self.moveBlockDt / self.maxMoveBlock
 			if self.bouncePos then

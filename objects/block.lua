@@ -109,7 +109,7 @@ local function NewBlock(self)
 		local drawRot = util.CardinalToDirection(self.direction) + (self.randomRotation or 0)
 		local image = self.def.imageFunc and self.def.imageFunc(self) or self.def.image
 		local color = self.def.drawColorFunc and self.def.drawColorFunc(self) or self.randomColor
-		drawQueue:push({y=self.pos[2]; f=function()
+		drawQueue:push({y=self.pos[2] + (self.def.depth or 0); f=function()
 			Resources.DrawImage(image, drawPos[1], drawPos[2], drawRot, false, self.randomScale, color)
 			if self.fireScale then
 				Resources.DrawImage("fire", drawPos[1], drawPos[2] + 0.28*Global.TILE_SIZE, drawRot, false, self.fireScale, color)

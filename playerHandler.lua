@@ -13,7 +13,6 @@ function api.KillPlayer()
 	if self.player then
 		self.player.Destroy()
 	end
-	self.player = false
 end
 
 function api.CreatePlayer(pos, direction)
@@ -36,7 +35,7 @@ function api.PickupCommand(command)
 end
 
 function api.GetTargetForCommand()
-	if not self.player then
+	if not self.player or self.player.IsDead() then
 		return false
 	end
 	local command = self.commandQueue[1]
@@ -79,7 +78,7 @@ local function TrySwapCommand()
 end
 
 local function TryDropCommand()
-	if self.player.ObjInRelativeDirection(0) or self.player.BlockInRelativeDirection(0) then
+	if (not self.player) or self.player.ObjInRelativeDirection(0) or self.player.BlockInRelativeDirection(0) or self.player.IsDead() then
 		return false
 	end
 	local command = self.commandQueue[1]
@@ -112,7 +111,7 @@ local function TryMove()
 end
 
 function api.KeyPressed(key, scancode, isRepeat)
-	if not self.player then
+	if not self.player or self.player.IsDead() then
 		return
 	end
 	self.bufferKey = key
@@ -140,7 +139,7 @@ function api.KeyReleased(key, scancode)
 end
 
 function api.MousePressed(mx, my, button)
-	if not self.player then
+	if not self.player or self.player.IsDead() then
 		return
 	end
 	if button == 1 then
@@ -154,11 +153,11 @@ function api.MousePressed(mx, my, button)
 end
 
 function api.GetPlayer()
-	return self.player
+	return self.player and (not self.player.IsDead()) and self.player
 end
 
 function api.GetPlayerAt(pos)
-	if self.player and self.player.IsAtPos(pos) then
+	if self.player and self.player.IsAtPos(pos) and not self.player.IsDead() then
 		return self.player
 	end
 end
