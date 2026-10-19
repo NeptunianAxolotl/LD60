@@ -4,7 +4,7 @@ return {
 	dimensions = {14, 12},
 	hideChipInventory = false,
 	specialEndText = [[
-'Master' Bot has been returned to janitorial duties.
+'Master Bot' has been returned to janitorial duties.
 Time to clock out and let the night 
 shift clean up this mess.
 Thanks for playing!
