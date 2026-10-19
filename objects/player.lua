@@ -53,7 +53,7 @@ local function NewPlayer(self, position, direction)
 		self.moveBlockDt = Global.PLAYER_MOVE_TIME
 		self.moveBlockMax = Global.PLAYER_MOVE_TIME
 		self.undoingMove = false
-		self.cannotPickup = false
+		self.cannotPickupAutomatically = false
 		return true
 	end
 	
@@ -101,12 +101,19 @@ local function NewPlayer(self, position, direction)
 		end
 	end
 	
+	function self.SetCannotPickup()
+		self.cannotPickupAutomatically = true
+	end
+	
 	function self.Update(dt)
 		if self.dead then
 			self.deadDt = util.UpdateTimer(self.deadDt, dt)
 			return
 		end
 		self.moveBlockDt = util.UpdateTimer(self.moveBlockDt, dt)
+		if not self.cannotPickupAutomatically then
+			self.CheckPickup()
+		end
 	end
 	
 	function self.Destroy(dt)

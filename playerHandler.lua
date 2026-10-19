@@ -123,6 +123,7 @@ local function DoTubeInventoryAction()
 		return true
 	end
 	if TryDropCommand() then
+		self.player.SetCannotPickup()
 		return true
 	end
 	if self.player.CheckPickup() then

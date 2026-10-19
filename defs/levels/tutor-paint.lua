@@ -1,6 +1,6 @@
 return {
 	humanName = "Painting",
-	description = "Use the C or B keys or click the Left Mouse Button to paint.\n\nPaint can also be removed with the same controls.\n\nThis robot turns on paint. It will run over you if you get in the way.\n\nHover the mouse over the commands below for tips",
+	description = "Use the X or N keys or click the Left Mouse Button to paint.\n\nPaint can also be removed with the same controls.\n\nThis robot turns on paint. It will run over you if you get in the way.\n\nHover the mouse over the commands below for tips",
 	dimensions = {12, 9},
 	hideChipInventory = true,
 	doorOpenState = {},
