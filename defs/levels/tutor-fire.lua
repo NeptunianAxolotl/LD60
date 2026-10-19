@@ -1,5 +1,5 @@
 return {
-	humanName = "Widdershins",
+	humanName = "Fire tutorial?",
 	description = "Paint puts out fires.\n\nYour robot is not strong enough to stand the heat.",
 	dimensions = {15, 9},
 	textSize = 300,
