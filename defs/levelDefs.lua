@@ -9,6 +9,7 @@ local def = {
 		"tutorial3",
 		"level2_alt",
 		"level3",
+		"levelA3",
 		--"level4",
 		"levelA1",
 		"levelA2",
