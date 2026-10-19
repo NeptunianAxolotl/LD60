@@ -1,22 +1,22 @@
 return {
 	humanName = "Polite Training",
 	description = "You are the red robot.\nUse WSAD or arrows to move.\n\nThe polite blue robot will turn right when it hits you. Most robots would crush you instead.\n\nDirect all the robots (including yourself) to their designated charging ports.",
-	dimensions = {14, 9},
+	dimensions = {13, 9},
 	hideChipInventory = true,
 	doorOpenState = {},
 	player = {
 		{
 			name = "player",
-			pos = {9, 4},
+			pos = {7, 4},
 			direction = 0,
 		},
 	},
 	robots = {
 		{
 			name = "basic_robot",
-			pos = {5, 3},
-			direction = 3,
 			humanName = "Polite Bot",
+			pos = {3, 2},
+			direction = 1,
 			program = {
 				{
 					trigger = "robot_goal",
@@ -40,42 +40,52 @@ return {
 	blocks = {
 		{
 			name = "player_goal",
-			pos = {7, 4},
+			pos = {5, 4},
 			direction = 0,
 		},
 		{
 			name = "wall",
-			pos = {3, 1},
+			pos = {1, 1},
 			direction = 0,
 		},
 		{
 			name = "wall",
-			pos = {3, 2},
+			pos = {1, 2},
 			direction = 0,
 		},
 		{
 			name = "wall",
-			pos = {3, 3},
+			pos = {1, 3},
 			direction = 0,
 		},
 		{
 			name = "wall",
-			pos = {3, 4},
+			pos = {1, 4},
 			direction = 0,
 		},
 		{
 			name = "wall",
-			pos = {3, 5},
+			pos = {1, 5},
 			direction = 0,
 		},
 		{
 			name = "wall",
-			pos = {3, 6},
+			pos = {1, 6},
 			direction = 0,
 		},
 		{
 			name = "wall",
-			pos = {3, 7},
+			pos = {1, 7},
+			direction = 0,
+		},
+		{
+			name = "wall",
+			pos = {1, 0},
+			direction = 0,
+		},
+		{
+			name = "wall",
+			pos = {2, 0},
 			direction = 0,
 		},
 		{
@@ -105,7 +115,37 @@ return {
 		},
 		{
 			name = "wall",
-			pos = {8, 0},
+			pos = {11, 8},
+			direction = 1,
+		},
+		{
+			name = "wall",
+			pos = {10, 8},
+			direction = 1,
+		},
+		{
+			name = "wall",
+			pos = {11, 7},
+			direction = 1,
+		},
+		{
+			name = "wall",
+			pos = {9, 4},
+			direction = 0,
+		},
+		{
+			name = "wall",
+			pos = {9, 3},
+			direction = 0,
+		},
+		{
+			name = "wall",
+			pos = {9, 2},
+			direction = 0,
+		},
+		{
+			name = "wall",
+			pos = {9, 1},
 			direction = 0,
 		},
 		{
@@ -115,57 +155,7 @@ return {
 		},
 		{
 			name = "wall",
-			pos = {13, 8},
-			direction = 1,
-		},
-		{
-			name = "wall",
-			pos = {12, 8},
-			direction = 1,
-		},
-		{
-			name = "wall",
-			pos = {13, 7},
-			direction = 1,
-		},
-		{
-			name = "wall",
-			pos = {11, 4},
-			direction = 0,
-		},
-		{
-			name = "wall",
-			pos = {11, 3},
-			direction = 0,
-		},
-		{
-			name = "wall",
-			pos = {11, 2},
-			direction = 0,
-		},
-		{
-			name = "wall",
-			pos = {11, 1},
-			direction = 0,
-		},
-		{
-			name = "wall",
-			pos = {11, 0},
-			direction = 0,
-		},
-		{
-			name = "wall",
-			pos = {10, 0},
-			direction = 0,
-		},
-		{
-			name = "wall",
-			pos = {11, 8},
-			direction = 0,
-		},
-		{
-			name = "wall",
-			pos = {10, 8},
+			pos = {8, 0},
 			direction = 0,
 		},
 		{
@@ -205,7 +195,12 @@ return {
 		},
 		{
 			name = "wall",
-			pos = {6, 4},
+			pos = {2, 8},
+			direction = 0,
+		},
+		{
+			name = "wall",
+			pos = {1, 8},
 			direction = 0,
 		},
 		{
@@ -215,42 +210,22 @@ return {
 		},
 		{
 			name = "wall",
-			pos = {5, 4},
+			pos = {2, 4},
 			direction = 0,
 		},
 		{
 			name = "wall",
+			pos = {3, 4},
+			direction = 0,
+		},
+		{
+			name = "wall",
+			pos = {2, 5},
+			direction = 1,
+		},
+		{
+			name = "wall",
 			pos = {4, 5},
-			direction = 1,
-		},
-		{
-			name = "wall",
-			pos = {6, 5},
-			direction = 1,
-		},
-		{
-			name = "wall",
-			pos = {6, 6},
-			direction = 1,
-		},
-		{
-			name = "wall",
-			pos = {6, 7},
-			direction = 1,
-		},
-		{
-			name = "wall",
-			pos = {5, 7},
-			direction = 1,
-		},
-		{
-			name = "wall",
-			pos = {5, 6},
-			direction = 1,
-		},
-		{
-			name = "wall",
-			pos = {5, 5},
 			direction = 1,
 		},
 		{
@@ -265,28 +240,228 @@ return {
 		},
 		{
 			name = "wall",
-			pos = {12, 4},
+			pos = {3, 7},
 			direction = 1,
 		},
 		{
 			name = "wall",
-			pos = {13, 4},
+			pos = {3, 6},
 			direction = 1,
 		},
 		{
 			name = "wall",
-			pos = {13, 5},
+			pos = {3, 5},
 			direction = 1,
 		},
 		{
 			name = "wall",
-			pos = {13, 6},
+			pos = {2, 6},
+			direction = 1,
+		},
+		{
+			name = "wall",
+			pos = {2, 7},
+			direction = 1,
+		},
+		{
+			name = "wall",
+			pos = {10, 4},
+			direction = 1,
+		},
+		{
+			name = "wall",
+			pos = {11, 4},
+			direction = 1,
+		},
+		{
+			name = "wall",
+			pos = {11, 5},
+			direction = 1,
+		},
+		{
+			name = "wall",
+			pos = {11, 6},
 			direction = 1,
 		},
 		{
 			name = "robot_goal",
-			pos = {12, 6},
+			pos = {10, 6},
 			direction = 1,
+		},
+		{
+			name = "wall",
+			pos = {0, 0},
+			direction = 0,
+		},
+		{
+			name = "wall",
+			pos = {-1, 0},
+			direction = 0,
+		},
+		{
+			name = "wall",
+			pos = {11, 0},
+			direction = 0,
+		},
+		{
+			name = "wall",
+			pos = {-1, 1},
+			direction = 0,
+		},
+		{
+			name = "wall",
+			pos = {-1, 2},
+			direction = 0,
+		},
+		{
+			name = "wall",
+			pos = {0, 1},
+			direction = 0,
+		},
+		{
+			name = "wall",
+			pos = {0, 2},
+			direction = 0,
+		},
+		{
+			name = "wall",
+			pos = {10, 3},
+			direction = 0,
+		},
+		{
+			name = "wall",
+			pos = {11, 1},
+			direction = 0,
+		},
+		{
+			name = "wall",
+			pos = {11, 2},
+			direction = 0,
+		},
+		{
+			name = "wall",
+			pos = {-1, 4},
+			direction = 0,
+		},
+		{
+			name = "wall",
+			pos = {11, 3},
+			direction = 0,
+		},
+		{
+			name = "wall",
+			pos = {10, 2},
+			direction = 0,
+		},
+		{
+			name = "wall",
+			pos = {-1, 5},
+			direction = 0,
+		},
+		{
+			name = "wall",
+			pos = {-1, 6},
+			direction = 0,
+		},
+		{
+			name = "wall",
+			pos = {-1, 7},
+			direction = 0,
+		},
+		{
+			name = "wall",
+			pos = {0, 6},
+			direction = 0,
+		},
+		{
+			name = "wall",
+			pos = {0, 5},
+			direction = 0,
+		},
+		{
+			name = "wall",
+			pos = {0, 4},
+			direction = 0,
+		},
+		{
+			name = "wall",
+			pos = {0, 3},
+			direction = 0,
+		},
+		{
+			name = "wall",
+			pos = {-1, 3},
+			direction = 0,
+		},
+		{
+			name = "wall",
+			pos = {0, 7},
+			direction = 0,
+		},
+		{
+			name = "wall",
+			pos = {0, 8},
+			direction = 0,
+		},
+		{
+			name = "wall",
+			pos = {-1, 8},
+			direction = 0,
+		},
+		{
+			name = "wall",
+			pos = {10, 0},
+			direction = 0,
+		},
+		{
+			name = "wall",
+			pos = {10, 1},
+			direction = 0,
+		},
+		{
+			name = "wall",
+			pos = {12, 0},
+			direction = 0,
+		},
+		{
+			name = "wall",
+			pos = {12, 1},
+			direction = 0,
+		},
+		{
+			name = "wall",
+			pos = {12, 2},
+			direction = 0,
+		},
+		{
+			name = "wall",
+			pos = {12, 3},
+			direction = 0,
+		},
+		{
+			name = "wall",
+			pos = {12, 4},
+			direction = 0,
+		},
+		{
+			name = "wall",
+			pos = {12, 5},
+			direction = 0,
+		},
+		{
+			name = "wall",
+			pos = {12, 6},
+			direction = 0,
+		},
+		{
+			name = "wall",
+			pos = {12, 8},
+			direction = 0,
+		},
+		{
+			name = "wall",
+			pos = {12, 7},
+			direction = 0,
 		},
 	},
 }
