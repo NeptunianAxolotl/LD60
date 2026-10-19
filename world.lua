@@ -52,14 +52,14 @@ function api.GetCosmos()
 	return self.cosmos
 end
 
-function api.SetGameOver(hasWon, overType)
+function api.SetGameOver(hasWon, overType, cyclesToWin)
 	if self.gameWon or self.gameLost then
 		return
 	end
 	
 	if hasWon then
 		self.gameWon = true
-		self.cosmos.SetLevelWon()
+		self.cosmos.SetLevelWon(cyclesToWin)
 	else
 		self.gameLost = true
 		self.overType = overType

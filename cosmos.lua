@@ -160,21 +160,32 @@ function api.GetCurrentLevelPreviouslyWon()
 	return self.wonLevels[(self.currentLevel.name or "unknown")]
 end
 
-function api.SetLevelWon()
+function api.SetLevelWon(cyclesToWin)
+	cyclesToWin = cyclesToWin or -1
+	local oldTime = self.wonLevels[(self.currentLevel.name or "unknown")] or -1
+	if oldTime > 0 and oldTime < cyclesToWin then
+		cyclesToWin = oldTime
+	end
 	if Global.SAVE_WON_LEVELS then
 		love.filesystem.createDirectory("completed")
-		local success, message = love.filesystem.write("completed/" .. (self.currentLevel.name or "unknown"), "won")
+		local success, message = love.filesystem.write("completed/" .. (self.currentLevel.name or "unknown"), cyclesToWin or "won")
 	end
-	self.wonLevels[(self.currentLevel.name or "unknown")] = true
+	self.wonLevels[(self.currentLevel.name or "unknown")] = cyclesToWin
 end
 
 function api.LoadLevelsWon()
 	local files = love.filesystem.getDirectoryItems("completed")
 	for i = 1, #(files or {}) do
-		if files[i] and LevelDefs.levels[files[i]] then
-			self.wonLevels[files[i]] = true
+		if files[i] then
+			local contents = love.filesystem.read("completed/" .. files[i])
+			local cyclesToWin = contents and tonumber(contents) or -1
+			self.wonLevels[files[i]] = cyclesToWin
 		end
 	end
+end
+
+function api.GetLevelTimes()
+	return self.wonLevels
 end
 
 --------------------------------------------------

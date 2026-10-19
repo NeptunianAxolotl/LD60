@@ -39,12 +39,19 @@ function api.GoalSatisfied()
 end
 
 function api.AllRobotsStationary()
-  return IterableMap.IfAllSatisfy(self.robots, "FullyStationary")
+	return IterableMap.IfAllSatisfy(self.robots, "FullyStationary")
+end
+
+function api.GetLevelCycles()
+	return self.levelCycles
 end
 
 function api.Update(dt)
 	local newDt, leftover = util.UpdateTimer(self.commandDt, dt)
 	self.commandDt = newDt
+	if not self.commandDt then
+		self.levelCycles = self.levelCycles + 1
+	end
 	IterableMap.ApplySelf(self.robots, "Update", dt, not self.commandDt)
 	if not self.commandDt then
 		self.commandDt = Global.ROBOT_MOVE_TIME/4 + leftover
@@ -59,6 +66,9 @@ function api.Draw(drawQueue)
 	IterableMap.ApplySelf(self.robots, "Draw", drawQueue)
 end
 function api.DrawInterface()
+	if not GameHandler.WantDrawRobotProgram() then
+		return
+	end
 	IterableMap.ApplySelf(self.robots, "DrawProgram", {Global.WINDOW_X - Global.UI_WIDTH + Global.COMMAND_DRAW_SIZE - 5, GameHandler.GetRobotCommandsOffset()})
 end
 
@@ -67,6 +77,7 @@ function api.Initialize(world, levelIndex, mapDataOverride)
 		world = world,
 		robots = IterableMap.New({stable = true}),
 		commandDt = Global.ROBOT_MOVE_TIME/4,
+		levelCycles = 0,
 	}
 end
 

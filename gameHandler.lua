@@ -1,4 +1,5 @@
 
+local LevelDefs = require("defs/levelDefs")
 local CommandDefs = util.LoadDefDirectory("defs/commands")
 
 local self = {}
@@ -24,6 +25,14 @@ function api.AllowMovement()
 		return false
 	end
 	return (not won)
+end
+
+function api.WantDrawRobotProgram()
+	local _, won = self.world.GetGameOver()
+	if not won then
+		return true
+	end
+	return not LevelHandler.GetLevelData().specialEndText
 end
 
 --------------------------------------------------
@@ -68,7 +77,7 @@ function api.Update(dt)
 		if not PlayerHandler.GetPlayer() and not LevelHandler.InEditMode() then
 			self.world.SetGameOver(false, "player_died")
 		elseif PlayerHandler.GoalSatisfied() and RobotHandler.GoalSatisfied() then
-			self.world.SetGameOver(true, "all_charging")
+			self.world.SetGameOver(true, "all_charging", RobotHandler.GetLevelCycles())
 		end
 	end
 	if self.hoveredCommand then
@@ -135,28 +144,59 @@ function api.DrawInterface()
 	love.graphics.setColor(Global.TEXT_COL)
 	love.graphics.printf(levelData.humanName, Global.WINDOW_X - Global.UI_WIDTH, 30, Global.UI_WIDTH, "center")
 	
-	if levelData.description then
-		Font.SetSize(4)
-		love.graphics.printf(levelData.description, Global.WINDOW_X - Global.UI_WIDTH + 20, offsetY, Global.UI_WIDTH - 45, "left")
-	end
-	offsetY = offsetY + api.GetRobotCommandsOffset() - 150
 	
-	local commandQueue = PlayerHandler.GetCommandQueue()
-	Font.SetSize(3)
-	if not LevelHandler.GetLevelData().hideChipInventory then
-		love.graphics.printf("Held Tube:", Global.WINDOW_X - Global.UI_WIDTH + 20, offsetY, Global.UI_WIDTH - 40, "left")
-		local offsetX = Global.WINDOW_X - Global.UI_WIDTH + 190
-		local CMD_SCALE = 1.2
-		for i = 1, #commandQueue do
-			local highlight = (i == 1) and 1
-			if highlight and PlayerHandler.GetTargetForCommand() then
-				highlight = 2
+	if api.WantDrawRobotProgram() then
+		if levelData.description then
+			Font.SetSize(4)
+			love.graphics.printf(levelData.description, Global.WINDOW_X - Global.UI_WIDTH + 20, offsetY, Global.UI_WIDTH - 45, "left")
+		end
+		offsetY = offsetY + api.GetRobotCommandsOffset() - 150
+		
+		local commandQueue = PlayerHandler.GetCommandQueue()
+		Font.SetSize(3)
+		if not LevelHandler.GetLevelData().hideChipInventory then
+			love.graphics.printf("Held Tube:", Global.WINDOW_X - Global.UI_WIDTH + 20, offsetY, Global.UI_WIDTH - 40, "left")
+			local offsetX = Global.WINDOW_X - Global.UI_WIDTH + 190
+			local CMD_SCALE = 1.2
+			for i = 1, #commandQueue do
+				local highlight = (i == 1) and 1
+				if highlight and PlayerHandler.GetTargetForCommand() then
+					highlight = 2
+				end
+				api.DrawCommandBox(commandQueue[i], offsetX, offsetY + Global.COMMAND_DRAW_SIZE*0.38, highlight, CMD_SCALE, CMD_SCALE)
+				offsetX = offsetX + Global.COMMAND_DRAW_SIZE*CMD_SCALE + 5
 			end
-			api.DrawCommandBox(commandQueue[i], offsetX, offsetY + Global.COMMAND_DRAW_SIZE*0.38, highlight, CMD_SCALE, CMD_SCALE)
-			offsetX = offsetX + Global.COMMAND_DRAW_SIZE*CMD_SCALE + 5
+		end
+		offsetY = offsetY + 60
+	else
+		local levelTimes = self.world.GetCosmos().GetLevelTimes()
+		Font.SetSize(4)
+		local included = {}
+		local totalTime = 0
+		offsetY = 120
+		love.graphics.printf("Cycles to complete each level:", Global.WINDOW_X - Global.UI_WIDTH + 20, offsetY, Global.UI_WIDTH - 40, "left")
+		offsetY = offsetY + 30
+		for i = 1, #LevelDefs.levelOrder do
+			local level = LevelDefs.levels[LevelDefs.levelOrder[i]]
+			local cycles = levelTimes[level.name]
+			if cycles and cycles > 0 then
+				totalTime = totalTime + cycles
+			else
+				cycles = "-"
+			end
+			love.graphics.printf(level.humanName .. " : " .. cycles, Global.WINDOW_X - Global.UI_WIDTH + 20, offsetY, Global.UI_WIDTH - 40, "left")
+			included[level.name] = true
+			offsetY = offsetY + 30
+		end
+		love.graphics.printf("Total cycles: " .. totalTime, Global.WINDOW_X - Global.UI_WIDTH + 20, offsetY, Global.UI_WIDTH - 40, "left")
+		offsetY = offsetY + 45
+		for name, cycles in pairs(levelTimes) do
+			if not included[name] then
+				love.graphics.printf(name .. " : " .. cycles, Global.WINDOW_X - Global.UI_WIDTH + 20, offsetY, Global.UI_WIDTH - 40, "left")
+				offsetY = offsetY + 30
+			end
 		end
 	end
-	offsetY = offsetY + 60
 	
 	if LevelHandler.InEditMode() then
 		return
