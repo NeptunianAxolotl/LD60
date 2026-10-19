@@ -1,7 +1,7 @@
 return {
 	humanName = "Widdershins",
 	description = "Paint puts out fires.\n\nYour robot is not strong enough to stand the heat.",
-	dimensions = {15, 9},
+	dimensions = {14, 9},
 	textSize = 300,
 	hideChipInventory = false,
 	doorOpenState = {},
@@ -15,34 +15,19 @@ return {
 	robots = {
 		{
 			name = "basic_robot",
-			humanName = "Helper",
-			pos = {10, 1},
-			direction = 1,
-			swapAction = {trigger = "wildcard", slot = 1},
-			program = {
-				{
-					trigger = "player_front",
-					actions = {"right"},
-				},
-				{
-					trigger = "wall_front",
-					actions = {"u_turn"},
-				},
-				{
-					trigger = "wildcard",
-					actions = {"empty", "move"},
-				},
-			},
-		},
-		{
-			name = "basic_robot",
 			humanName = "Moth",
-			pos = {4, 3},
-			direction = 0,
+			pos = {5, 5},
+			direction = 2,
+			swapTrigger = "empty",
+			swapAction = {trigger = "paint", slot = 1},
 			program = {
 				{
-					trigger = "robot_goal",
+					trigger = "paint",
 					actions = {"wait"},
+				},
+				{
+					trigger = "empty",
+					actions = {"paint_down"},
 				},
 				{
 					trigger = "fire",
@@ -50,15 +35,15 @@ return {
 				},
 				{
 					trigger = "wildcard",
-					actions = {"move", "right"},
+					actions = {"right", "move"},
 				},
 			},
 		},
 		{
 			name = "basic_robot",
 			humanName = "Sprinter",
-			pos = {3, 2},
-			direction = 0,
+			pos = {5, 6},
+			direction = 2,
 			brickDetectionClauses = {
 				{
 					{
@@ -77,12 +62,12 @@ return {
 			},
 			program = {
 				{
-					trigger = "robot_goal",
+					trigger = "robot_front",
 					actions = {"wait"},
 				},
 				{
 					trigger = "fire",
-					actions = {"move_fast", "right", "move_fast", "move_fast", "right", "move_fast", "right", "move_fast", "right"},
+					actions = {"right", "move_fast", "right", "move_fast", "right", "move_fast", "move_fast", "right", "move_fast", },
 				},
 				{
 					trigger = "wildcard",
@@ -93,7 +78,7 @@ return {
 	},
 	blocks = {
 		{
-			name = "cmd_paint_down",
+			name = "cmd_move",
 			pos = {10, 6},
 			direction = 0,
 		},
@@ -224,7 +209,7 @@ return {
 		},
 		{
 			name = "wall",
-			pos = {0, 7},
+			pos = {13, 6},
 			direction = 0,
 		},
 		{
@@ -243,23 +228,23 @@ return {
 			direction = 0,
 		},
 		{
-			name = "fire",
-			pos = {1, 2},
+			name = "wall",
+			pos = {9, 0},
 			direction = 0,
 		},
 		{
-			name = "fire",
-			pos = {1, 3},
+			name = "wall",
+			pos = {13, 1},
 			direction = 0,
 		},
 		{
-			name = "fire",
-			pos = {1, 7},
+			name = "wall",
+			pos = {0, 8},
 			direction = 0,
 		},
 		{
-			name = "robot_goal",
-			pos = {1, 4},
+			name = "wall",
+			pos = {13, 0},
 			direction = 0,
 		},
 		{
@@ -268,13 +253,13 @@ return {
 			direction = 0,
 		},
 		{
-			name = "fire",
-			pos = {1, 5},
+			name = "wall",
+			pos = {1, 6},
 			direction = 0,
 		},
 		{
-			name = "fire",
-			pos = {1, 6},
+			name = "wall",
+			pos = {12, 4},
 			direction = 0,
 		},
 		{
@@ -379,12 +364,12 @@ return {
 		},
 		{
 			name = "wall",
-			pos = {14, 8},
+			pos = {13, 7},
 			direction = 0,
 		},
 		{
 			name = "wall",
-			pos = {0, 8},
+			pos = {13, 5},
 			direction = 0,
 		},
 		{
@@ -419,12 +404,92 @@ return {
 		},
 		{
 			name = "wall",
-			pos = {14, 1},
+			pos = {1, 7},
+			direction = 0,
+		},
+		{
+			name = "cmd_wildcard",
+			pos = {11, 6},
 			direction = 0,
 		},
 		{
 			name = "wall",
-			pos = {14, 2},
+			pos = {13, 2},
+			direction = 0,
+		},
+		{
+			name = "wall",
+			pos = {13, 4},
+			direction = 0,
+		},
+		{
+			name = "fire",
+			pos = {8, 7},
+			direction = 0,
+		},
+		{
+			name = "fire",
+			pos = {8, 1},
+			direction = 0,
+		},
+		{
+			name = "wall",
+			pos = {13, 3},
+			direction = 0,
+		},
+		{
+			name = "fire",
+			pos = {5, 4},
+			direction = 2,
+		},
+		{
+			name = "wall",
+			pos = {9, 4},
+			direction = 0,
+		},
+		{
+			name = "wall",
+			pos = {10, 4},
+			direction = 0,
+		},
+		{
+			name = "wall",
+			pos = {11, 4},
+			direction = 0,
+		},
+		{
+			name = "wall",
+			pos = {1, 1},
+			direction = 0,
+		},
+		{
+			name = "wall",
+			pos = {1, 2},
+			direction = 0,
+		},
+		{
+			name = "wall",
+			pos = {1, 3},
+			direction = 0,
+		},
+		{
+			name = "wall",
+			pos = {1, 4},
+			direction = 0,
+		},
+		{
+			name = "wall",
+			pos = {1, 5},
+			direction = 0,
+		},
+		{
+			name = "wall",
+			pos = {0, 0},
+			direction = 0,
+		},
+		{
+			name = "wall",
+			pos = {0, 1},
 			direction = 0,
 		},
 		{
@@ -453,103 +518,13 @@ return {
 			direction = 0,
 		},
 		{
+			name = "wall",
+			pos = {0, 7},
+			direction = 0,
+		},
+		{
 			name = "robot_goal",
-			pos = {5, 4},
-			direction = 2,
-		},
-		{
-			name = "wall",
-			pos = {9, 4},
-			direction = 0,
-		},
-		{
-			name = "wall",
-			pos = {10, 4},
-			direction = 0,
-		},
-		{
-			name = "wall",
-			pos = {11, 4},
-			direction = 0,
-		},
-		{
-			name = "wall",
-			pos = {12, 4},
-			direction = 0,
-		},
-		{
-			name = "wall",
-			pos = {13, 4},
-			direction = 0,
-		},
-		{
-			name = "wall",
-			pos = {14, 4},
-			direction = 0,
-		},
-		{
-			name = "wall",
-			pos = {0, 1},
-			direction = 0,
-		},
-		{
-			name = "fire",
-			pos = {8, 7},
-			direction = 0,
-		},
-		{
-			name = "fire",
-			pos = {8, 1},
-			direction = 0,
-		},
-		{
-			name = "wall",
-			pos = {14, 5},
-			direction = 0,
-		},
-		{
-			name = "wall",
-			pos = {14, 6},
-			direction = 0,
-		},
-		{
-			name = "wall",
-			pos = {14, 7},
-			direction = 0,
-		},
-		{
-			name = "cmd_left",
 			pos = {10, 2},
-			direction = 0,
-		},
-		{
-			name = "wall",
-			pos = {0, 0},
-			direction = 0,
-		},
-		{
-			name = "wall",
-			pos = {14, 0},
-			direction = 0,
-		},
-		{
-			name = "wall",
-			pos = {13, 0},
-			direction = 0,
-		},
-		{
-			name = "wall",
-			pos = {14, 3},
-			direction = 0,
-		},
-		{
-			name = "wall",
-			pos = {9, 0},
-			direction = 0,
-		},
-		{
-			name = "fire",
-			pos = {1, 1},
 			direction = 0,
 		},
 	},
