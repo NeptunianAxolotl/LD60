@@ -111,7 +111,7 @@ local function UpdateDoors()
 		self.doorWantClosed[doorIndex] = false
 	end
 	if not self.skipFirstDoorSound and playSound then
-		SoundHandler.PlaySound("csharp_7")
+		--SoundHandler.PlaySound("csharp_7")
 	end
 	self.skipFirstDoorSound = false
 end

@@ -1,4 +1,4 @@
 return {
 	file = "csharp 7.ogg",
-	volMult = 1.0,
+	volMult = 0.3,
 }

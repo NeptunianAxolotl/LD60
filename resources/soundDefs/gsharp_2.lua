@@ -1,4 +1,4 @@
 return {
 	file = "gsharp 2.ogg",
-	volMult = 1.0,
+	volMult = 0.65,
 }

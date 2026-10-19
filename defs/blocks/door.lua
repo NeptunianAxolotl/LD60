@@ -26,7 +26,6 @@ local def = {
 		if wantOpen == self.open then
 			return
 		end
-    SoundHandler.PlaySound("csharp_7")
 		if not wantOpen then
 			local blockage = TerrainHandler.GetMobileObjectAt(self.pos)
 			if blockage then

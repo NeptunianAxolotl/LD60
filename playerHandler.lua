@@ -72,6 +72,7 @@ local function TrySwapCommand()
 		self.commandQueue[i] = self.commandQueue[i + 1]
 	end
 	local newCommand = target.SwapCommand(command, targetType)
+	SoundHandler.PlaySound("csharp_3")
 	if newCommand and not CommandDefs[newCommand].isEmpty then
 		self.commandQueue[#self.commandQueue + 1] = newCommand
 	end
