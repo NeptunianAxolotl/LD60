@@ -72,11 +72,12 @@ function api.Update(dt)
 	else
 		BGMHandler.SetArp(1)
 	end
+	self.everInEditor = self.everInEditor or LevelHandler.InEditMode()
 	if not self.world.GetGameOver() then
 		if not PlayerHandler.GetPlayer() and not LevelHandler.InEditMode() then
 			self.world.SetGameOver(false, "player_died")
 		elseif PlayerHandler.GoalSatisfied() and RobotHandler.GoalSatisfied() then
-			self.world.SetGameOver(true, "all_charging", RobotHandler.GetLevelCycles())
+			self.world.SetGameOver(true, "all_charging", (not self.everInEditor) and RobotHandler.GetLevelCycles())
 			if LevelHandler.GetLevelData().specialEndText then
 				self.world.GetCosmos().SetShowHighScore(true)
 			end
@@ -280,6 +281,7 @@ function api.Initialize(parentWorld)
 		world = parentWorld,
 		tooltipAlpha = 0,
 		tooltipDisplay = false,
+		everInEditor = false,
 	}
 end
 
