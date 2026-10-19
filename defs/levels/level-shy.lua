@@ -1,9 +1,8 @@
 return {
 	humanName = "Shepherd",
 	description = "These twin robots are both terrified.\n\nJust get them back on their charging ports for now, we'll worry about counselling later.",
-	textSize = 300,
 	dimensions = {14, 11},
-	hideChipInventory = true,
+	textSize = 350,
 	doorOpenState = {},
 	player = {
 		{
@@ -13,35 +12,6 @@ return {
 		},
 	},
 	robots = {
-		{
-			name = "basic_robot",
-			humanName = "Shy Bot",
-			pos = {3, 5},
-			direction = 0,
-			swapAction = {trigger = "wall_front", slot = 1},
-			program = {
-				{
-					trigger = "player_front",
-					actions = {"set_1", "u_turn"},
-				},
-				{
-					trigger = "player_see_right",
-					actions = {"left"},
-				},
-				{
-					trigger = "player_see_left",
-					actions = {"right"},
-				},
-				{
-					trigger = "wall_front",
-					actions = {"move_back"},
-				},
-				{
-					trigger = "register_1",
-					actions = {"paint_down","move_fast", "move", "reset_1"},
-				},
-			},
-		},
 		{
 			name = "basic_robot",
 			humanName = "Timid Bot",
@@ -63,11 +33,40 @@ return {
 				},
 				{
 					trigger = "wall_front",
+					actions = {"move_back"},
+				},
+				{
+					trigger = "register_1",
+					actions = {"paint_down", "move_fast", "move", "reset_1"},
+				},
+			},
+		},
+		{
+			name = "basic_robot",
+			humanName = "Shy Bot",
+			pos = {3, 5},
+			direction = 0,
+			swapAction = {trigger = "wall_front", slot = 1},
+			program = {
+				{
+					trigger = "player_front",
+					actions = {"set_1", "u_turn"},
+				},
+				{
+					trigger = "player_see_right",
+					actions = {"left"},
+				},
+				{
+					trigger = "player_see_left",
+					actions = {"right"},
+				},
+				{
+					trigger = "wall_front",
 					actions = {"empty"},
 				},
 				{
 					trigger = "register_1",
-					actions = {"paint_down","move_fast", "move", "reset_1"},
+					actions = {"paint_down", "move_fast", "move", "reset_1"},
 				},
 			},
 		},
@@ -494,9 +493,9 @@ return {
 			direction = 3,
 		},
 		{
-			name = "wall",
-			pos = {3, 7},
-			direction = 3,
+			name = "robot_goal",
+			pos = {9, 7},
+			direction = 0,
 		},
 		{
 			name = "wall",
@@ -549,8 +548,8 @@ return {
 			direction = 1,
 		},
 		{
-			name = "robot_goal",
-			pos = {9, 7},
+			name = "wall",
+			pos = {3, 8},
 			direction = 0,
 		},
 	},
