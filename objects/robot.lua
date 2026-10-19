@@ -479,7 +479,7 @@ local function NewRobot(self)
 			end
 			offsetY = offsetY + Global.COMMAND_DRAW_SIZE + 10
 		end
-		drawPos[2] = offsetY - 22
+		drawPos[2] = offsetY - 10
 	end
 	
 	function self.Draw(drawQueue)

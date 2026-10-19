@@ -119,7 +119,9 @@ end
 
 function api.Draw(drawQueue)
 	IterableMap.ApplySelf(self.blocks, "Draw", drawQueue)
-	drawQueue:push({y=-100; f=function()
+	local depth = LevelHandler.InEditMode() and 2000 or -100
+	local RECT_SIZE = 2000
+	drawQueue:push({y=depth; f=function()
 		love.graphics.setColor(0, 0, 0, 0.5)
 		local dimension = LevelHandler.GetDimensions()
 		local rightPos = dimension[1]*Global.TILE_SIZE
@@ -130,6 +132,11 @@ function api.Draw(drawQueue)
 		for i = 0, dimension[2] do
 			love.graphics.line(0, i*Global.TILE_SIZE, rightPos, i*Global.TILE_SIZE)
 		end
+		love.graphics.setColor(Global.WALL_COLOR)
+		love.graphics.rectangle("fill", -RECT_SIZE, -RECT_SIZE, RECT_SIZE, bottomPos + RECT_SIZE*2)
+		love.graphics.rectangle("fill", rightPos, -RECT_SIZE, RECT_SIZE, bottomPos + RECT_SIZE*2)
+		love.graphics.rectangle("fill", -RECT_SIZE, -RECT_SIZE, rightPos + RECT_SIZE*2, RECT_SIZE)
+		love.graphics.rectangle("fill", -RECT_SIZE, bottomPos, rightPos + RECT_SIZE*2, RECT_SIZE)
 	end})
 end
 function api.Initialize(world)

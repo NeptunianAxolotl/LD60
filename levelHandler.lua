@@ -308,6 +308,7 @@ local function DrawEditor()
 	
 	if api.InEditMode() then
 		Font.SetSize(4)
+		love.graphics.setColor(0.9, 0.9, 0.9, 1)
 		offset = 10
 		love.graphics.printf([[
 Editing Level
