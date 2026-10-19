@@ -1,5 +1,8 @@
 
 local globals = {
+	DEV_TOOLS_ENABLED = true,
+	DEBUG_SKIP_TO_LEVEL = 9,
+	
 	BACK_COL = {180/255, 180/255, 180/255},
 	TILE_COL = {124/255, 149/255, 61/255},
 	BACK_COL_EDITOR = {1.2*10/255, 1.2*84/255, 1.2*156/255},
@@ -66,7 +69,7 @@ local globals = {
 		"dimensions", "textSize", "hideChipInventory",
 		"doorOpenState", "doorIndex",
 		"player", "robots", "blocks",
-		"pos", "direction",
+		"pos", "direction", "hideChipInventory",
 		"swapTrigger", "swapAction", "brickDetection",
 		"trigger", "actions",
 	},
@@ -92,7 +95,6 @@ local globals = {
 	MUSIC_VOLUME = 0.75,
 	DEFAULT_MUSIC_DURATION = 174.69,
 	CROSSFADE_TIME = 0,
-	DEV_TOOLS_ENABLED = false,
 	
 	ZOOM_OUT = 1,
 	CAMERA_SPEED = 2,

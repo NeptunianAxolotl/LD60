@@ -34,12 +34,6 @@ local menuSliders = {
 	},
 }
 
-if Global.DEV_TOOLS_ENABLED then
-	menuOptions[#menuOptions + 1] = "Money++"
-	menuOptions[#menuOptions + 1] ="Disable Tutorial"
-	menuOptions[#menuOptions + 1] = "God Mode"
-end
-
 local function UpdateSliderDrag()
 	local slider = self.sliderHeld and menuSliders[self.sliderHeld] and menuSliders[self.sliderHeld]
 	if not (slider and slider.extents) then

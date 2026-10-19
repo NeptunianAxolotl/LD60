@@ -89,13 +89,21 @@ function api.SwitchLevel(goNext)
 	end
 end
 
+function api.SwitchLevelByNumber(levelNumber)
+	if LevelDefs.levelOrder[levelNumber] then
+		self.currentLevel = LevelDefs.levels[LevelDefs.levelOrder[levelNumber]]
+		World.Initialize(api, self.currentLevel)
+		return
+	end
+end
+
 function api.GetLevelNumber()
-  	for i = 1, #LevelDefs.levelOrder do
+	for i = 1, #LevelDefs.levelOrder do
 		if LevelDefs.levelOrder[i] == self.currentLevel.name then
 			return i
-    end
-  end
-  return nil
+		end
+	end
+	return nil
 end
 
 function api.GetScrollSpeeds()
@@ -187,6 +195,9 @@ function api.KeyPressed(key, scancode, isRepeat)
 	if key == "s" and (love.keyboard.isDown("lctrl") or love.keyboard.isDown("rctrl")) then
 		api.TakeScreenshot()
 		return true
+	end
+	if Global.DEV_TOOLS_ENABLED and key == "b" and (love.keyboard.isDown("lctrl") or love.keyboard.isDown("rctrl")) then
+		api.SwitchLevelByNumber(Global.DEBUG_SKIP_TO_LEVEL)
 	end
 	if key == "n" and (love.keyboard.isDown("lctrl") or love.keyboard.isDown("rctrl")) then
 		api.SwitchLevel(true)
