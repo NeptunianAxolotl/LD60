@@ -41,7 +41,7 @@ end
 local function FindNextNonEmpty(self, index)
 	local actions = self.program[index].actions
 	local increment = true
-	local finalIndex = index%(#actions) - 1
+	local finalIndex = self.nextAction[index]
 	while increment do
 		self.nextAction[index] = (self.nextAction[index])%(#actions) + 1
 		increment = SkipAction(self, actions[self.nextAction[index]]) and (self.nextAction[index] ~= finalIndex)
