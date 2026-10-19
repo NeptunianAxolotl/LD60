@@ -1,5 +1,5 @@
 return {
 	file = "music/pad.ogg",
-	volMult = 1.0,
+	volMult = 0.66,
   track = "pad"
 }
