@@ -164,8 +164,8 @@ end
 function api.SetLevelWon(cyclesToWin)
 	cyclesToWin = cyclesToWin or -1
 	local oldTime = self.wonLevels[(self.currentLevel.name or "unknown")] or -1
-	if oldTime > 0 and oldTime < cyclesToWin then
-		cyclesToWin = oldTime
+	if oldTime > 0 and oldTime < cyclesToWin or (cyclesToWin < 0) then
+		cyclesToWin = oldTime or -1
 	end
 	if Global.SAVE_WON_LEVELS then
 		love.filesystem.createDirectory("completed")
