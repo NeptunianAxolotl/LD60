@@ -47,15 +47,13 @@ function api.GetLevelCycles()
 end
 
 function api.Update(dt)
-	if not GameHandler.AllowMovement() then
-		return
-	end
 	local newDt, leftover = util.UpdateTimer(self.commandDt, dt)
+	local doCommand = (not newDt) and GameHandler.AllowMovement()
 	self.commandDt = newDt
-	if not self.commandDt then
+	if doCommand then
 		self.levelCycles = self.levelCycles + 1
 	end
-	IterableMap.ApplySelf(self.robots, "Update", dt, not self.commandDt)
+	IterableMap.ApplySelf(self.robots, "Update", dt, doCommand)
 	if not self.commandDt then
 		self.commandDt = Global.ROBOT_MOVE_TIME/4 + leftover
 	end
