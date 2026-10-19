@@ -121,9 +121,10 @@ end
 function api.DrawInterface()
 	love.graphics.setLineWidth(5)
 	love.graphics.setColor(Global.PANEL_COL)
-	love.graphics.rectangle("fill", Global.WINDOW_X - Global.UI_WIDTH, -1000, 1200, 3000, 4, 4, 16)
+	local UI_PAD = 12
+	love.graphics.rectangle("fill", Global.WINDOW_X - Global.UI_WIDTH - UI_PAD, -1000, 1200, 3000, 4, 4, 16)
 	love.graphics.setColor(Global.PANEL_BORDER_COL)
-	love.graphics.rectangle("line", Global.WINDOW_X - Global.UI_WIDTH, -1000, 1200, 3000, 4, 4, 16)
+	love.graphics.rectangle("line", Global.WINDOW_X - Global.UI_WIDTH - UI_PAD, -1000, 1200, 3000, 4, 4, 16)
 	
 	local levelData = LevelHandler.GetLevelData()
 	local offsetY = 100
@@ -177,8 +178,8 @@ function api.DrawInterface()
 Press Ctrl+R to restart the level
 ]], panelX, panelY + 24, width, "center")
 	elseif self.tooltipDisplay then
-		local panelX, panelY = 800, 920
-		local width = (Global.WINDOW_X - Global.UI_WIDTH - 30) - panelX
+		local panelX, panelY = 800 - UI_PAD, 920
+		local width = (Global.WINDOW_X - Global.UI_WIDTH - 30 - UI_PAD) - panelX
 		local height = Global.WINDOW_Y - panelY - 20
 		local alpha = math.min(1, self.tooltipAlpha)
 		local CMD_SCALE = 2
