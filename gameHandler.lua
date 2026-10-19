@@ -134,7 +134,7 @@ function api.DrawInterface()
 	
 	if levelData.description then
 		Font.SetSize(4)
-		love.graphics.printf(levelData.description, Global.WINDOW_X - Global.UI_WIDTH + 20, offsetY, Global.UI_WIDTH - 15, "left")
+		love.graphics.printf(levelData.description, Global.WINDOW_X - Global.UI_WIDTH + 20, offsetY, Global.UI_WIDTH - 45, "left")
 	end
 	offsetY = offsetY + api.GetRobotCommandsOffset() - 150
 	
@@ -154,7 +154,6 @@ function api.DrawInterface()
 		end
 	end
 	offsetY = offsetY + 60
-	
 	
 	local _, won, lost = self.world.GetGameOver()
 	local mousePos = self.world.GetMousePositionInterface()

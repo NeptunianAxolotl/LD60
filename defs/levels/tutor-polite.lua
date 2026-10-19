@@ -1,6 +1,6 @@
 return {
 	humanName = "Polite Training",
-	description = "You are the red robot.\nUse WSAD or arrows to move.\n\nThe polite blue robot will turn right when it hits you. Most robots would crush you instead.\n\nDirect all the robots (including yourself) to their designated charging ports.",
+	description = "You are the red robot.\nUse WSAD or arrows to move.\n\nThe polite blue robot will turn right when it hits you. Most other robots would crush you.\n\nDirect all the robots (including yourself) to their designated charging ports.",
 	dimensions = {13, 9},
 	hideChipInventory = true,
 	doorOpenState = {},
