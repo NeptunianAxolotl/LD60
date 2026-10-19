@@ -1,6 +1,6 @@
 return {
 	humanName = "Impasse",
-	description = "Robots are strong enough to push boxes, but they see the boxes as walls.\n\nLoyal Bot would walk through walls for you.\n\nTraitor Bot... not so much.",
+	description = "These old robots are strong enough to push boxes. Unfortunately their programming sees boxes as walls.\n\nLoyal Bot would walk through walls for you.\n\nTraitor Bot... not so much.",
 	dimensions = {15, 11},
 	doorOpenState = {},
 	player = {
