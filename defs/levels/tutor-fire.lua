@@ -1,12 +1,21 @@
 return {
-	humanName = "Incendiary",
-	description = "Paint puts out fires but your robot is not as fireproof as the older models.\n\n\n",
-	dimensions = {12, 9},
+	humanName = "Fire Register",
+	description = [[Paint puts out fires.
+
+Your robot is not strong enough to stand the heat.
+
+The [1] trigger activates as long its register is set. Register commands enable or disable the trigger.
+
+Press Ctrl+R to restart the level if you get stuck.
+]],
+	textSize = 480,
+	dimensions = {11, 8},
+	hideChipInventory = false,
 	doorOpenState = {},
 	player = {
 		{
 			name = "player",
-			pos = {4, 5},
+			pos = {4, 4},
 			direction = 0,
 		},
 	},
@@ -16,14 +25,19 @@ return {
 			humanName = "Firefighter",
 			pos = {7, 3},
 			direction = 1,
+			swapAction = {trigger = "register_1", slot = 4},
 			program = {
+				{
+					trigger = "register_1",
+					actions = {"paint_down", "u_turn", "move", "empty"},
+				},
 				{
 					trigger = "paint",
 					actions = {"paint_up", "right"},
 				},
 				{
 					trigger = "wall_front",
-					actions = {"paint_down", "u_turn"},
+					actions = {"set_1"},
 				},
 				{
 					trigger = "wildcard",
@@ -35,162 +49,57 @@ return {
 	blocks = {
 		{
 			name = "wall",
-			pos = {-3, 2},
+			pos = {-2, 2},
 			direction = 0,
 		},
 		{
 			name = "wall",
-			pos = {-3, 4},
+			pos = {-2, 4},
 			direction = 0,
 		},
 		{
 			name = "wall",
-			pos = {-3, 6},
+			pos = {-2, 6},
 			direction = 0,
 		},
 		{
 			name = "wall",
-			pos = {-3, 5},
+			pos = {-2, 5},
 			direction = 0,
 		},
 		{
 			name = "wall",
-			pos = {-3, 8},
+			pos = {-2, 8},
 			direction = 0,
 		},
 		{
 			name = "wall",
-			pos = {-3, 3},
+			pos = {-2, 3},
 			direction = 0,
 		},
 		{
 			name = "wall",
-			pos = {-3, 7},
+			pos = {-2, 7},
 			direction = 0,
 		},
 		{
 			name = "wall",
-			pos = {-3, 0},
+			pos = {-2, 0},
 			direction = 0,
 		},
 		{
 			name = "wall",
-			pos = {-3, 1},
+			pos = {-2, 1},
 			direction = 0,
 		},
 		{
 			name = "wall",
-			pos = {1, 7},
+			pos = {2, 7},
 			direction = 0,
 		},
 		{
 			name = "wall",
-			pos = {1, 8},
-			direction = 0,
-		},
-		{
-			name = "wall",
-			pos = {1, 3},
-			direction = 0,
-		},
-		{
-			name = "wall",
-			pos = {1, 4},
-			direction = 0,
-		},
-		{
-			name = "wall",
-			pos = {1, 6},
-			direction = 0,
-		},
-		{
-			name = "wall",
-			pos = {5, 0},
-			direction = 0,
-		},
-		{
-			name = "fire",
-			pos = {6, 1},
-			direction = 0,
-		},
-		{
-			name = "wall",
-			pos = {11, 0},
-			direction = 0,
-		},
-		{
-			name = "wall",
-			pos = {6, 0},
-			direction = 0,
-		},
-		{
-			name = "wall",
-			pos = {7, 0},
-			direction = 0,
-		},
-		{
-			name = "fire",
-			pos = {8, 4},
-			direction = 0,
-		},
-		{
-			name = "wall",
-			pos = {11, 1},
-			direction = 0,
-		},
-		{
-			name = "wall",
-			pos = {3, 0},
-			direction = 0,
-		},
-		{
-			name = "wall",
-			pos = {4, 0},
-			direction = 0,
-		},
-		{
-			name = "wall",
-			pos = {11, 5},
-			direction = 0,
-		},
-		{
-			name = "wall",
-			pos = {11, 4},
-			direction = 0,
-		},
-		{
-			name = "wall",
-			pos = {11, 3},
-			direction = 0,
-		},
-		{
-			name = "wall",
-			pos = {11, 2},
-			direction = 0,
-		},
-		{
-			name = "wall",
-			pos = {1, 5},
-			direction = 0,
-		},
-		{
-			name = "wall",
-			pos = {8, 0},
-			direction = 0,
-		},
-		{
-			name = "wall",
-			pos = {9, 0},
-			direction = 0,
-		},
-		{
-			name = "wall",
-			pos = {10, 0},
-			direction = 0,
-		},
-		{
-			name = "fire",
-			pos = {9, 5},
+			pos = {3, 1},
 			direction = 0,
 		},
 		{
@@ -200,42 +109,42 @@ return {
 		},
 		{
 			name = "wall",
-			pos = {8, 7},
+			pos = {1, 7},
+			direction = 0,
+		},
+		{
+			name = "fire",
+			pos = {6, 3},
 			direction = 0,
 		},
 		{
 			name = "wall",
-			pos = {8, 8},
+			pos = {6, 0},
+			direction = 0,
+		},
+		{
+			name = "fire",
+			pos = {6, 1},
 			direction = 0,
 		},
 		{
 			name = "wall",
-			pos = {7, 8},
+			pos = {1, 3},
 			direction = 0,
 		},
 		{
 			name = "wall",
-			pos = {6, 8},
+			pos = {7, 0},
 			direction = 0,
 		},
 		{
 			name = "wall",
-			pos = {5, 8},
+			pos = {8, 0},
 			direction = 0,
 		},
 		{
-			name = "wall",
-			pos = {4, 8},
-			direction = 0,
-		},
-		{
-			name = "wall",
-			pos = {3, 8},
-			direction = 0,
-		},
-		{
-			name = "wall",
-			pos = {2, 8},
+			name = "fire",
+			pos = {9, 4},
 			direction = 0,
 		},
 		{
@@ -245,187 +154,17 @@ return {
 		},
 		{
 			name = "wall",
-			pos = {2, 2},
+			pos = {4, 0},
 			direction = 0,
 		},
 		{
 			name = "wall",
-			pos = {3, 2},
-			direction = 0,
-		},
-		{
-			name = "wall",
-			pos = {3, 1},
-			direction = 0,
-		},
-		{
-			name = "fire",
-			pos = {7, 5},
-			direction = 0,
-		},
-		{
-			name = "fire",
-			pos = {10, 5},
-			direction = 0,
-		},
-		{
-			name = "fire",
-			pos = {5, 4},
-			direction = 0,
-		},
-		{
-			name = "fire",
-			pos = {6, 4},
-			direction = 0,
-		},
-		{
-			name = "fire",
-			pos = {5, 3},
-			direction = 0,
-		},
-		{
-			name = "fire",
-			pos = {4, 2},
-			direction = 0,
-		},
-		{
-			name = "fire",
-			pos = {5, 2},
-			direction = 0,
-		},
-		{
-			name = "fire",
-			pos = {4, 1},
-			direction = 0,
-		},
-		{
-			name = "fire",
-			pos = {7, 2},
-			direction = 0,
-		},
-		{
-			name = "fire",
-			pos = {9, 4},
-			direction = 0,
-		},
-		{
-			name = "fire",
-			pos = {9, 1},
-			direction = 0,
-		},
-		{
-			name = "fire",
-			pos = {10, 2},
-			direction = 0,
-		},
-		{
-			name = "fire",
-			pos = {10, 1},
-			direction = 0,
-		},
-		{
-			name = "player_goal",
-			pos = {9, 2},
-			direction = 0,
-		},
-		{
-			name = "robot_goal",
-			pos = {3, 6},
-			direction = 0,
-		},
-		{
-			name = "wall",
-			pos = {9, 6},
-			direction = 0,
-		},
-		{
-			name = "wall",
-			pos = {9, 7},
-			direction = 0,
-		},
-		{
-			name = "wall",
-			pos = {9, 8},
-			direction = 0,
-		},
-		{
-			name = "wall",
-			pos = {10, 8},
-			direction = 0,
-		},
-		{
-			name = "wall",
-			pos = {10, 7},
-			direction = 0,
-		},
-		{
-			name = "wall",
-			pos = {10, 6},
-			direction = 0,
-		},
-		{
-			name = "wall",
-			pos = {11, 6},
-			direction = 0,
-		},
-		{
-			name = "wall",
-			pos = {11, 7},
-			direction = 0,
-		},
-		{
-			name = "wall",
-			pos = {11, 8},
-			direction = 0,
-		},
-		{
-			name = "wall",
-			pos = {0, 8},
-			direction = 0,
-		},
-		{
-			name = "wall",
-			pos = {0, 7},
-			direction = 0,
-		},
-		{
-			name = "wall",
-			pos = {0, 6},
-			direction = 0,
-		},
-		{
-			name = "wall",
-			pos = {0, 5},
-			direction = 0,
-		},
-		{
-			name = "wall",
-			pos = {0, 4},
-			direction = 0,
-		},
-		{
-			name = "wall",
-			pos = {0, 3},
-			direction = 0,
-		},
-		{
-			name = "wall",
-			pos = {0, 2},
+			pos = {5, 0},
 			direction = 0,
 		},
 		{
 			name = "wall",
 			pos = {2, 0},
-			direction = 0,
-		},
-		{
-			name = "wall",
-			pos = {0, 1},
-			direction = 0,
-		},
-		{
-			name = "wall",
-			pos = {0, 0},
 			direction = 0,
 		},
 		{
@@ -440,19 +179,233 @@ return {
 		},
 		{
 			name = "wall",
+			pos = {3, 0},
+			direction = 0,
+		},
+		{
+			name = "fire",
+			pos = {7, 5},
+			direction = 0,
+		},
+		{
+			name = "wall",
+			pos = {9, 0},
+			direction = 0,
+		},
+		{
+			name = "wall",
+			pos = {10, 0},
+			direction = 0,
+		},
+		{
+			name = "wall",
+			pos = {10, 4},
+			direction = 0,
+		},
+		{
+			name = "wall",
+			pos = {9, 5},
+			direction = 0,
+		},
+		{
+			name = "wall",
+			pos = {9, 6},
+			direction = 0,
+		},
+		{
+			name = "wall",
+			pos = {9, 7},
+			direction = 0,
+		},
+		{
+			name = "wall",
+			pos = {3, 7},
+			direction = 0,
+		},
+		{
+			name = "wall",
+			pos = {4, 7},
+			direction = 0,
+		},
+		{
+			name = "wall",
+			pos = {5, 7},
+			direction = 0,
+		},
+		{
+			name = "wall",
+			pos = {6, 7},
+			direction = 0,
+		},
+		{
+			name = "wall",
+			pos = {7, 7},
+			direction = 0,
+		},
+		{
+			name = "fire",
+			pos = {9, 1},
+			direction = 0,
+		},
+		{
+			name = "player_goal",
+			pos = {8, 2},
+			direction = 0,
+		},
+		{
+			name = "wall",
+			pos = {2, 2},
+			direction = 0,
+		},
+		{
+			name = "wall",
+			pos = {3, 2},
+			direction = 0,
+		},
+		{
+			name = "fire",
+			pos = {6, 4},
+			direction = 0,
+		},
+		{
+			name = "wall",
+			pos = {8, 5},
+			direction = 0,
+		},
+		{
+			name = "wall",
+			pos = {1, 5},
+			direction = 0,
+		},
+		{
+			name = "wall",
+			pos = {10, 5},
+			direction = 0,
+		},
+		{
+			name = "wall",
+			pos = {1, 4},
+			direction = 0,
+		},
+		{
+			name = "fire",
+			pos = {7, 4},
+			direction = 0,
+		},
+		{
+			name = "fire",
+			pos = {5, 2},
+			direction = 0,
+		},
+		{
+			name = "wall",
+			pos = {1, 6},
+			direction = 0,
+		},
+		{
+			name = "fire",
+			pos = {4, 1},
+			direction = 0,
+		},
+		{
+			name = "fire",
+			pos = {4, 2},
+			direction = 0,
+		},
+		{
+			name = "wall",
+			pos = {8, 7},
+			direction = 0,
+		},
+		{
+			name = "wall",
+			pos = {10, 3},
+			direction = 0,
+		},
+		{
+			name = "fire",
+			pos = {8, 1},
+			direction = 0,
+		},
+		{
+			name = "wall",
+			pos = {10, 2},
+			direction = 0,
+		},
+		{
+			name = "wall",
+			pos = {10, 1},
+			direction = 0,
+		},
+		{
+			name = "fire",
+			pos = {9, 2},
+			direction = 0,
+		},
+		{
+			name = "wall",
 			pos = {2, 1},
 			direction = 0,
 		},
 		{
-			name = "fire",
-			pos = {7, 6},
+			name = "wall",
+			pos = {10, 6},
 			direction = 0,
 		},
 		{
-			name = "fire",
-			pos = {6, 5},
+			name = "wall",
+			pos = {10, 7},
+			direction = 0,
+		},
+		{
+			name = "robot_goal",
+			pos = {3, 5},
+			direction = 1,
+		},
+		{
+			name = "wall",
+			pos = {0, 0},
+			direction = 0,
+		},
+		{
+			name = "wall",
+			pos = {0, 1},
+			direction = 0,
+		},
+		{
+			name = "wall",
+			pos = {0, 2},
+			direction = 0,
+		},
+		{
+			name = "wall",
+			pos = {0, 3},
+			direction = 0,
+		},
+		{
+			name = "wall",
+			pos = {0, 4},
+			direction = 0,
+		},
+		{
+			name = "wall",
+			pos = {0, 5},
+			direction = 0,
+		},
+		{
+			name = "wall",
+			pos = {0, 6},
+			direction = 0,
+		},
+		{
+			name = "wall",
+			pos = {0, 7},
+			direction = 0,
+		},
+		{
+			name = "cmd_reset_1",
+			pos = {5, 5},
 			direction = 0,
 		},
 	},
-	hideChipInventory = false,
 }

@@ -64,6 +64,7 @@ local function ExecuteNextCommand(self, index)
 	self.lastStepActions[index][self.nextAction[index]] = true
 	FindNextNonEmpty(self, index)
 	self.previousAction = actionToTake
+	print(actionToTake.name)
 	
 	self.commandSpeed, self.maxMoveBlock = GetCommandSpeedAndMoveTime(self, actionToTake)
 	self.moveBlockDt = self.maxMoveBlock
@@ -91,9 +92,11 @@ local function FindAndExecuteCommand(self)
 	self.lastStepActions = {}
 	self.completedExclusiveAction = false
 	while self.chainAction do
+		local forceTriggerIndex = self.chainTriggerIndex
 		self.chainAction = false -- Set by actions
-		if self.chainTriggerIndex then
-			if ExecuteNextCommand(self, self.chainTriggerIndex) then
+		self.chainTriggerIndex = false -- Set by actions
+		if forceTriggerIndex then
+			if ExecuteNextCommand(self, forceTriggerIndex) then
 				return
 			end
 		else
@@ -490,6 +493,7 @@ local function NewRobot(self)
 			local lastTrigger = (self.lastStepTriggers and self.lastStepTriggers[i])
 			local highlight = CheckSelfTargetHighlight(self, (self.swapTrigger == i), "trigger")
 			local scale = lastTrigger and ((self.prevCommandDt or 0)*0.6 + 1) or 1
+			love.graphics.setLineWidth(3)
 			love.graphics.setColor(Global.PANEL_BORDER_COL)
 			love.graphics.rectangle("line", offsetX, offsetY - 3, Global.COMMAND_DRAW_SIZE, 6, 4, 4, 16)
 			
