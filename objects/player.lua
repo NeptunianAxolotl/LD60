@@ -32,6 +32,10 @@ local function NewPlayer(self, position, direction)
 		return TerrainHandler.GetBlockAt(self.pos)
 	end
 	
+	function self.GetPos()
+		return self.pos
+	end
+	
 	function self.Move(direction)
 		if self.dead or not GameHandler.AllowMovement() then
 			return false
@@ -49,7 +53,7 @@ local function NewPlayer(self, position, direction)
 		self.moveBlockDt = Global.PLAYER_MOVE_TIME
 		self.moveBlockMax = Global.PLAYER_MOVE_TIME
 		self.undoingMove = false
-		self.blockPickingUp = false
+		self.cannotPickup = false
 		return true
 	end
 	
@@ -88,7 +92,7 @@ local function NewPlayer(self, position, direction)
 	end
 	
 	function self.CheckPickup()
-		if not self.HasArrived() or self.blockPickingUp then
+		if not self.HasArrived() or self.cannotPickup then
 			return
 		end
 		local block = TerrainHandler.GetBlockAt(self.pos)
@@ -97,13 +101,8 @@ local function NewPlayer(self, position, direction)
 		end
 	end
 	
-	function self.DropPickup(commandName)
-		if self.BlockAtMyLocation() then
-			return
-		end
-		TerrainHandler.AddBlock("cmd_" .. commandName, self.pos, 0)
-		self.blockPickingUp = true
-		return true
+	function self.SetCannotPickup()
+		self.cannotPickup = true
 	end
 	
 	function self.Update(dt)

@@ -32,6 +32,7 @@ end
 
 function api.PickupCommand(command)
 	self.commandQueue[#self.commandQueue + 1] = command
+	return true
 end
 
 function api.GetTargetForCommand()
@@ -81,13 +82,26 @@ local function TryDropCommand()
 	if (not self.player) or self.player.IsDead() then
 		return false
 	end
-	local success = self.player.DropPickup(self.commandQueue[1])
-	if success then
-		for i = 1, #self.commandQueue do
-			self.commandQueue[i] = self.commandQueue[i + 1]
-		end
+	local command = self.commandQueue[1]
+	if not command then
+		return false
 	end
-	return success
+	-- Remove pickup from inventory
+	for i = 1, #self.commandQueue do
+		self.commandQueue[i] = self.commandQueue[i + 1]
+	end
+	local blockAtPos = self.player.BlockAtMyLocation()
+	if (not blockAtPos) or blockAtPos.TryPickup(self.player) then
+		TerrainHandler.AddBlock("cmd_" .. command, self.player.GetPos(), 0)
+		if not blockAtPos then
+			self.player.SetCannotPickup()
+		end
+		return true
+	else
+		-- Did not manage to drop, readd my command
+		self.commandQueue[1] = command
+		return false
+	end
 end
 
 local function TryMove()

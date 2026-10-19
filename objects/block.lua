@@ -66,7 +66,7 @@ local function NewBlock(self)
 	
 	function self.TryPickup(other)
 		if self.def.pickupFunc then
-			self.def.pickupFunc(self, other)
+			return self.def.pickupFunc(self, other)
 		end
 	end
 	
