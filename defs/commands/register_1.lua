@@ -6,7 +6,7 @@ local def = {
 		return self.GetRegister(1)
 	end,
 	imageFunc = function (self)
-		return self.GetRegister(1)and "cmd_set_1_on" or "cmd_set_1_off"
+		return self.GetRegister(1) and "cmd_set_1_on" or "cmd_set_1_off"
 	end
 }
 
