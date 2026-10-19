@@ -28,11 +28,10 @@ function api.AllowMovement()
 end
 
 function api.WantDrawRobotProgram()
-	local _, won = self.world.GetGameOver()
-	if not won then
-		return true
+	if self.world.GetCosmos().ShowHighScore() then
+		return false
 	end
-	return not LevelHandler.GetLevelData().specialEndText
+	return true
 end
 
 --------------------------------------------------
@@ -78,6 +77,9 @@ function api.Update(dt)
 			self.world.SetGameOver(false, "player_died")
 		elseif PlayerHandler.GoalSatisfied() and RobotHandler.GoalSatisfied() then
 			self.world.SetGameOver(true, "all_charging", RobotHandler.GetLevelCycles())
+			if LevelHandler.GetLevelData().specialEndText then
+				self.world.GetCosmos().SetShowHighScore(true)
+			end
 		end
 	end
 	if self.hoveredCommand then
@@ -189,6 +191,8 @@ function api.DrawInterface()
 			offsetY = offsetY + 30
 		end
 		love.graphics.printf("Total cycles: " .. totalTime, Global.WINDOW_X - Global.UI_WIDTH + 20, offsetY, Global.UI_WIDTH - 40, "left")
+		offsetY = offsetY + 45
+		love.graphics.printf("Ctrl+H to toggle", Global.WINDOW_X - Global.UI_WIDTH + 20, offsetY, Global.UI_WIDTH - 40, "left")
 		offsetY = offsetY + 45
 		for name, cycles in pairs(levelTimes) do
 			if not included[name] then

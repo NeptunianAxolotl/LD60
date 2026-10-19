@@ -79,7 +79,7 @@ function api.LoadLevel(name)
 		EffectsHandler.SpawnEffect("error_popup", {400, 300}, {text = "Level format error.", velocity = {0, 4}})
 		return
 	end
-	
+	levelData.name = name
 	self.world.GetCosmos().LoadLevelByTable(levelData)
 	return true
 end

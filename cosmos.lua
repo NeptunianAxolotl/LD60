@@ -87,6 +87,7 @@ function api.SwitchLevel(goNext)
 			return
 		end
 	end
+	api.SwitchLevelByNumber(1)
 end
 
 function api.SwitchLevelByNumber(levelNumber)
@@ -188,6 +189,14 @@ function api.GetLevelTimes()
 	return self.wonLevels
 end
 
+function api.ShowHighScore()
+	return self.showHighScore
+end
+
+function api.SetShowHighScore(newValue)
+	self.showHighScore = newValue
+end
+
 --------------------------------------------------
 -- Draw
 --------------------------------------------------
@@ -230,6 +239,10 @@ function api.KeyPressed(key, scancode, isRepeat)
 	end
 	if key == "s" and (love.keyboard.isDown("lctrl") or love.keyboard.isDown("rctrl")) then
 		api.TakeScreenshot()
+		return true
+	end
+	if key == "h" and (love.keyboard.isDown("lctrl") or love.keyboard.isDown("rctrl")) then
+		self.showHighScore = not self.showHighScore
 		return true
 	end
 	if Global.DEV_TOOLS_ENABLED and key == "b" and (love.keyboard.isDown("lctrl") or love.keyboard.isDown("rctrl")) then
@@ -296,6 +309,7 @@ function api.Initialize()
 		soundEnabled = true,
 		editMode = false,
 		levelsLoaded = false,
+		showHighScore = false,
 		wonLevels = {},
 		drawDebug = Global.DRAW_DEBUG,
 	}
