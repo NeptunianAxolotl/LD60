@@ -38,40 +38,52 @@ function api.Update(dt)
     
     --victory siren is only when you've won; for that matter drums should stop if you die
     local _, gameWon, gameLost = self.cosmos.GetWorld().GetGameOver()
-    if(gameWon) then
-      bgmTrackTargetVolumes["siren"]["vol"] = 1
-    else 
-      bgmTrackTargetVolumes["siren"]["vol"] = 0
-    end
+    --if(gameWon) then
+    --  bgmTrackTargetVolumes["siren"]["vol"] = 1
+    --else 
+    --  bgmTrackTargetVolumes["siren"]["vol"] = 0
+   -- end
     
-    if(gameLost) then
-      bgmTrackTargetVolumes["drums"]["vol"] = 0
-    else 
-      bgmTrackTargetVolumes["drums"]["vol"] = 1
-    end
+    
     
     --pad is active after level 1, bass is active after level 2, lead is active after level 3
     -- reduce drums volume by 3dB in levels 1-4
     local currentLevel = self.cosmos.GetLevelNumber()
     
     if currentLevel ~= nil then
-      if currentLevel >= 1 and currentLevel < 3 then
+      if currentLevel >= 1 and currentLevel < 2 then
+        bgmTrackTargetVolumes["pad"]["vol"] = 0
+        bgmTrackTargetVolumes["bass"]["vol"] = 0.5
+        bgmTrackTargetVolumes["lead"]["vol"] = 0
+        bgmTrackTargetVolumes["siren"]["vol"] = 0
+        elseif currentLevel >= 2 and currentLevel < 3 then
+        bgmTrackTargetVolumes["pad"]["vol"] = 1
+        bgmTrackTargetVolumes["bass"]["vol"] = 0
+        bgmTrackTargetVolumes["lead"]["vol"] = 0
+        bgmTrackTargetVolumes["siren"]["vol"] = 0
+      elseif currentLevel >= 3 and currentLevel < 5 then
         bgmTrackTargetVolumes["pad"]["vol"] = 1
         bgmTrackTargetVolumes["bass"]["vol"] = 1
-        bgmTrackTargetVolumes["lead"]["vol"] = 1
-      elseif currentLevel >= 3 and currentLevel < 5 then
-        bgmTrackTargetVolumes["pad"]["vol"] = 0
-        bgmTrackTargetVolumes["bass"]["vol"] = 1
         bgmTrackTargetVolumes["lead"]["vol"] = 0
+        bgmTrackTargetVolumes["siren"]["vol"] = 0
       elseif currentLevel >= 5 and currentLevel < 7 then
         bgmTrackTargetVolumes["pad"]["vol"] = 1
         bgmTrackTargetVolumes["bass"]["vol"] = 1
-        bgmTrackTargetVolumes["lead"]["vol"] = 0
+        bgmTrackTargetVolumes["lead"]["vol"] = 1
+        bgmTrackTargetVolumes["siren"]["vol"] = 0
       else
         bgmTrackTargetVolumes["pad"]["vol"] = 1
         bgmTrackTargetVolumes["bass"]["vol"] = 1
         bgmTrackTargetVolumes["lead"]["vol"] = 1
+        bgmTrackTargetVolumes["siren"]["vol"] = 1
       end
+    end
+    
+    if(gameLost) then
+      bgmTrackTargetVolumes["drums"]["vol"] = 0
+      bgmTrackTargetVolumes["snare"]["vol"] = 0
+    --else 
+    -- bgmTrackTargetVolumes["drums"]["vol"] = 1
     end
     
     
