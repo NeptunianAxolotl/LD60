@@ -1,6 +1,6 @@
 return {
 	humanName = "Impasse",
-	description = "Remember the robots' programming sees boxes as walls.\n\nLoyal Bot would walk through walls for you.\n\nTraitor Bot... not so much.",
+	description = "Remember the robots' programming sees boxes as walls.\n\nLoyal Bot would walk through walls for you.\n\nTraitor Bot... not so much.\nBut perhaps you can trick it.",
 	dimensions = {15, 12},
 	hideChipInventory = false,
 	doorOpenState = {},
