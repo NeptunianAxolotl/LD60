@@ -82,6 +82,9 @@ function api.KeyPressed(key, scancode, isRepeat)
 	if GameHandler.KeyPressed and GameHandler.KeyPressed(key, scancode, isRepeat) then
 		return
 	end
+	if Global.DEV_TOOLS_ENABLED and key == "g" and (love.keyboard.isDown("lctrl") or love.keyboard.isDown("rctrl")) then
+		self.gameSpeed = 21 - (self.gameSpeed or 1)
+	end
 	if api.GetGameOver() then
 		return -- No doing actions
 	end
@@ -211,6 +214,7 @@ function api.ViewResize(width, height)
 end
 
 function api.Update(dt)
+	dt = dt*(self.gameSpeed or 1)
 	if api.GetPaused() then
 		UpdateCamera(dt)
 		InterfaceUtil.Update(dt)
