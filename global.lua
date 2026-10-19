@@ -69,7 +69,7 @@ local globals = {
 		"dimensions", "textSize", "hideChipInventory",
 		"doorOpenState", "doorIndex",
 		"player", "robots", "blocks",
-		"pos", "direction", "hideChipInventory",
+		"pos", "direction",
 		"swapTrigger", "swapAction", "brickDetection",
 		"trigger", "actions",
 	},

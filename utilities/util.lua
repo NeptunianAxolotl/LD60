@@ -1033,7 +1033,7 @@ function TableToStringHelper(data, tableChecked, newIndent, indentAdd, delimiter
 	if orderPreference then
 		for i = 1, #orderPreference do
 			local nameRaw = orderPreference[i]
-			if data[nameRaw] then
+			if data[nameRaw] ~= nil then
 				AddTableLine(nameRaw, data[nameRaw], newIndent, indentAdd, delimiter, lineFunc, orderPreference, inlineConf, depth)
 				alreadyAdded[nameRaw] = true
 			end

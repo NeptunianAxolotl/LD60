@@ -325,8 +325,8 @@ local function NewRobot(self)
 			return false
 		end
 		local block = TerrainHandler.GetBlockAt(self.pos)
-		if block or block.GetType() == "fire" then
-			if block.GetType() == "fire" then
+		if (not block) or block.GetType() == "fire" then
+			if block and block.GetType() == "fire" then
 				TerrainHandler.RemoveBlock(self.pos)
 			end
 			TerrainHandler.AddBlock("paint", self.pos, 0)
