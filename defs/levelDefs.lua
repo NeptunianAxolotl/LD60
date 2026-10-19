@@ -10,6 +10,7 @@ local def = {
 		"level-hallway",
 		"level-slidy",
 		"tutor-doors",
+		"tutor-fire",
 		"level-doortwo",
 		"level-leaky",
 		"tutor-register",

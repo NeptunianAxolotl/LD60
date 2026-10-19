@@ -2,8 +2,6 @@ return {
 	humanName = "Fire Register",
 	description = [[Paint puts out fires.
 
-Your robot is not strong enough to stand the heat.
-
 The [1] trigger activates as long its register is set. Register commands enable or disable the trigger.
 
 Press Ctrl+R to restart the level if you get stuck.
