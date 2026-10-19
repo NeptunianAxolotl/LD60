@@ -59,7 +59,7 @@ return {
 			program = {
 				{
 					trigger = "player_see_front",
-					actions = {"move_fast"},
+					actions = {"move"},
 				},
 				{
 					trigger = "paint",

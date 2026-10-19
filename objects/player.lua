@@ -49,6 +49,7 @@ local function NewPlayer(self, position, direction)
 		self.moveBlockDt = Global.PLAYER_MOVE_TIME
 		self.moveBlockMax = Global.PLAYER_MOVE_TIME
 		self.undoingMove = false
+		self.blockPickingUp = false
 		return true
 	end
 	
@@ -87,13 +88,22 @@ local function NewPlayer(self, position, direction)
 	end
 	
 	function self.CheckPickup()
-		if not self.HasArrived() then
+		if not self.HasArrived() or self.blockPickingUp then
 			return
 		end
 		local block = TerrainHandler.GetBlockAt(self.pos)
 		if block then
 			block.TryPickup(self)
 		end
+	end
+	
+	function self.DropPickup(commandName)
+		if self.BlockAtMyLocation() then
+			return
+		end
+		TerrainHandler.AddBlock("cmd_" .. commandName, self.pos, 0)
+		self.blockPickingUp = true
+		return true
 	end
 	
 	function self.Update(dt)

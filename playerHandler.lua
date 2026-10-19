@@ -78,19 +78,16 @@ local function TrySwapCommand()
 end
 
 local function TryDropCommand()
-	if (not self.player) or self.player.ObjInRelativeDirection(0) or self.player.BlockInRelativeDirection(0) or self.player.IsDead() then
+	if (not self.player) or self.player.IsDead() then
 		return false
 	end
-	local command = self.commandQueue[1]
-	if not command then
-		return false
+	local success = self.player.DropPickup(self.commandQueue[1])
+	if success then
+		for i = 1, #self.commandQueue do
+			self.commandQueue[i] = self.commandQueue[i + 1]
+		end
 	end
-	for i = 1, #self.commandQueue do
-		self.commandQueue[i] = self.commandQueue[i + 1]
-	end
-	local dropPos = self.player.GetRelativeTile(0)
-	TerrainHandler.AddBlock("cmd_" .. command, dropPos, 0)
-	return true
+	return success
 end
 
 local function TryMove()
