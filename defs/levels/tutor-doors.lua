@@ -1,6 +1,6 @@
 return {
 	humanName = "Toggle Doors",
-	description = "Press the slit button to open or close doors.\n",
+	description = "Press the lit buttons to open and close doors.\n\nDoors do not switch if both types of button are held down.",
 	dimensions = {13, 10},
 	doorOpenState = {},
 	player = {

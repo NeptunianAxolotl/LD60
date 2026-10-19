@@ -1,7 +1,8 @@
 return {
 	humanName = "Airlock",
-	description = "Warden Bot is already on its charging platform.\n\nUnfortunately, you are not.\n\nYou can modify the trigger conditions of some bots.",
+	description = "Warden Bot is already on its charging platform.\n\nUnfortunately, you are not.\n\nYou can modify the trigger conditions of some bots.\n\nPress Ctrl+R to restart the level if you get stuck.",
 	dimensions = {15, 9},
+	textSize = 480,
 	hideChipInventory = false,
 	doorOpenState = {},
 	player = {
