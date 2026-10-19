@@ -6,7 +6,6 @@ The [1] trigger activates as long its register is set. Register commands enable 
 
 Press Ctrl+R to restart the level if you get stuck.
 ]],
-	textSize = 480,
 	dimensions = {11, 8},
 	hideChipInventory = false,
 	doorOpenState = {},

@@ -64,7 +64,6 @@ local function ExecuteNextCommand(self, index)
 	self.lastStepActions[index][self.nextAction[index]] = true
 	FindNextNonEmpty(self, index)
 	self.previousAction = actionToTake
-	print(actionToTake.name)
 	
 	self.commandSpeed, self.maxMoveBlock = GetCommandSpeedAndMoveTime(self, actionToTake)
 	self.moveBlockDt = self.maxMoveBlock

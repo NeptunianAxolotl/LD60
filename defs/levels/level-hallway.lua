@@ -1,6 +1,6 @@
 return {
 	humanName = "Hall Cleaners",
-	description = "These sentries restlessly patrol the hallway to keep it clean of paint.\n\nWin by putting all three robots on charging points, even if momentarily.\n\nUse X/N/Left Mouse Button to add or remove paint.\n",
+	description = "These sentries restlessly patrol the hallway to keep it clean of paint.\n\nWin by putting all three robots on charging points, even if momentarily.\n\nUse C/B/Left Mouse Button to add or remove paint.\n",
 	dimensions = {13, 8},
 	hideChipInventory = true,
 	doorOpenState = {},

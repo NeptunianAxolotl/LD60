@@ -116,13 +116,18 @@ function api.KeyPressed(key, scancode, isRepeat)
 	end
 	self.bufferKey = key
 	TryMove()
-	if key == "x" or key == "n" then
+	if key == "c" or key == "b" then
 		self.player.DropOrCleanPaint()
 		return true
 	end
+	if key == "x" or key == "n" then
+		if TrySwapCommand() then
+			return true
+		end
+	end
 	if key == "z" or key == "m" then
-		if not TrySwapCommand() then
-			TryDropCommand()
+		if TryDropCommand() then
+			return true
 		end
 	end
 end

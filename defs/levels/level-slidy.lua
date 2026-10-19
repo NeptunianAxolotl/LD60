@@ -1,6 +1,6 @@
 return {
 	humanName = "Slip and Slide",
-	description = "Slidy Bot follows paint while Cleaner Bot tidies it up.  Their programs require adjustment.\n\nUse Z/M/Right Mouse Button to place commands.\n\nPress Ctrl+R to restart the level if you get stuck.\n",
+	description = "Slidy Bot follows paint while Cleaner Bot tidies it up.  Their programs require adjustment.\n\nUse X/N/Right Mouse Button to place commands.\n\nPress Ctrl+R to restart the level if you get stuck.\n",
 	dimensions = {14, 8},
 	doorOpenState = {},
 	player = {

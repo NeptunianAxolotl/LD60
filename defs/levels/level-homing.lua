@@ -1,5 +1,11 @@
 return {
 	humanName = "Homing Bots",
+	description = [[
+Cleanbot lives to clean.
+
+Killbot lives to charge at you and run you over.
+]],
+	textSize = 240,
 	dimensions = {18, 11},
 	hideChipInventory = true,
 	doorOpenState = {},
