@@ -1,6 +1,6 @@
 return {
-	humanName = "Level A1",
-	description = "bla\n",
+	humanName = "Toggle Doors",
+	description = "Press the slit button to open or close doors.\n",
 	dimensions = {13, 10},
 	doorOpenState = {},
 	player = {

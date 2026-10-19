@@ -1,6 +1,6 @@
 return {
-	humanName = "Level A2",
-	description = "WSAD or arrows to move.\nSpace/Right Mouse to paint.\nSwap commands with LMB\nDirect all the robots (including yourself) to their designated charging ports.\n\nCtrl+J to toggle editor\nCtrl+R to restart\n",
+	humanName = "Jump Scare",
+	description = "Bored Bot is waiting impatiently for a cleaning job.\n\nPerhaps it needs to be told to slow down a little...",
 	dimensions = {11, 10},
 	doorOpenState = {},
 	player = {
