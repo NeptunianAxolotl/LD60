@@ -4,7 +4,9 @@ local api = {}
 
 local menuOptions = {
 	"Quit",
-	"Restart Game",
+	"Restart Level",
+	"Next Level",
+	"Previous Level",
 	"Fullscreen",
 	"Music Volume",
 	--"SFX Volume",

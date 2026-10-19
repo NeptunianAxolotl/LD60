@@ -509,7 +509,7 @@ local function NewRobot(self)
 			GameHandler.DrawCommandBox(self.program[i].trigger.name, offsetX, offsetY, highlight, scale, 1, lastTrigger, false, false, false, self)
 			offsetX = offsetX + Global.COMMAND_DRAW_SIZE + 20
 			for j = 1, #actions do
-				if j > 1 and j%5 == 1 then
+				if j > 1 and j%4 == 1 then
 					offsetX = drawPos[1] + Global.COMMAND_DRAW_SIZE + 20
 					offsetY = offsetY + Global.COMMAND_DRAW_SIZE + 5
 				end

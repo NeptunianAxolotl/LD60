@@ -1,6 +1,6 @@
 return {
 	humanName = "Standby Mode",
-	description = "1. Run over a tube to grab it.\n2. Move next to a robot.\n3. Use the Z or M keys or click the Right Mouse Button to socket it.\n\nCommands can be swapped out of the highlighted slot of each robot.\n",
+	description = "1. Run over a tube to grab it.\n2. Move next to a robot.\n3. Press the Z or M keys or the Right Mouse Button to use it.\n\nCommands can be swapped with the highlighted slots on robots.\n",
 	dimensions = {13, 9},
 	doorOpenState = {},
 	player = {
