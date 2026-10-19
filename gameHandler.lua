@@ -45,6 +45,12 @@ end
 --------------------------------------------------
 
 function api.Update(dt)
+  if RobotHandler.AllRobotsStationary() then
+    BGMHandler.SetArp(0)
+  else
+    BGMHandler.SetArp(1)
+  end
+  
 	if not self.world.GetGameOver() then
 		if not PlayerHandler.GetPlayer() and not LevelHandler.InEditMode() then
 			self.world.SetGameOver(false, "player_died")

@@ -17,6 +17,11 @@ local self = {}
 local api = {}
 local cosmos
 
+-- Used to allow RobotHandler to tell the BGM whether robots can move
+function api.SetArp(vol)
+  bgmTrackTargetVolumes["arp"]["vol"] = vol
+end
+
 function api.Update(dt)
 	if DISABLED then
     for k,v in pairs(soundFiles) do

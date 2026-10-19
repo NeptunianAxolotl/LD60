@@ -38,6 +38,10 @@ function api.GoalSatisfied()
 	return IterableMap.IfAllSatisfy(self.robots, "GoalSatisfied")
 end
 
+function api.AllRobotsStationary()
+  return IterableMap.IfAllSatisfy(self.robots, "FullyStationary")
+end
+
 function api.Update(dt)
 	local newDt, leftover = util.UpdateTimer(self.commandDt, dt)
 	self.commandDt = newDt
