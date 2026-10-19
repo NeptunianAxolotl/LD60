@@ -18,7 +18,8 @@ Your robot is not strong enough to stand the heat.
 	robots = {
 		{
 			name = "basic_robot",
-			pos = {6, 5},
+			humanName = "Intruder",
+			pos = {6, 2},
 			direction = 0,
 			swapAction = {trigger = "paint", slot = 2},
 			program = {
@@ -365,7 +366,7 @@ Your robot is not strong enough to stand the heat.
 		{
 			name = "button_close",
 			doorIndex = 2,
-			pos = {12, 7},
+			pos = {3, 5},
 			direction = 0,
 		},
 		{
@@ -614,8 +615,8 @@ Your robot is not strong enough to stand the heat.
 			direction = 0,
 		},
 		{
-			name = "cmd_left",
-			pos = {4, 3},
+			name = "cmd_paint_down",
+			pos = {4, 4},
 			direction = 0,
 		},
 	},
