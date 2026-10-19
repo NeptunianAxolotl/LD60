@@ -12,7 +12,6 @@ local def = {
 		local other = TerrainHandler.GetMobileObjectAt(self.pos)
 		if other then
 			TerrainHandler.SetDoorOpen(self.doorIndex, false)
-      SoundHandler.PlaySound("csharp_7")
 		end
 	end,
 }
