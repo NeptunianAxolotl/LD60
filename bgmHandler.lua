@@ -9,7 +9,7 @@ for k,v in pairs(soundFiles) do
     bgmTracks[v.track] = love.audio.newSource("resources/sounds/"..v.file,"static")
     bgmTracks[v.track]:setLooping(true)
     bgmTracks[v.track]:setVolume(0)
-    bgmTrackTargetVolumes[v.track] = {vol = 1.0, time = 2}
+    bgmTrackTargetVolumes[v.track] = {vol = 1.0, time = 0.8}
 end
 
 
