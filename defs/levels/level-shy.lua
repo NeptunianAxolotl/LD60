@@ -16,7 +16,7 @@ return {
 		{
 			name = "basic_robot",
 			humanName = "Shy Bot",
-			pos = {2, 5},
+			pos = {3, 5},
 			direction = 0,
 			swapAction = {trigger = "wall_front", slot = 1},
 			program = {
@@ -38,14 +38,14 @@ return {
 				},
 				{
 					trigger = "register_1",
-					actions = {"move_fast", "move", "reset_1"},
+					actions = {"paint_down","move_fast", "move", "reset_1"},
 				},
 			},
 		},
 		{
 			name = "basic_robot",
 			humanName = "Timid Bot",
-			pos = {2, 4},
+			pos = {3, 4},
 			direction = 0,
 			swapAction = {trigger = "wall_front", slot = 1},
 			program = {
@@ -67,7 +67,7 @@ return {
 				},
 				{
 					trigger = "register_1",
-					actions = {"move_fast", "move", "reset_1"},
+					actions = {"paint_down","move_fast", "move", "reset_1"},
 				},
 			},
 		},
