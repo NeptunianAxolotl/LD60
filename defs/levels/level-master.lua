@@ -1,6 +1,6 @@
 return {
 	humanName = "Central",
-	description = "What does that so-called\n'Master Bot' think it is doing?\n\nThat is YOUR command center\nit is sitting in.\n\nTake it back.",
+	description = "What does that so-called\n'Master Bot' think it is doing?\n\nThat is YOUR command center\nit is lounging around in.\n\nTake it back.",
 	dimensions = {14, 12},
 	hideChipInventory = false,
 	doorOpenState = {},
@@ -21,7 +21,7 @@ return {
 			program = {
 				{
 					trigger = "paint",
-					actions = {"left"},
+					actions = {"paint_up","left"},
 				},
 				{
 					trigger = "wildcard",
