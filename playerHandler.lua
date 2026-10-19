@@ -32,6 +32,7 @@ end
 
 function api.PickupCommand(command)
 	self.commandQueue[#self.commandQueue + 1] = command
+	return true
 end
 
 function api.GetTargetForCommand()
@@ -81,13 +82,23 @@ local function TryDropCommand()
 	if (not self.player) or self.player.IsDead() then
 		return false
 	end
-	local success = self.player.DropPickup(self.commandQueue[1])
-	if success then
-		for i = 1, #self.commandQueue do
-			self.commandQueue[i] = self.commandQueue[i + 1]
-		end
+	local command = self.commandQueue[1]
+	if not command then
+		return false
 	end
-	return success
+	-- Remove pickup from inventory
+	for i = 1, #self.commandQueue do
+		self.commandQueue[i] = self.commandQueue[i + 1]
+	end
+	local blockAtPos = self.player.BlockAtMyLocation()
+	if (not blockAtPos) or blockAtPos.TryPickup(self.player) then
+		TerrainHandler.AddBlock("cmd_" .. command, self.player.GetPos(), 0)
+		return true
+	else
+		-- Did not manage to drop, readd my command
+		self.commandQueue[1] = command
+		return false
+	end
 end
 
 local function TryMove()
@@ -107,25 +118,30 @@ local function TryMove()
 	end
 end
 
+local function DoTubeInventoryAction()
+	if TrySwapCommand() then
+		return true
+	end
+	if TryDropCommand() then
+		return true
+	end
+	if self.player.CheckPickup() then
+		return true
+	end
+end
+
 function api.KeyPressed(key, scancode, isRepeat)
 	if not self.player or self.player.IsDead() then
 		return
 	end
 	self.bufferKey = key
 	TryMove()
-	if key == "c" or key == "b" then
+	if key == "x" or key == "n" then
 		self.player.DropOrCleanPaint()
 		return true
 	end
-	if key == "x" or key == "n" then
-		if TrySwapCommand() then
-			return true
-		end
-	end
 	if key == "z" or key == "m" then
-		if TryDropCommand() then
-			return true
-		end
+		return DoTubeInventoryAction()
 	end
 end
 
@@ -148,9 +164,7 @@ function api.MousePressed(mx, my, button)
 		self.player.DropOrCleanPaint()
 	end
 	if button == 2 then
-		if not TrySwapCommand() then
-			TryDropCommand()
-		end
+		return DoTubeInventoryAction()
 	end
 end
 
