@@ -4,9 +4,9 @@ return {
 	dimensions = {14, 12},
 	hideChipInventory = false,
 	specialEndText = [[
-As you clear away the last of the rubble a thought sticks in your mind:
-It is time to replace those robots!
-
+'Master' Bot has been returned to janitorial duties.
+Time to clock out and let the night 
+shift clean up this mess.
 Thanks for playing!
 (Ctrl+J opens the level editor)
 ]],
