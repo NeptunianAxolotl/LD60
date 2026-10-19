@@ -18,7 +18,7 @@ Your robot is not strong enough to stand the heat.
 	robots = {
 		{
 			name = "basic_robot",
-			humanName = "Intruder",
+			humanName = "Intruder Bot",
 			pos = {6, 2},
 			direction = 0,
 			swapAction = {trigger = "paint", slot = 2},

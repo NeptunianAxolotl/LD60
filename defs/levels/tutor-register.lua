@@ -19,7 +19,7 @@ Press Ctrl+R to restart the level if you get stuck.
 	robots = {
 		{
 			name = "basic_robot",
-			humanName = "Firefighter",
+			humanName = "Firefighter Bot",
 			pos = {7, 3},
 			direction = 1,
 			swapAction = {trigger = "register_1", slot = 4},

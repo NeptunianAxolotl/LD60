@@ -14,7 +14,7 @@ return {
 	robots = {
 		{
 			name = "basic_robot",
-			humanName = "Hacker",
+			humanName = "Hacker Bot",
 			pos = {6, 2},
 			direction = 0,
 			swapAction = {trigger = "paint", slot = 2},
@@ -39,7 +39,7 @@ return {
 		},
 		{
 			name = "basic_robot",
-			humanName = "Technician",
+			humanName = "Technician Bot",
 			pos = {2, 3},
 			direction = 0,
 			swapTrigger = "empty",
