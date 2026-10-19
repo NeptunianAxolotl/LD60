@@ -30,7 +30,7 @@ return {
 		},
 		{
 			name = "basic_robot",
-			humanName = "Patrol Bot",
+			humanName = "Bouncy Bot",
 			pos = {10, 4},
 			direction = 2,
 			swapAction = {trigger = "paint", slot = 2},

@@ -14,7 +14,7 @@ return {
 	robots = {
 		{
 			name = "basic_robot",
-			humanName = "Left Paint Turner",
+			humanName = "Lefty Bot",
 			pos = {7, 4},
 			direction = 3,
 			program = {

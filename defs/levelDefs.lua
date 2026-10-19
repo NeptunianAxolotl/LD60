@@ -15,6 +15,7 @@ local def = {
 		"tutor-fire",
 		"tutor-box",
 		"level-bored",
+		"level-traitor",
 		"level-homing",
 		"level-hardbox",
 		
