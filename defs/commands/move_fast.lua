@@ -1,7 +1,7 @@
 local def = {
 	image = "cmd_move_fast",
-	humanName = "On Player Port",
-	description = "Triggers when the robot is on a player robot charging port.",
+	humanName = "On Player Charging Port",
+	description = "Triggers when the robot is on one of your charging ports.",
 	humanName = "Move Quickly",
 	description = "Moves the robot fowards at double speed.",
 	commandType = "move",
