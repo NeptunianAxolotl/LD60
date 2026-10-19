@@ -28,10 +28,10 @@ end
 --------------------------------------------------
 
 function api.MousePressed(x, y)
-	if self.hovered == "You Win! Space to continue." then
+	if self.hovered == "Level Complete!\nPress Space to continue" then
 		self.world.GetCosmos().SwitchLevel(true)
 		return true
-	elseif self.hovered == "You Died! Space to restart." then
+	elseif self.hovered == "You Died!\nPress Space to restart" then
 		self.world.Restart()
 		return true
 	end
@@ -200,9 +200,9 @@ Press Ctrl+R to restart the level
 	
 	self.hovered = false
 	if won then
-		self.hovered = InterfaceUtil.DrawButton(600, 500, 700, 100, mousePos, "You Win! Space to continue.", false, false, false, false, 1, 15, false, 0.85)
+		self.hovered = InterfaceUtil.DrawButton(620, 500, 640, 180, mousePos, "Level Complete!\nPress Space to continue", false, false, false, false, 1, 17, false, 0.85)
 	elseif lost then
-		self.hovered = InterfaceUtil.DrawButton(600, 500, 700, 100, mousePos, "You Died! Space to restart.", false, false, false, false, 1, 15, false, 0.85)
+		self.hovered = InterfaceUtil.DrawButton(620, 500, 640, 180, mousePos, "You Died!\nPress Space to restart", false, false, false, false, 1, 17, false, 0.85)
 	end
 end
 

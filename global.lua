@@ -2,6 +2,7 @@
 local globals = {
 	DEV_TOOLS_ENABLED = true,
 	DEBUG_SKIP_TO_LEVEL = 11,
+	SAVE_WON_LEVELS = true,
 	
 	BACK_COL = {180/255, 180/255, 180/255},
 	TILE_COL = {124/255, 149/255, 61/255},

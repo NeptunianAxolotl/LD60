@@ -5,8 +5,8 @@ local api = {}
 local menuOptions = {
 	"Quit",
 	"Restart Level",
-	"Next Level",
 	"Previous Level",
+	"Next Level",
 	"Fullscreen",
 	"Music Volume",
 	"SFX Volume",
@@ -14,6 +14,11 @@ local menuOptions = {
 local menuTooltip = {
 	Brutal = function ()
 		return "NOT IMPLEMENTED"
+	end,
+}
+local enableOptionFunc = {
+	["Next Level"] = function ()
+		return self.cosmos.GetCurrentLevelPreviouslyWon()
 	end,
 }
 local menuSliders = {
@@ -66,6 +71,10 @@ function api.MousePressed(x, y, button)
 		api.ToggleMenu()
 	elseif self.hoveredMenuAction == "Quit" then
 		self.cosmos.QuitGame()
+	elseif self.hoveredMenuAction == "Next Level" then
+		self.cosmos.SwitchLevel(true)
+	elseif self.hoveredMenuAction == "Previous Level" then
+		self.cosmos.SwitchLevel(false)
 	elseif self.hoveredMenuAction == "Restart Game" then
 		self.cosmos.RestartWorld()
 	elseif self.hoveredMenuAction == "Fullscreen" then
@@ -109,7 +118,8 @@ function api.DrawInterface()
 		if slider then
 			slider.extents = {x = overX, width = 350}
 		end
-		local hovered = InterfaceUtil.DrawButton(overX, offset, 350, 60, mousePos, menuOptions[i], false, false, false, false, 2, 8, false, false, slider and slider.drawFunc())
+		local enabled = (not enableOptionFunc[menuOptions[i]]) or enableOptionFunc[menuOptions[i]]()
+		local hovered = InterfaceUtil.DrawButton(overX, offset, 350, 60, mousePos, menuOptions[i], not enabled, false, false, false, 2, 8, false, false, slider and slider.drawFunc())
 		if hovered then
 			self.hoveredMenuAction = hovered
 		end

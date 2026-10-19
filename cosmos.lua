@@ -153,6 +153,31 @@ function api.GetLocalisation()
 end
 
 --------------------------------------------------
+-- Won Levels
+--------------------------------------------------
+
+function api.GetCurrentLevelPreviouslyWon()
+	return self.wonLevels[(self.currentLevel.name or "unknown")]
+end
+
+function api.SetLevelWon()
+	if Global.SAVE_WON_LEVELS then
+		love.filesystem.createDirectory("completed")
+		local success, message = love.filesystem.write("completed/" .. (self.currentLevel.name or "unknown"), "won")
+	end
+	self.wonLevels[(self.currentLevel.name or "unknown")] = true
+end
+
+function api.LoadLevelsWon()
+	local files = love.filesystem.getDirectoryItems("completed")
+	for i = 1, #(files or {}) do
+		if files[i] and LevelDefs.levels[files[i]] then
+			self.wonLevels[files[i]] = true
+		end
+	end
+end
+
+--------------------------------------------------
 -- Draw
 --------------------------------------------------
 
@@ -244,6 +269,10 @@ function api.Update(dt, realDt)
 	BGMHandler.Update(realDt)
 	SoundHandler.Update(realDt)
 	World.Update(dt)
+	if not self.levelsLoaded then
+		self.levelsLoaded = true
+		api.LoadLevelsWon()
+	end
 end
 
 function api.Initialize()
@@ -255,6 +284,8 @@ function api.Initialize()
 		musicEnabled = true,
 		soundEnabled = true,
 		editMode = false,
+		levelsLoaded = false,
+		wonLevels = {},
 		drawDebug = Global.DRAW_DEBUG,
 	}
 	BGMHandler.Initialize(api)

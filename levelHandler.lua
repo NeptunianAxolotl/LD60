@@ -326,7 +326,7 @@ Ctrl+Arrows - Size
 E,R - Rotate
 T,Y - Place command
 Z - Delete
-]] .. EditorDefs.spawnString, 0, offset, 500, "left")
+]] .. EditorDefs.spawnString, 30, offset, 500, "left")
 	end
 end
 

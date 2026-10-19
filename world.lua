@@ -59,6 +59,7 @@ function api.SetGameOver(hasWon, overType)
 	
 	if hasWon then
 		self.gameWon = true
+		self.cosmos.SetLevelWon()
 	else
 		self.gameLost = true
 		self.overType = overType

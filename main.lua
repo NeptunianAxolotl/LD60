@@ -96,6 +96,7 @@ function love.load(arg)
 	Resources.LoadResources()
 	Cosmos.Initialize()
 	
-	love.filesystem.setIdentity("LD60", true)
-	love.window.maximize() -- Do not fullscreen since we lack an exit button.
+	love.filesystem.setIdentity("BuggyBotBedtime", true)
+	love.window.maximize()
+	love.window.setFullscreen(true)
 end
