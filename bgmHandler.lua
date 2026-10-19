@@ -45,6 +45,30 @@ function api.Update(dt)
       bgmTrackTargetVolumes["drums"]["vol"] = 1
     end
     
+    --pad is active after level 1, bass is active after level 2, lead is active after level 3
+    local currentLevel = self.cosmos.GetLevelNumber()
+    
+    if currentLevel ~= nil then
+      if currentLevel >= 1 and currentLevel < 3 then
+        bgmTrackTargetVolumes["pad"]["vol"] = 0
+        bgmTrackTargetVolumes["bass"]["vol"] = 0
+        bgmTrackTargetVolumes["lead"]["vol"] = 0
+      elseif currentLevel >= 3 and currentLevel < 5 then
+        bgmTrackTargetVolumes["pad"]["vol"] = 1
+        bgmTrackTargetVolumes["bass"]["vol"] = 0
+        bgmTrackTargetVolumes["lead"]["vol"] = 0
+      elseif currentLevel >= 5 and currentLevel < 7 then
+        bgmTrackTargetVolumes["pad"]["vol"] = 1
+        bgmTrackTargetVolumes["bass"]["vol"] = 1
+        bgmTrackTargetVolumes["lead"]["vol"] = 0
+      else
+        bgmTrackTargetVolumes["pad"]["vol"] = 1
+        bgmTrackTargetVolumes["bass"]["vol"] = 1
+        bgmTrackTargetVolumes["lead"]["vol"] = 1
+      end
+    end
+    
+    
     for k,v in pairs(soundFiles) do
       local currentVolumeRel = 0
       if self.cosmos.GetMusicVolume() > 0 then

@@ -89,6 +89,15 @@ function api.SwitchLevel(goNext)
 	end
 end
 
+function api.GetLevelNumber()
+  	for i = 1, #LevelDefs.levelOrder do
+		if LevelDefs.levelOrder[i] == self.currentLevel.name then
+			return i
+    end
+  end
+  return nil
+end
+
 function api.GetScrollSpeeds()
 	return (self.grabInput and self.mouseScrollSpeed) or 0, self.keyScrollSpeed
 end
