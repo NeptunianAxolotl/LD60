@@ -26,7 +26,9 @@ local def = {
 			local blockage = TerrainHandler.GetMobileObjectAt(self.pos)
 			if blockage then
 				if blockage.GetType() == "player" then
-					PlayerHandler.KillPlayer()
+					if not blockage.UndoMove(Global.PLAYER_CRUSH_UNDO_WINDOW) then
+						PlayerHandler.KillPlayer()
+					end
 				else
 					return
 				end

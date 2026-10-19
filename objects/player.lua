@@ -60,7 +60,7 @@ local function NewPlayer(self, position, direction)
 			return false
 		end
 		self.pos, self.prevPos = self.prevPos, self.pos
-		self.moveBlockDt = (self.moveBlockMax - self.moveBlockDt)*1.5
+		self.moveBlockDt = (self.moveBlockMax - self.moveBlockDt)
 		self.undoingMove = true
 		return true
 	end
@@ -108,7 +108,9 @@ local function NewPlayer(self, position, direction)
 	end
 	
 	function self.BlockMoveIntoByObject(object)
-		PlayerHandler.KillPlayer()
+		if not self.UndoMove(Global.PLAYER_CRUSH_UNDO_WINDOW) then
+			PlayerHandler.KillPlayer()
+		end
 		return false
 	end
 	

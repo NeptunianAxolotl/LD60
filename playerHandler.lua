@@ -131,12 +131,11 @@ end
 function api.KeyReleased(key, scancode)
 	if key == self.lastMoveKey then
 		if self.repeatedMove and self.player then
-			self.player.UndoMove(Global.PLAYER_REPEAT_MOVE_UNDO_WINDOW)
 			self.bufferKey = false
 		end
 		self.lastMoveKey = false
 		self.repeatedMove = false
-		self.lastMoveDt = Global.PLAYER_REPEAT_MOVE_UNDO_WINDOW
+		self.lastMoveDt = false
 	end
 end
 
