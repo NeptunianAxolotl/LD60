@@ -339,7 +339,7 @@ local function NewRobot(self)
 			if block and block.GetType() == "fire" then
 				TerrainHandler.RemoveBlock(self.pos)
 				local drawPos = self.GetDrawPosAndRot()
-				EffectsHandler.SpawnEffect("fire_extinguish", drawPos, {scale = 1.4, velocity = {0, -1.2 - 0.6*math.random()}})
+				EffectsHandler.SpawnEffect("fire_extinguish", drawPos, {scale = 1.4, velocity = {0, -1.2 - 0.4*math.random()}})
 			end
 			TerrainHandler.AddBlock("paint", self.pos, 0)
 		end

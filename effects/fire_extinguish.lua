@@ -5,11 +5,9 @@ return {
 	scale = 0.2,
 	lifeScale = 3,
 	color = {1, 1, 1},
-	walkMag = 2,
-	walkRate = 8,
 	inFront = 2000,
 	spawnOffset = {0, 0},
-	duration = 0.7,
-	drag = 6.5,
+	duration = 1.5,
+	drag = 2.5,
 	gravity = -2,
 }

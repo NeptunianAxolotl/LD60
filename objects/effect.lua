@@ -38,10 +38,22 @@ local function NewEffect(self, def)
 	end
 	
 	function self.Update(dt)
-		self.animTime = self.animTime + dt*self.animMult
-		self.life = self.life - dt*self.animMult
+		self.animTime = self.animTime + dt
+		self.life = self.life - dt
 		if self.life <= 0 then
 			return true
+		end
+		if def.gravity then
+			self.velocity = self.velocity or {0, 0}
+			self.velocity[2] = self.velocity[2] + dt*def.gravity
+		end
+		if def.drag then
+			self.velocity = self.velocity or {0, 0}
+			self.velocity = util.Mult(1 - dt*def.drag*(self.drag or 1), self.velocity)
+		end
+		if def.walkRate and math.random() < def.walkRate*dt then
+			self.velocity = self.velocity or {0, 0}
+			self.velocity = util.Add(self.velocity, util.RandomPointInAnnulus(def.walkMag/4, def.walkMag))
 		end
 		
 		if self.velocity then
