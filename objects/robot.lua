@@ -503,7 +503,7 @@ local function NewRobot(self)
 	end
 	
 	function self.Draw(drawQueue)
-		drawQueue:push({y=self.pos[2] + 10; f=function()
+		drawQueue:push({y=self.pos[2] + 10 + (self.def.isRobot and 130 or 0); f=function()
 			local drawPos, drawRot = self.GetDrawPosAndRot()
 			Resources.DrawImage(self.def.image, drawPos[1], drawPos[2], drawRot)
 			if self.def.isRobot then
