@@ -1,7 +1,7 @@
 
-
 local api = {}
 local sounds = IterableMap.New()
+local cosmos
 
 local soundFiles = util.LoadDefDirectory("resources/soundDefs")
 
@@ -13,6 +13,10 @@ function AddSource(name, musicData)
 		end
 		return love.audio.newSource("resources/sounds/" .. def.file, "static")
 	end
+end
+
+local function GetVolume()
+	return cosmos and cosmos.GetSoundVolume()
 end
 
 function api.LoadSound(name, id, musicData)
@@ -53,7 +57,7 @@ function api.PlaySound(name, id, fadeIn, fadeOut, delay, loop, wantedVolume, pla
 		if pitch then
 			soundData.source:setPitch(pitch)
 		end
-		soundData.source:setVolume(soundData.want * soundData.volumeMult)
+		soundData.source:setVolume(soundData.want * soundData.volumeMult * GetVolume())
 	end
 	return soundData
 end
@@ -98,7 +102,7 @@ function api.Update(dt)
 				if soundData.want > 0 then
 					soundData.source:stop()
 					love.audio.play(soundData.source)
-					soundData.source:setVolume(soundData.want * soundData.volumeMult)
+					soundData.source:setVolume(soundData.want * soundData.volumeMult * GetVolume())
 				end
 				if soundData.killSound then
 					soundData.source:stop()
@@ -110,7 +114,7 @@ function api.Update(dt)
 				if soundData.have > soundData.want then
 					soundData.have = soundData.want
 				end
-				soundData.source:setVolume(soundData.have * soundData.volumeMult)
+				soundData.source:setVolume(soundData.have * soundData.volumeMult * GetVolume())
 			end
 
 			if soundData.want < soundData.have then
@@ -118,7 +122,7 @@ function api.Update(dt)
 				if soundData.have < soundData.want then
 					soundData.have = soundData.want
 				end
-				soundData.source:setVolume(soundData.have * soundData.volumeMult)
+				soundData.source:setVolume(soundData.have * soundData.volumeMult * GetVolume())
 				if (not soundData.playAtZero) and soundData.have <= 0 then
 					soundData.source:stop()
 				end
@@ -140,7 +144,8 @@ function api.setPitch(name,id,pitch)
   soundData.source:setPitch(pitch)
 end
 
-function api.Initialize()
+function api.Initialize(newCosmos)
+	cosmos = newCosmos
 	for _, soundData in IterableMap.Iterator(sounds) do
 		soundData.source:stop()
 	end

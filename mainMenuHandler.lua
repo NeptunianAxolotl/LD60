@@ -9,8 +9,7 @@ local menuOptions = {
 	"Previous Level",
 	"Fullscreen",
 	"Music Volume",
-	--"SFX Volume",
-	--"Brutal",
+	"SFX Volume",
 }
 local menuTooltip = {
 	Brutal = function ()
