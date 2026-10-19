@@ -28,7 +28,7 @@ local def = {
 					humanName = data.humanName,
 					swapAction = data.swapAction,
 					swapTrigger = data.swapTrigger,
-					brickDetection = data.brickDetection,
+					brickDetectionClauses = data.brickDetectionClauses,
 				}
 				RobotHandler.AddRobot(data.name, data.pos, data.direction, params)
 			end,

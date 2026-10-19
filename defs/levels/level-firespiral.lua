@@ -59,6 +59,22 @@ return {
 			humanName = "Sprinter",
 			pos = {3, 2},
 			direction = 0,
+			brickDetectionClauses = {
+				{
+					{
+						trigger = "robot_goal",
+						invert = true,
+					},
+					{
+						trigger = "fire",
+						invert = true,
+					},
+					{
+						trigger = "wall_front",
+						invert = false,
+					},
+				},
+			},
 			program = {
 				{
 					trigger = "robot_goal",

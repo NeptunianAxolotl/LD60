@@ -17,7 +17,9 @@ return {
 			pos = {6, 5},
 			direction = 3,
 			swapAction = {trigger = "robot_goal", slot = 1},
-			brickDetection = {"paint", "wall_front"},
+			brickDetectionClauses= {
+				{{trigger = "paint", invert = false}, {trigger = "wall_front", invert = false}},
+			},
 			program = {
 				{
 					trigger = "robot_goal",

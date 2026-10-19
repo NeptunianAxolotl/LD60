@@ -70,10 +70,10 @@ local globals = {
 		"doorOpenState", "doorIndex",
 		"player", "robots", "blocks",
 		"pos", "direction",
-		"swapTrigger", "swapAction", "brickDetection",
+		"swapTrigger", "swapAction", "brickDetectionClauses",
 		"trigger", "actions",
 	},
-	SAVE_INLINE = {"pos", "dimensions", "doorOpenState", "actions", "swapAction", "brickDetection"},
+	SAVE_INLINE = {"pos", "dimensions", "doorOpenState", "actions", "swapAction"},
 	
 	BUFFER_KEY_LEEWAY = 0.16,
 	SAME_MOVE_BUFFER_KEY_LEEWAY = 0.25,

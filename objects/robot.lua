@@ -168,13 +168,21 @@ local function CheckSelfTargetHighlight(self, highlight, controlType)
 end
 
 local function CheckBrick(self)
-	for i = 1, #self.brickDetection do
-		local check = self.brickDetection[i]
-		if not (CommandDefs[check].acceptFunc and CommandDefs[check].acceptFunc(self)) then
+	for i = 1, #self.brickDetectionClauses do
+		local clauseTrue = true
+		for j = 1, #self.brickDetectionClauses[i] do
+			local check = self.brickDetectionClauses[i][j]
+			local passed = (CommandDefs[check.trigger].acceptFunc and CommandDefs[check.trigger].acceptFunc(self))
+			if (passed and check.invert) or (not passed and not check.invert) then
+				clauseTrue = false
+				break
+			end
+		end
+		if clauseTrue then
+			GameHandler.NofityRobotBrick(self.humanName)
 			return
 		end
 	end
-	GameHandler.NofityRobotBrick(self.humanName)
 end
 
 local function NewRobot(self)
@@ -182,7 +190,7 @@ local function NewRobot(self)
 	self.commandSpeed = 1
 	self.commandAcc = 3
 	self.humanName = self.params.humanName or "Unnamed"
-	self.brickDetection = self.params.brickDetection
+	self.brickDetectionClauses = self.params.brickDetectionClauses
 	self.program = InitProgram(self.params.program)
 	self.nextAction = {}
 	self.registerValues = {}
@@ -369,7 +377,7 @@ local function NewRobot(self)
 			self.prevCommandDt = Global.PREV_COMMAND_PULSE_TIME
 			FindAndExecuteCommand(self)
 		end
-		if self.brickDetection and not GameHandler.GetBrickedRobotName() then
+		if self.brickDetectionClauses and not GameHandler.GetBrickedRobotName() then
 			CheckBrick(self)
 		end
 	end
