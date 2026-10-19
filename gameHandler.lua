@@ -15,8 +15,10 @@ local api = {}
 function api.MousePressed(x, y)
 	if self.hovered == "You Win! Space to continue." then
 		self.world.GetCosmos().SwitchLevel(true)
+		return true
 	elseif self.hovered == "You Died! Space to restart." then
 		self.world.Restart()
+		return true
 	end
 end
 

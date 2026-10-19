@@ -307,6 +307,9 @@ local function NewRobot(self)
 	end
 	
 	function self.AddPaint()
+		if not GameHandler.AllowMovement() then
+			return false
+		end
 		local block = TerrainHandler.GetBlockAt(self.pos)
 		if not block then
 			TerrainHandler.AddBlock("paint", self.pos, 0)
@@ -314,6 +317,9 @@ local function NewRobot(self)
 	end
 	
 	function self.RemovePaint()
+		if not GameHandler.AllowMovement() then
+			return false
+		end
 		local block = TerrainHandler.GetBlockAt(self.pos)
 		if block and block.GetType() == "paint" then
 			TerrainHandler.RemoveBlock(self.pos)

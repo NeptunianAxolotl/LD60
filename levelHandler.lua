@@ -188,6 +188,7 @@ function api.KeyPressed(key, scancode, isRepeat)
 		if key == "escape" then
 			self.loadingLevelGetName = false
 			self.saveLevelGetName = false
+			return true
 		end
 		if key == "return" and self.enteredText then
 			if self.loadingLevelGetName then

@@ -163,10 +163,6 @@ end
 --------------------------------------------------
 
 function api.KeyPressed(key, scancode, isRepeat)
-	if key == "escape" then
-		MainMenuHandler.ToggleMenu()
-		return true
-	end
 	if key == "r" and (love.keyboard.isDown("lctrl") or love.keyboard.isDown("rctrl")) then
 		api.RestartWorld()
 		return true
@@ -194,7 +190,13 @@ function api.KeyPressed(key, scancode, isRepeat)
 	if key == "j" and (love.keyboard.isDown("lctrl") or love.keyboard.isDown("rctrl")) then
 		self.editMode = not self.editMode
 	end
-	return World.KeyPressed(key, scancode, isRepeat)
+	if World.KeyPressed(key, scancode, isRepeat) then
+		return true
+	end
+	if key == "escape" then
+		MainMenuHandler.ToggleMenu()
+		return true
+	end
 end
 
 function api.KeyReleased(key, scancode)
