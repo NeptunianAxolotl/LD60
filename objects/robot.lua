@@ -245,7 +245,7 @@ local function NewRobot(self)
 				boxes[#boxes + 1] = obj -- A box to push
 			elseif obj and obj.IsRobot() then
 				return false -- cannot push through Robots
-			elseif obj.GetType() == "player" then
+			elseif obj and obj.GetType() == "player" then
 				obj.BlockMoveIntoByObject()
 				break -- Kill player and start pushing
 			else
@@ -325,7 +325,10 @@ local function NewRobot(self)
 			return false
 		end
 		local block = TerrainHandler.GetBlockAt(self.pos)
-		if not block then
+		if block or block.GetType() == "fire" then
+			if block.GetType() == "fire" then
+				TerrainHandler.RemoveBlock(self.pos)
+			end
 			TerrainHandler.AddBlock("paint", self.pos, 0)
 		end
 	end
