@@ -47,6 +47,9 @@ function api.GetLevelCycles()
 end
 
 function api.Update(dt)
+	if not GameHandler.AllowMovement() then
+		return
+	end
 	local newDt, leftover = util.UpdateTimer(self.commandDt, dt)
 	self.commandDt = newDt
 	if not self.commandDt then
