@@ -7,7 +7,11 @@ local def = {
 		return not self.open
 	end,
 	drawColorFunc = function (self)
-		return Global.DOOR_ON_COLOR[self.doorIndex]
+		local open = self.open
+		if self.closeDelayDt then
+			open = self.oldOpen
+		end
+		return open and Global.DOOR_OFF_COLOR_DOOR[self.doorIndex] or Global.DOOR_ON_COLOR[self.doorIndex]
 	end,
 	imageFunc = function (self)
 		local open = self.open
