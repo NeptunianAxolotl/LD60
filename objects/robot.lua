@@ -546,7 +546,7 @@ local function NewRobot(self)
 			return
 		end
 		local heldPos = util.Add(util.PolarToCart(-0.29*Global.TILE_SIZE, drawRot), drawPos)
-		Resources.DrawImage(command.image, heldPos[1], heldPos[2], drawRot - math.pi*0.25, false, 0.3)
+		Resources.DrawImage(command.image, heldPos[1], heldPos[2], drawRot + math.pi*0.5, false, 0.3)
 		Resources.DrawImage("tube_held_robot", drawPos[1], drawPos[2], drawRot)
 	end
 	
